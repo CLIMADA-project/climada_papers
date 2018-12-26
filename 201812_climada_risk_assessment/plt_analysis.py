@@ -381,7 +381,7 @@ def fig06(data_dir, fig_dir):
 
     graph = graphs_exceedance(expo_dict, tc_dict, imp_dict)
     if fig_dir:
-        graph.fig.savefig(os.path.join(fig_dir, 'fig06.pdf'), format='pdf', bbox_inches='tight')
+        graph.fig.savefig(os.path.join(fig_dir, 'fig06.png'), format='png', bbox_inches='tight')
 
 def fig07(data_dir, fig_dir):
     """ Generate fig07. """
@@ -403,4 +403,4 @@ def fig07(data_dir, fig_dir):
     graph = quality_ensembles(hist_tracks, tc_dict, expo_dict, data_dir)
 
     if fig_dir:
-        graph.fig.savefig(os.path.join(fig_dir, 'fig07.pdf'), format='pdf', bbox_inches='tight')
+        graph.fig.savefig(os.path.join(fig_dir, 'fig07.png'), format='png', bbox_inches='tight')

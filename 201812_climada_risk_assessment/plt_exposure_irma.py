@@ -16,7 +16,7 @@ from climada.engine import Impact
 import climada.util.plot as u_plot
 from climada.util.scalebar_plot import scale_bar
 
-from script_exec import YEAR, POLY_VAL, GDP_NLD_ISL, INC_GRP, GDP, CNTRIES
+from constants import YEAR, POLY_VAL, GDP_NLD_ISL, INC_GRP, GDP, CNTRIES
 
 MS2KN = 1.9438444924406049
 
@@ -340,9 +340,9 @@ def fig03_fig04(ibtracs_dir, data_dir, fig_dir=None):
     fig03a, fig03b = irma_and_exposures(south_isl, nord_isl, tc_irma_s, 
                                         tc_irma_t, data_irma)
     if fig_dir:
-        fig03a.savefig(os.path.join(fig_dir, 'fig03a.pdf'), format='pdf', bbox_inches='tight')
-        fig03b.savefig(os.path.join(fig_dir, 'fig03b.pdf'), format='pdf', bbox_inches='tight')
+        fig03a.savefig(os.path.join(fig_dir, 'fig03a.png'), format='png', bbox_inches='tight')
+        fig03b.savefig(os.path.join(fig_dir, 'fig03b.png'), format='png', bbox_inches='tight')
 
     fig04 = irma_percen(tc_irma_s, tc_irma_t, south_isl, nord_isl)
     if fig_dir:
-        fig04.savefig(os.path.join(fig_dir, 'fig04.pdf'), format='pdf', bbox_inches='tight')
+        fig04.savefig(os.path.join(fig_dir, 'fig04.png'), format='png', bbox_inches='tight')

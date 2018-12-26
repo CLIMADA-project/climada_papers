@@ -7,10 +7,14 @@ import numpy as np
 from iso3166 import countries as iso_cntry
 
 from climada.entity import BlackMarble, ImpactFuncSet, IFTropCyclone
-from climada.hazard import TCTracks, TropCyclone, Centroids
+from climada.hazard import TropCyclone, Centroids
 from climada.engine import Impact
 from climada.util.save import save
-from climada.util.files_handler import get_file_names
+
+from constants import CNTRIES, CNTRIES_ISO, RESOL, YEAR, GDP_NLD_ISL, INC_GRP, GDP, POLY_VAL
+from plt_exposure_irma import fig03_fig04
+from plt_analysis import fig06
+
 
 DATA_DIR = os.path.abspath(os.path.dirname(__file__))
 """ Input/output data folder relative path """
@@ -18,41 +22,10 @@ DATA_DIR = os.path.abspath(os.path.dirname(__file__))
 IBTRACS_DIR = os.path.join(DATA_DIR, 'tracks')
 """ Tracks data in DATA_DIR """
 
-RESOL = 0.5
-""" Approx. resolution in km """
+FIG_DIR = DATA_DIR
+""" Folder where the images are written """
 
-YEAR = 2016
-""" Year of exposure data """
-
-CNTRIES = ['Saint Barthelemy', 'Saint Martin', 'Sint Maarten', 'Anguilla',
-           'British Virgin Islands', 'United States Virgin Islands',
-           'Turks And Caicos Islands', 'Saint Kitts And Nevis',
-           'Antigua And Barbuda', 'Netherlands']
-""" Country (island groups) names """
-
-CNTRIES_ISO = ['BLM', 'MAF', 'SXM', 'AIA', 'VGB', 'VIR', 'TCA', 'KNA', 'ATG', 'NLD']
-""" Country (island groups) ISO3 codes """
-
-GDP = {'BLM': 414710000, 'MAF': 614258169, 'SXM': 1081577185, \
-       'AIA': 337201995, 'VGB': 971237110, \
-       'VIR': 3765000000, 'TCA': 917550492, \
-       'KNA': 909854630, 'ATG': 1460144703, 'NLD': ''}
-""" GDP at YEAR per island group """
-
-GDP_NLD_ISL = 48.0e6 + 100.0e6
-""" GDP Saba and St. Eustatius """
-
-INC_GRP_DEF = 4
-INC_GRP = {'BLM': INC_GRP_DEF, 'MAF': INC_GRP_DEF, 'SXM': INC_GRP_DEF,
-           'AIA': INC_GRP_DEF, 'VGB': INC_GRP_DEF, 'VIR': INC_GRP_DEF,
-           'TCA': INC_GRP_DEF, 'KNA': INC_GRP_DEF, 'ATG': INC_GRP_DEF,
-           'NLD': INC_GRP_DEF}
-""" income group level at YEAR per island group """
-
-POLY_VAL = [0, 0, 1]
-""" Polygonal transformation in night lights """
-
-def calc_tracks(data_dir, ibtracs_dir):
+def calc_tracks(data_dir):
     """ Compute tracks from ibtracs data, if not contained in data_dir.
     This functions is the longest one to execute."""
     try:
@@ -61,13 +34,10 @@ def calc_tracks(data_dir, ibtracs_dir):
             sel_ibtracs = pickle.load(f)
         print('Loaded sel_hist_syn_1h:', sel_ibtracs.size)
     except FileNotFoundError:
-        sel_ibtracs = TCTracks()
-        for file in get_file_names(ibtracs_dir):
-            tmp_tr = TCTracks()
-            tmp_tr.read_ibtracs_csv(file)
-            sel_ibtracs.append(tmp_tr.data)
-        print('num tracks hist:', sel_ibtracs.size)
-        save(os.path.join(data_dir, 'sel_hist.p'), sel_ibtracs)
+        abs_path = os.path.join(data_dir, 'sel_hist.p')
+        with open(abs_path, 'rb') as f:
+            sel_ibtracs = pickle.load(f)
+        print('Loaded sel_hist:', sel_ibtracs.size)
 
         sel_ibtracs.calc_random_walk(49)
         print('num tracks hist+syn:', sel_ibtracs.size)
@@ -187,7 +157,7 @@ def main(argv):
     expo_dict = calc_exposure(DATA_DIR)
 
     # tracks
-    sel_tr = calc_tracks(DATA_DIR, IBTRACS_DIR)
+    sel_tr = calc_tracks(DATA_DIR)
 
     # dictionary of tc per island
     tc_dict = calc_tc(expo_dict, sel_tr, DATA_DIR)
@@ -203,6 +173,13 @@ def main(argv):
 
     # compute impact exceedance frequency
     get_efc_isl(imp_dict)
+
+    # FIG03 and FIG04
+    fig03_fig04(IBTRACS_DIR, DATA_DIR, FIG_DIR) # 5min
+
+    # FIG 06
+    fig06(DATA_DIR, FIG_DIR)
+
 
 if __name__ == "__main__":
    main(sys.argv[1:])
