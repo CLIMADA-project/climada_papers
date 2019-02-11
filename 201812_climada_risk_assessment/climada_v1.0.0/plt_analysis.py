@@ -77,7 +77,7 @@ def irma_efc_mainland(graph, label, imp_dict):
             imp_all.at_event[ev] += imp_dict[isl].at_event[ev]
 
     efc_all = imp_all.calc_freq_curve()
-    print('aquiiiiiii:', label, efc_all.impact[:50])
+
     irma_id = imp_ev_info.event_name.index('2017242N16333')
     dam_irma_all = imp_all.at_event[irma_id]
     dam_irma = np.array([dam_irma_all])
