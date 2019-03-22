@@ -28,11 +28,12 @@ from climada.util.constants import DATA_DIR
 from climada.util.config import CONFIG
 
 # set output directory
-output_path = os.path.join(DATA_DIR, 'results')
+output_path = os.path.join(DATA_DIR, 'results', 'plots')
 if not os.path.isdir(output_path):
     os.mkdir(output_path)
 CONFIG['local_data']['save_dir'] = output_path
 
+DPI = 300 # Graph export resolution
 
 def get_entity(country,exponents,description_str,date_str):
     
@@ -61,14 +62,14 @@ def get_entity(country,exponents,description_str,date_str):
 
 date_str = '20190308'
 exponents = [[1,0], [0,1], [1,1]]
-country = ['USA','GBR','ZAF','IND','MEX']
-city_name =['New York','London','Cape Town','Mumbai','Mexico City']
-extent = [(-74.6, -73, 40, 41),(-0.6,0.4,51,52),
-          (17.7,19.1,-34.65,-33.2),(72,73.35,18.8,19.4),
-          (-99.8,-98.6,18.9,20)]
-markersize = [1,6,1,4,1]
-col_max_value = [1.2*10**10,3*10**9,5*10**8,6.5*10**8,1.1*10**9]
-col_min_value = np.true_divide(col_max_value,10**3)
+country = ['GBR','ZAF','IND','MEX','USA']
+city_name =['London', 'Cape Town', 'Mumbai', 'Mexico City', 'New York']
+extent = [(-0.6,0.4,51,52),
+          (17.7,19.1,-34.65,-33.2), (72,73.35,18.8,19.4),
+          (-99.8,-98.6,18.9,20), (-74.6, -73, 40, 41)]
+markersize = [6, 1, 4, 1, 1]
+col_max_value = [3e9, 5e8, 6.5e8, 1.1e9, 1.2e10]
+col_min_value = np.true_divide(col_max_value,1000)
 plot_method = 1
 
 for country_i,city_name_i,extent_i,markersize_i,col_max_value_i,col_min_value_i \
@@ -93,12 +94,12 @@ for country_i,city_name_i,extent_i,markersize_i,col_max_value_i,col_min_value_i 
                     'cmap':'plasma',
                     'marker':'s',
                     's':markersize_i,
-                    'norm':colors.LogNorm(10**3,col_max_value_i)
+                    'norm':colors.LogNorm(1000,col_max_value_i)
                     }
             value_log = exposure.value[index_plot].replace(0,0.0001)
             plt.scatter(exposure.longitude[index_plot], exposure.latitude[index_plot], c=value_log , **scatter_params)
     #        plt.scatter(exposure.longitude[index_plot], exposure.latitude[index_plot], c=exposure.value[index_plot], **scatter_params)
-            plt.colorbar()
+            cbar = plt.colorbar()
         elif plot_method == 1:
             lon_vec = np.sort(exposure.longitude[index_plot].unique())
             lat_vec = np.sort(exposure.latitude[index_plot].unique())
@@ -111,10 +112,11 @@ for country_i,city_name_i,extent_i,markersize_i,col_max_value_i,col_min_value_i 
                            transform=ccrs.PlateCarree(),
                            cmap='plasma',vmin=col_min_value_i,vmax=col_max_value_i,
                            norm=colors.LogNorm(col_min_value_i,col_max_value_i))
-            plt.colorbar()
+            cbar = plt.colorbar()
+            # cbar.ax.set_ylabel('USD')
         elif plot_method == 2:
             exposure_crop = exposure.cx[extent_i[2]:extent_i[3],extent_i[0]:extent_i[1]]
-        plt.title(country_i + ', ' + city_name_i + ' - ' + description_str + ' distributed')
+        # plt.title(country_i + ', ' + city_name_i + ' - ' + description_str + ' distributed')
         plot_name = os.path.abspath(os.path.join( \
                 CONFIG['local_data']['save_dir'], country_i + '_' + city_name_i.replace(' ', '') + '_' + description_str +'.pdf'))
-        plt.savefig(plot_name, bbox_inches='tight',dpi=300)
+        plt.savefig(plot_name, bbox_inches='tight',dpi=DPI)

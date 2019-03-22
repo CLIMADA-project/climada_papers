@@ -22,43 +22,57 @@ from climada.util.finance import world_bank_wealth_account
 
 # set output directory:
 output_path = os.path.join(DATA_DIR, 'results')
-if not os.path.isdir(output_path):
-    os.mkdir(output_path)
+
+# Data export choices:
+export_litpop_norm = True # export gridded normalised Lit and Pop for (14) selected countries
+export_litpop_all = True # export gridded LitPop for all (227) countries
+save_csv = True # save entities as CSV-file
+save_hdf5 = False # save entities as HDF5-file
 
 version = 'v1'
 yyyy = 2014 # reference year for input data
 fin_mode = 'pc' # produced capital as prefered asset base
-
-# Data export choices:
-export_litpop_norm = True # export gridded normalised Lit and Pop for selected countries
-export_litpop_all = False # export gridded LitPop for all countries
-
 resolution = 30 # resolution of exposure map. set to 30 for best results (slow)
 
 countries = ['AUS', 'BRA', 'CAN', 'CHE', 'CHN', 'DEU', 'FRA', 'IDN', 'IND', \
-             'JPN', 'MEX', 'TUR', 'USA', 'ZAF']
+             'JPN', 'MEX', 'TUR', 'USA', 'ZAF'] # selected countries for extra data
 countries = sorted(countries)
-countries_sel = np.arange(0, len(countries)) # of countries in countries list
+countries_sel = np.arange(0, len(countries)) # indices of countries in countries list
+
+if not os.path.isdir(output_path): # create output directory if it does not exist
+    os.mkdir(output_path)
 
 print('CREATE AND EXPORT GRIDDED DATA:')
 for i in countries_sel:
     print('*** ' + countries[i] + ' *** ')
     ent = lp.LitPop()
-    
+    # Gridded LitPop for selected countries:
     ent.set_country(countries[i], res_arcsec=resolution, fin_mode=fin_mode, \
                     exponents=[1, 1], reference_year=yyyy)
-    ent.to_csv(os.path.join(output_path, 'LitPop_pc_' + str(resolution) + \
-                            'arcsec_' + countries[i] +  '_' + version + '.csv'))
+    if save_csv:
+        ent.to_csv(os.path.join(output_path, 'LitPop_pc_' + str(resolution) + \
+                                'arcsec_' + countries[i] +  '_' + version + '.csv'))
+    if save_hdf5:
+        ent.write_hdf5(os.path.join(output_path, 'LitPop_pc_' + str(resolution) + \
+                                'arcsec_' + countries[i] +  '_' + version + '.hdf5'))
     if export_litpop_norm:
+        # Normalized gridded Lit and Pop for selected countries:
         ent.set_country(countries[i], res_arcsec=resolution, fin_mode='norm', \
                         exponents=[1, 0], reference_year=yyyy)
-        ent.to_csv(os.path.join(output_path, 'Lit_norm_' + str(resolution) + \
-                                'arcsec_' + countries[i] +  '_' + version + '.csv'))
-
+        if save_csv:
+            ent.to_csv(os.path.join(output_path, 'Lit_norm_' + str(resolution) + \
+                                    'arcsec_' + countries[i] +  '_' + version + '.csv'))
+        if save_hdf5:
+            ent.write_hdf5(os.path.join(output_path, 'Lit_norm_' + str(resolution) + \
+                                    'arcsec_' + countries[i] +  '_' + version + '.hdf5'))
         ent.set_country(countries[i], res_arcsec=resolution, fin_mode='norm', \
                         exponents=[0, 1], reference_year=yyyy)
-        ent.to_csv(os.path.join(output_path, 'Pop_norm_' + str(resolution) + \
-                                'arcsec_' + countries[i] + '_' + version + '.csv'))
+        if save_csv:
+            ent.to_csv(os.path.join(output_path, 'Pop_norm_' + str(resolution) + \
+                                    'arcsec_' + countries[i] + '_' + version + '.csv'))
+        if save_hdf5:
+            ent.write_hdf5(os.path.join(output_path, 'Pop_norm_' + str(resolution) + \
+                                    'arcsec_' + countries[i] +  '_' + version + '.hdf5'))            
 
 if export_litpop_all:
     success = list()
@@ -67,12 +81,19 @@ if export_litpop_all:
     for c in iso_cntry:
         print('*** ' + c.alpha3 + ' ***')
         if not (c.alpha3 in countries):
+            # Try computing and exporting gridded LitPop for rest of countries:
             try:
                 ent = lp.LitPop()
                 ent.set_country(c.alpha3, res_arcsec=resolution, fin_mode=fin_mode, \
                             exponents=[1, 1], reference_year=yyyy)
-                ent.to_csv(os.path.join(output_path, 'LitPop_pc_' + str(resolution) + \
-                                        'arcsec_' + c.alpha3 + '_' + version + '.csv'))
+                if save_csv:
+                    ent.to_csv(os.path.join(output_path, 'LitPop_pc_' + \
+                                            str(resolution) + 'arcsec_' + \
+                                            c.alpha3 + '_' + version + '.csv'))
+                if save_hdf5:
+                    ent.write_hdf5(os.path.join(output_path, 'LitPop_pc_' + \
+                                            str(resolution) + 'arcsec_' + \
+                                            c.alpha3 + '_' + version + '.hdf5'))
                 success.append(c.alpha3)
                 print('Success: ' + c.name)
             except:
@@ -83,6 +104,10 @@ if export_litpop_all:
     print(failure)
     print(success)
 """
+# Lists of countries for which LitPop computation worked (2019/03):
+if not 'countries' in locals():
+        countries = ['AUS', 'BRA', 'CAN', 'CHE', 'CHN', 'DEU', 'FRA', 'IDN', \
+                     'IND', 'JPN', 'MEX', 'TUR', 'USA', 'ZAF']
 if not 'success' in locals():
         success = ['AFG', 'ALB', 'DZA', 'ASM', 'AND', 'AGO', 'AIA', 'ATG', \
                    'ARG', 'ARM', 'ABW', 'AUT', 'AZE', 'BHS', 'BHR', 'BGD', \
