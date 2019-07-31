@@ -1,5 +1,5 @@
 These scripts reproduce the main results of paper:
-CLIMADA v1: a global weather and climate risk assessment platform. Aznar-Siguan, G & Bresch, D. N.
+Aznar-Siguan, G. and Bresch, D. N.: CLIMADA v1: a global weather and climate risk assessment platform, Geosci. Model Dev., 12, 3085-3097, https://doi.org/10.5194/gmd-12-3085-2019, 2019.
 
 Execute script_exec.py with CLIMADA version v1.2.5. 
 The execution in a laptop should take less than 2 hours.
