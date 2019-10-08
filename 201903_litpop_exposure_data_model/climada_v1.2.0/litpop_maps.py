@@ -28,12 +28,13 @@ from climada.util.constants import DATA_DIR
 from climada.util.config import CONFIG
 
 # set output directory
-output_path = os.path.join(DATA_DIR, 'results', 'plots')
+save_figures = True
+output_path = os.path.join(DATA_DIR, 'results')
 if not os.path.isdir(output_path):
     os.mkdir(output_path)
 CONFIG['local_data']['save_dir'] = output_path
 
-DPI = 300 # Graph export resolution
+DPI = 600 # Graph export resolution
 
 def get_entity(country,exponents,description_str,date_str):
     
@@ -119,4 +120,5 @@ for country_i,city_name_i,extent_i,markersize_i,col_max_value_i,col_min_value_i 
         # plt.title(country_i + ', ' + city_name_i + ' - ' + description_str + ' distributed')
         plot_name = os.path.abspath(os.path.join( \
                 CONFIG['local_data']['save_dir'], country_i + '_' + city_name_i.replace(' ', '') + '_' + description_str +'.pdf'))
-        plt.savefig(plot_name, bbox_inches='tight',dpi=DPI)
+        if save_figures:
+            plt.savefig(plot_name, bbox_inches='tight',dpi=DPI)
