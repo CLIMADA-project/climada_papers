@@ -4,7 +4,7 @@ These scripts reproduce the main results of paper:
 
 Samuel Eberenz, Dario Stocker, Thomas Röösli, David N. Bresch (2019, in prep.). "Exposure data for global physical risk assessment"
 
-Contact: [Samuel Eberenz](mailto:samuel.eberenz@ethz.ch)
+Contact: [Samuel Eberenz](mailto:samuel.eberenz@usys.ethz.ch)
 
 ## Content:
 three independent scripts for Python 3.6 with CLIMADA 1.2.0:
@@ -16,6 +16,7 @@ Compute LitPop, Lit, and Pop for metropolitan areas and plot maps.
 ## litpop_validation.py
 LitPop exposure data model validation + scatter and box plots
 Sections 3.2, 3.3; Figures 3, 4; Tables (A1), A2, A3, S1
+
 ! slow to run for all countries !
 
 ##  litpop_data.py
@@ -44,6 +45,7 @@ Documentation for the LitPop module is available on Read the Docs:
 If script fails, revert CLIMADA version to release v1.2.0 (2018-03):
 * from [GitHub](https://github.com/CLIMADA-project/climada_python/releases/tag/v1.2.0)
 * from [ETH Data Archive](http://doi.org/10.5905/ethz-1007-226)
+
 ...and download GPW v4.10 to the data/systems folder inside CLIMADA
 (Download link: http://sedac.ciesin.columbia.edu/downloads/data/gpw-v4/gpw-v4-population-count-rev10/gpw-v4-population-count-rev10_2015_30_sec_tif.zip)
 
