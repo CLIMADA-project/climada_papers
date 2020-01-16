@@ -435,6 +435,7 @@ if validation_plots:
     r_rp = r_rp.round(2)
     r_slope = r_slope.round(2)
     r_rmsf = r_rmsf.round(2)
+
     # save to CSV:
     r_stat.to_csv(os.path.join(output_path, experiment_name + '_STAT_' + str(resolution) + '.csv'))
     r_rp.to_csv(os.path.join(output_path, experiment_name + '_RP_' + str(resolution) + '.csv'))
