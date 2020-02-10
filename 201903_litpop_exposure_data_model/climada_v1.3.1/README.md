@@ -47,6 +47,8 @@ Documentation: https://github.com/CLIMADA-project/climada_python/blob/master/doc
 
 ## Documentation:
 
+* Publication: [doi.org/10.5194/essd-2019-189](https://doi.org/10.5194/essd-2019-189)
+
 Documentation for CLIMADA is available on Read the Docs:
 
 * [online (recommended)](https://climada-python.readthedocs.io/en/stable/)
