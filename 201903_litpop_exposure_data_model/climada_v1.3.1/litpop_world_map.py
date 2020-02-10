@@ -1,32 +1,77 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Thu Nov 14 15:36:02 2019
+This file is part of CLIMADA-papers.
 
-@author: eberenzs
+Eberenz, S., Stocker, D., Röösli, T., and Bresch, D. N.:
+Exposure data for global physical risk assessment,
+Earth Syst. Sci. Data Discuss., https://doi.org/10.5194/essd-2019-189, in review, 2019. 
+
+
+Plot global asset exposure data for 224 countries
+Sections 3.1
+Figure 3
+
+Requires asset exposure data in the form of CSV as available from the ETH research repository:
+https://doi.org/10.3929/ethz-b-000331316
+Save CSV data in local folder ENTITY_DIR or set path in variable ENTITY_DIR before executing this script.
+
+Specify result folder path in variable RES_DIR before running this script.
+
+Requires https://github.com/CLIMADA-project/climada_python/releases/tag/v1.3.1
+or later
+
+The required gridded population data GPWv4.10 is available from SEDAC's Beta site, please see
+https://beta.sedac.ciesin.columbia.edu/data/collection/gpw-v4/sets/browse
+
+For more guidance on the LitPop module please refer to the CLIMADA tutorial:
+https://climada-python.readthedocs.io/en/latest/tutorial/climada_entity_LitPop.html
+
+@author: Samuel Eberenz
 """
+
+
 import os
 
 
 import numpy as np
-import pandas as pd
+# import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib.colors import LogNorm
+import cartopy.crs as ccrs
+from cartopy.io import shapereader
 
 from climada.util.constants import SYSTEM_DIR
 from climada.entity import Exposures
-from climada.entity.exposures.litpop import LitPop
-
+# from climada.entity.exposures.litpop import LitPop
 
 version_date = 'v1_1'
 REF_YEAR = 2014
 RES_ARCSEC = 30
-ENTITY_DIR = os.path.join(SYSTEM_DIR, 'litpop_%i' % (REF_YEAR))
-filename_start = 'LitPop_pc_%iarcsec_' % (RES_ARCSEC)
-RES_DIR = '/Users/eberenzs/Documents/Projects/climada_papers/201903_litpop_exposure_data_model/climada_v1.3.1/results'
 
+# List of target resolutions in arcsec
+res_targets = [600] 
+ENTITY_DIR = os.path.join(SYSTEM_DIR, 'litpop_%i' % (REF_YEAR))
+ENTITY_DIR_HDF5 = os.path.join(SYSTEM_DIR, 'litpop_%i_hdf5' % (REF_YEAR))
+filename_start = 'LitPop_pc_%iarcsec_' % (RES_ARCSEC)
+RES_DIR = '' # SPECIFY RES_DIR BEFORE USE
+
+# Import and export options:
+write_to_tiff = True
+try_read_from_tiff = True
+save_plots = True
 write_to_hdf5 = False
-try_read_from_hdf5 = True
+try_read_from_hdf5 = False
+
+fix_zeros = True # CHANGES TOTAL VALUES OF EXPOSURE; USE FOR PLOTTING ONLY
+
+if fix_zeros:
+    fadd = '_fixzeros_'
+else:
+    fadd = ''
+
+
+plot_minimum = 100
 
 if not os.path.exists(RES_DIR):
     os.makedirs(RES_DIR)
@@ -34,79 +79,92 @@ if not os.path.exists(RES_DIR):
 files = [i for i in os.listdir(ENTITY_DIR) if os.path.isfile(os.path.join(ENTITY_DIR,i)) and \
          filename_start in i]
 files = np.unique(files)
-print('Number of country exposure files: %i' %(len(files)))
+print('\n' + '\x1b[1;03;30;30m' + 'Number of country exposure files: %i' %(len(files)) + '\x1b[0m')
 
-# 
-exposure_data = LitPop()
+"""LOADING DATA FROM CSV AND REGRIDDING TO TARGET RESOLUTION PER COUNTRY:"""
+print('\n' + '\x1b[1;03;30;30m' + 'REGRIDDING TO TARGET RESOLUTION PER COUNTRY' + '\x1b[0m')
+for res_target in res_targets:
+    for idx, fi in enumerate(files):
+        exposure_tmp = Exposures()
+        if os.path.exists(os.path.join(RES_DIR, '%s_%ias.tiff' %(fi[0:-4]+fadd, res_target))):
+            print('\n' + '\x1b[1;03;30;30m' + 'TIFF exists already, skipping: %s_%ias.tiff' %(fi[0:-4], res_target) + '\x1b[0m')
 
-if try_read_from_hdf5 and os.path.exists(os.path.join(ENTITY_DIR, 'LitPop_hdf5_pc_%iarcsec_000_all.hdf5' % (RES_ARCSEC))):
-    exposure_data.read_hdf5(os.path.join(ENTITY_DIR, 'LitPop_hdf5_pc_%iarcsec_000_all.hdf5' % (RES_ARCSEC)))
-else:
-    grid_stats = pd.DataFrame(index=np.arange(0, len(files)), columns=['country', 'grid_count', 'sum', 'max', 'mean', 'median'])
-    for idx, fi in enumerate(files[0:3]):
-        print('Loading: %s ...' %(fi))
-        exposure_tmp = LitPop()
-        exposure_tmp = exposure_tmp.from_csv(os.path.join(ENTITY_DIR, fi), index_col=None)
-        exposure_data = exposure_data.append(exposure_tmp)
+            continue
+        else:
+            print('\n' + '\x1b[1;03;30;30m' + 'Loading: %s ...' %(fi) + '\x1b[0m')
+            exposure_tmp = exposure_tmp.from_csv(os.path.join(ENTITY_DIR, fi), index_col=None)
 
-        grid_stats.loc[idx, 'country'] = fi[-7:-4]
-        grid_stats.loc[idx, 'grid_count'] = exposure_tmp.value[exposure_tmp.value > 0].count()
-        grid_stats.loc[idx, 'sum'] = exposure_tmp.value.sum()
-        grid_stats.loc[idx, 'max'] = exposure_tmp.value.max()
-        grid_stats.loc[idx, 'mean'] = exposure_tmp.value.mean()
-        grid_stats.loc[idx, 'median'] = exposure_tmp.value.median()
+            if np.isnan(exposure_tmp.value.max()):
+                continue
+            exposure_tmp = Exposures(exposure_tmp)
+            exposure_tmp.set_geometry_points() # set geometry attribute (shapely Points) from GeoDataFrame from latitude and longitude
+            exposure_tmp.check() # puts metadata that has not been assigned        
+            if write_to_hdf5:
+                exposure_tmp.write_hdf5(os.path.join(ENTITY_DIR_HDF5, '%s.hdf5' %(fi[0:-4]+fadd)))
+            if write_to_tiff:
+                if fix_zeros:
+                    exposure_tmp.value[exposure_tmp.value<1] = 1
+                # exposure_tmp.plot_raster(res=RES_ARCSEC/3600, save_tiff=\
+                #                          os.path.join(RES_DIR, '%s_%ias.tiff' %(fi[0:-4], RES_ARCSEC)))
+                exposure_tmp.plot_raster(res=RES_ARCSEC/3600, raster_res=res_target/3600, save_tiff=\
+                                         os.path.join(RES_DIR, '%s_%ias.tiff' %(fi[0:-4]+fadd, res_target)))
 
-    del exposure_tmp
-    grid_stats.to_csv(os.path.join(RES_DIR, 'LitPop_meta_%iarcsec_%i_grid_stats.csv' % (RES_ARCSEC, REF_YEAR)))
-    grid_stats.to_csv(os.path.join(ENTITY_DIR, 'LitPop_meta_%iarcsec_%i_grid_stats.csv' % (RES_ARCSEC, REF_YEAR)))
-    exposure_data = Exposures(exposure_data)
-    print('\n' + '\x1b[1;03;30;30m' + 'exposure_data is now an Exposures:', str(type(exposure_data)) + '\x1b[0m')
-    exposure_data.set_geometry_points() # set geometry attribute (shapely Points) from GeoDataFrame from latitude and longitude
-    print('\n' + '\x1b[1;03;30;30m' + 'check method logs:' + '\x1b[0m')
-    exposure_data.check() # puts metadata that has not been assigned
+"""COMBINE AND PLOT EXPOSURE AT TARGET RESOLUTION:"""
+print('\n' + '\x1b[1;03;30;30m' + 'COMBINE AND PLOT EXPOSURE AT TARGET RESOLUTION' + '\x1b[0m')
+for res_target in res_targets:
+    exposure_data = Exposures()
+    for idx, fi in enumerate(files):
+        exposure_tmp = Exposures()
+        if try_read_from_tiff and os.path.exists(os.path.join(RES_DIR, '%s_%ias.tiff' %(fi[0:-4]+fadd, res_target))):
+            print('\n' + '\x1b[1;03;30;30m' + 'Loading: %s_%ias.tiff' %(fi[0:-4]+fadd, res_target) + '\x1b[0m')
+            exposure_tmp.set_from_raster(os.path.join(RES_DIR, '%s_%ias.tiff' %(fi[0:-4]+fadd, res_target)))
+            exposure_tmp = Exposures(exposure_tmp)
+            exposure_tmp.set_geometry_points() # set geometry attribute (shapely Points) from GeoDataFrame from latitude and longitude
+            exposure_tmp.check() # puts metadata that has not been assigned
+            exposure_data = exposure_data.append(exposure_tmp)
+            if fix_zeros:
+                exposure_tmp.value[exposure_tmp.value<plot_minimum] = plot_minimum
+        else:
+            print('\n' + '\x1b[1;03;30;30m' + 'ERROR Loading: %s_%ias.tiff' %(fi[0:-4]+fadd, res_target) + '\x1b[0m')
+        
+    print('\n' + '\x1b[1;03;30;30m' + 'Checking combined data...' + '\x1b[0m')
+    exposure_data.check()
+    if write_to_tiff:
+        print('\n' + '\x1b[1;03;30;30m' + 'Writing combined data to TIFF...' + '\x1b[0m')
+        exposure_data.plot_raster(res=res_target/3600, raster_res=res_target/3600, save_tiff=\
+            os.path.join(RES_DIR, '%s_000_%ias.tiff' %(files[0][0:-8]+fadd, res_target)))
+    ax_exp = exposure_data.plot_hexbin(pop_name=False, cmap='plasma', norm=LogNorm(vmin=plot_minimum, vmax=0.1*exposure_data.value.max()))
+    if save_plots:
+        plt.savefig(os.path.join(RES_DIR, 'LitPop_pc_%iarcsec_%i_%s_world_map.png' % (res_target, REF_YEAR, fadd)), \
+                      dpi=300, facecolor='w', edgecolor='w', \
+                      orientation='portrait', papertype=None, format='png', \
+                      transparent=False, bbox_inches=None, pad_inches=0.1, \
+                      frameon=None, metadata=None)
+        plt.savefig(os.path.join(RES_DIR, 'LitPop_pc_%iarcsec_%i_%s_world_map.pdf' % (res_target, REF_YEAR, fadd)), \
+                      dpi=300, facecolor='w', edgecolor='w', \
+                      orientation='portrait', papertype=None, format='pdf', \
+                      transparent=False, bbox_inches=None, pad_inches=0.1, \
+                          frameon=None, metadata=None)
     
-    print('\n' + '\x1b[1;03;30;30m'  + 'exposure_data looks like:' + '\x1b[0m')
-    print(exposure_data.head())
-
-    print('Global number of grid cells with value > USD 0: %i' %(exposure_data.value[exposure_data.value > 0].count()))
-    print('Global max. grid cell value: USD %1.0f' %(exposure_data.value.max()))
-    print('Global mean grid cell value: USD %1.0f' %(exposure_data.value.mean()))
-    print('Global median grid cell value: USD %1.0f' %(exposure_data.value.median()))
-
-    if write_to_hdf5:
-        print('\n' + '\x1b[1;03;30;30m'  + 'Write to hdf5...' + '\x1b[0m')
-        exposure_data.write_hdf5(os.path.join(ENTITY_DIR, 'LitPop_hdf5_pc_%iarcsec_000_all.hdf5' % (RES_ARCSEC)))
-
-print('\n' + '\x1b[1;03;30;30m'  + 'regridding raster & plotting global maps...' + '\x1b[0m')
-
-plot_res = [1800, 300]
-for res_target in plot_res:
-    print('\n' + '\x1b[1;03;30;30m'  + 'raserize to %ias...' %(res_target) + '\x1b[0m')
-    ax_exp_raster1 = exposure_data.plot_raster(res=RES_ARCSEC/3600, raster_res=res_target/3600, save_tiff=\
-                os.path.join(RES_DIR, 'LitPop_pc_1800as_%i_world_map.tiff' % (REF_YEAR)))
-    plt.savefig(os.path.join(RES_DIR, 'LitPop_pc_%iarcsec_%i_world_map_raster_%ias.png' % (RES_ARCSEC, REF_YEAR, res_target)), \
-                  dpi=600, facecolor='w', edgecolor='w', \
-                  orientation='portrait', papertype=None, format='png', \
-                  transparent=False, bbox_inches=None, pad_inches=0.1, \
-                  frameon=None, metadata=None)
-    plt.savefig(os.path.join(RES_DIR, 'LitPop_pc_%iarcsec_%i_world_map_raster_%ias.pdf' % (RES_ARCSEC, REF_YEAR, res_target)), \
-                  dpi=600, facecolor='w', edgecolor='w', \
-                  orientation='portrait', papertype=None, format='pdf', \
-                  transparent=False, bbox_inches=None, pad_inches=0.1, \
-                  frameon=None, metadata=None)
     
-    print('\n' + '\x1b[1;03;30;30m'  + 'plot hexbin %ias...' %(res_target) + '\x1b[0m')
-    exp_plot = Exposures()    
-    exp_plot.set_from_raster(os.path.join(RES_DIR, 'LitPop_pc_300as_%i_world_map.tiff' % (REF_YEAR)))
+    ax_exp_scatter = exposure_data.plot_scatter(pop_name=False, cmap='plasma', s=.01, shapes=False, \
+                                                norm=LogNorm(vmin=plot_minimum, vmax=np.max([0.1*exposure_data.value.max(), 10**9])))
+
+    shp_file = shapereader.natural_earth(resolution='10m', \
+                    category='cultural', name='admin_0_countries')
+    shp = shapereader.Reader(shp_file)
+    for geometry in shp.geometries():
+        ax_exp_scatter.add_geometries([geometry], crs=ccrs.PlateCarree(), facecolor='', \
+                                edgecolor='black', linewidth=.5)
     
-    ax_exp = exp_plot.plot_hexbin(pop_name=False, cmap='plasma', norm=LogNorm(vmin=10, vmax=0.1*exp_plot.value.max()))
-    plt.savefig(os.path.join(RES_DIR, 'LitPop_pc_%iarcsec_%i_world_map.png' % (res_target, REF_YEAR)), \
-                  dpi=600, facecolor='w', edgecolor='w', \
-                  orientation='portrait', papertype=None, format='png', \
-                  transparent=False, bbox_inches=None, pad_inches=0.1, \
-                  frameon=None, metadata=None)
-    plt.savefig(os.path.join(RES_DIR, 'LitPop_pc_%iarcsec_%i_world_map.pdf' % (res_target, REF_YEAR)), \
-                  dpi=600, facecolor='w', edgecolor='w', \
-                  orientation='portrait', papertype=None, format='pdf', \
-                  transparent=False, bbox_inches=None, pad_inches=0.1, \
-                  frameon=None, metadata=None)
+    if save_plots:
+        plt.savefig(os.path.join(RES_DIR, 'LitPop_pc_%iarcsec_%i_world_map_scatter001pt_lw3%s.png' % (res_target, REF_YEAR, fadd)), \
+                      dpi=300, facecolor='w', edgecolor='w', \
+                      orientation='portrait', papertype=None, format='png', \
+                      transparent=False, bbox_inches=None, pad_inches=0.1, \
+                      frameon=None, metadata=None)
+        plt.savefig(os.path.join(RES_DIR, 'LitPop_pc_%iarcsec_%i_world_map_scatter001pt_lw3%s.pdf' % (res_target, REF_YEAR, fadd)), \
+                      dpi=300, facecolor='w', edgecolor='w', \
+                      orientation='portrait', papertype=None, format='pdf', \
+                      transparent=False, bbox_inches=None, pad_inches=0.1, \
+                          frameon=None, metadata=None)

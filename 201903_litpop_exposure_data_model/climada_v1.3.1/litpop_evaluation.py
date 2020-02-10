@@ -1,15 +1,23 @@
 """
 This file is part of CLIMADA-papers.
 
-Global LitPop: An Exposure Data Model for Disaster Risk Assessment based on Nightlight and Population Data
+Eberenz, S., Stocker, D., Röösli, T., and Bresch, D. N.:
+Exposure data for global physical risk assessment,
+Earth Syst. Sci. Data Discuss., https://doi.org/10.5194/essd-2019-189, in review, 2019. 
 
-LitPop exposure data model validation + scatter and box plots
-Sections 3.2, 3.3
-Figures 3, 4
+LitPop exposure data model evaluation for 14 countries and plotting of scatter and box plots
+Sections 2.6, 3.2, 3.3
+Figures 3, 5
 Tables (A1), A2, A3
 
 Requires https://github.com/CLIMADA-project/climada_python/releases/tag/v1.2.0
 or later
+
+The required gridded population data GPWv4.10 is available from SEDAC's Beta site, please see
+https://beta.sedac.ciesin.columbia.edu/data/collection/gpw-v4/sets/browse
+
+For more guidance on the LitPop module please refer to the CLIMADA tutorial:
+https://climada-python.readthedocs.io/en/latest/tutorial/climada_entity_LitPop.html
 
 @author: Samuel Eberenz
 """
@@ -33,9 +41,9 @@ experiment_name = 'v1'
 
 # SWITCH FEATURES ON/OFF:
 """
-- compute_validation: 
+- compute_validation:
 Compute full validation statistics for all selected countries:
-Pearson correlation coefficient (rho), linear regression slope beta, 
+Pearson correlation coefficient (rho), linear regression slope beta,
 and root mean squared fraction RMSF  for variations of Lit^n * Pop^m.
 # warning: computational intensive. This can take several hours.
 Plots scatter plots per country (Figure 4).
@@ -58,18 +66,18 @@ countries = ['AUS', 'BRA', 'CAN', 'CHE', 'CHN', 'DEU', 'FRA', 'IDN', 'IND', \
 countries = sorted(countries)
 if quick_test:
     countries_sel = [3] # Switzerland only
-    resolution = 120 # reduced resolution 
+    resolution = 120 # reduced resolution
     experiment_name = 'test'
 else:
     countries_sel = np.arange(0, len(countries)) # all countries in list
     # set resolution of exposure in arcsec. set to 30 for best results (slow):
     resolution = 30
 
-# name per method evaluated:             
+# name per method evaluated:
 methods = ['Lit', 'Lit2', 'Lit3', 'Lit4', 'Lit5', 'Pop', 'Pop2', 'Lit3Pop', 'Lit2Pop', 'LitPop']
 # exponents per method:
 exponents_list = [[1, 0], [2, 0], [3, 0], [4, 0], [5, 0], [0, 1], [0, 2], [3, 1], [2, 1], [1, 1]]
-# choose which method to include in plots + marker style per method: 
+# choose which method to include in plots + marker style per method:
 methods_show = [True, False, True, False, True, True, False, False, False, True]
 markers_list = ['o', 's', '^', 'd', 'p', 'o', 's', '^', 's', 'o']
 
@@ -175,7 +183,7 @@ def plot_skillpercountry(data_df, **args):
     hght = args.get('hght', 4)
     markersize = 60
     target_y = args.get('target_y', 1)
-    label_y = args.get('label_y', r'$\rho_P$')
+    label_y = args.get('label_y', r'$\rho$')
     meth_labels = [r'$Lit$', r'$Lit^2$', r'$Lit^3$', r'$Lit^4$', r'$Lit^5$', \
                    r'$Pop$', r'$Pop^2$', r'$Lit^3Pop$', r'$Lit^2Pop$', r'$LitPop$']
 
@@ -227,7 +235,7 @@ def plot_countryperskill(data_df, **args):
     hght = args.get('hght', 4)
     markersize = 60
     target_y = args.get('target_y', 1)
-    label_y = args.get('label_y', r'$\rho_P$')
+    label_y = args.get('label_y', r'$\rho$')
     colors14 = args.get('colors14', ['#a6cee3', '#1f78b4', '#b2df8a', '#33a02c', \
                                      '#fb9a99', '#e31a1c', '#fdbf6f', '#ff7f00', \
                                      '#cab2d6', '#6a3d9a', '#ffff99', '#b15928', \
@@ -267,7 +275,7 @@ def plot_countryperskill(data_df, **args):
                 transparent=False, bbox_inches=None, pad_inches=0.1,
                 frameon=None, metadata=None)
     plt.show()
-    
+
 def boxplot_skillpermethod(data_df, **args):
     """
     Make boxplot of skill scores with method on x-axis
@@ -279,9 +287,9 @@ def boxplot_skillpermethod(data_df, **args):
     wdth = args.get('wdth', 6) # 7
     hght = args.get('hght', 3.5)
     target_y = args.get('target_y', 1)
-    label_y = args.get('label_y', r'$\rho_P$')
+    label_y = args.get('label_y', r'$\rho$')
     ticks_y = args.get('ticks_y', None)
-    
+
     meth_labels = [r'$Lit^1$', r'$Lit^2$', r'$Lit^3$', r'$Lit^4$', r'$Lit^5$', \
                    r'$Pop^1$', r'$Pop^2$', r'$Lit^3Pop^1$', r'$Lit^2Pop^1$', r'$Lit^1Pop^1$']
     idx = idx[order]
@@ -290,10 +298,10 @@ def boxplot_skillpermethod(data_df, **args):
 
     f_h = plt.figure(facecolor='w', figsize=(wdth, hght))
     ax_h = f_h.add_subplot(1,1,1)
-    
+
     if not target_y == 'none':
         ax_h.plot([0, len(idx)+1], [target_y, target_y], c='black', alpha=.25, lw=3, ls='-', zorder=1)
-    
+
     data_df.iloc[np.array(idx)].T.boxplot(ax=ax_h)
     plt.xticks(np.arange(1, len(idx)+1), meth_labels, color='black', rotation=30)
     if not ticks_y is None:
@@ -334,7 +342,7 @@ if validation_plots:
         adm1_gdp_share['country'] = countries[i]
         adm1_gdp_share_all = pd.concat([adm1_gdp_share_all, adm1_gdp_share])
 
-        
+
     # compute RMSF (Root mean squared fraction) for each method:
         rmsf[countries[i]] = list()
         slopes[countries[i]] = list()
@@ -372,7 +380,7 @@ if validation_plots:
     # PLOTTING:
     order=np.array([9, 0, 1, 2, 3, 4, 5, 6, 8, 7], int)
     plot_skillpercountry(r, idx=rp_i, name='Pearson Correlation', countries=countries, \
-                         countries_sel=countries_sel, label_y=r'$\rho_P$', \
+                         countries_sel=countries_sel, label_y=r'$\rho$', \
                          methods_show=methods_show)
     plot_skillpercountry(df_slope, name='Linear Regression Slope', countries=countries, \
                          countries_sel=countries_sel, label_y=r'$\beta$', methods_show=methods_show)
@@ -380,33 +388,33 @@ if validation_plots:
                          countries_sel=countries_sel, label_y='RMSF', methods_show=methods_show)
 
     plot_countryperskill(r, idx=rp_i, order=order, name='Pearson Correlation', countries=countries, \
-                         countries_sel=countries_sel, label_y=r'$\rho_P$', \
+                         countries_sel=countries_sel, label_y=r'$\rho$', \
                          methods_show=methods_show)
     plot_countryperskill(df_slope, order=order, name='Linear Regression Slope', countries=countries, \
                          countries_sel=countries_sel, label_y=r'$\beta$', methods_show=methods_show)
     plot_countryperskill(r, idx=rmsf_i, order=order, name='Root Mean Squared Fraction', countries=countries, \
                          countries_sel=countries_sel, label_y='RMSF', methods_show=methods_show)
     boxplot_skillpermethod(r, idx=rp_i, order=order, name='Pearson Correlation', countries=countries, \
-                         countries_sel=countries_sel, label_y=r'$\rho_P$', \
+                         countries_sel=countries_sel, label_y=r'$\rho$', \
                          methods_show=methods_show)
     boxplot_skillpermethod(df_slope, order=order, name='Linear Regression Slope', countries=countries, \
                          countries_sel=countries_sel, label_y=r'$\beta$', methods_show=methods_show)
     boxplot_skillpermethod(r, idx=rmsf_i, order=order, name='Root Mean Squared Fraction', countries=countries, \
                          countries_sel=countries_sel, label_y='RMSF', methods_show=methods_show, \
                          ticks_y = np.array([1, 2, 5, 10, 20]))
-    
+
     # Rearrange Data frames for nice CSV output
     methods = [methods[i] for i in order]
     countries_ = [countries[i] for i in countries_sel]
     r_rp = r[countries_].iloc[rp_i[order]]
     r_rp['COEFF'] = r['COEFF'].iloc[rp_i[order]]
-    
+
     r_slope = df_slope[countries_].iloc[order]
     r_slope['COEFF'] = df_slope['COEFF'].iloc[order]
-    
+
     r_rmsf = r[countries_].iloc[rmsf_i[order]]
     r_rmsf['COEFF'] = r['COEFF'].iloc[rmsf_i[order]]
-    
+
     cols = r_rp.columns.tolist()
     cols = cols[-1:] + cols[:-1]
     r_rp = r_rp[cols]
@@ -418,7 +426,7 @@ if validation_plots:
     r_rp = r_rp.reset_index(drop=True)
     r_slope = r_slope.reset_index(drop=True)
     r_rmsf = r_rmsf.reset_index(drop=True)
-    
+
     #Create a DataFrame
     statistics_ = {'Method':methods}
     r_stat = pd.DataFrame(statistics_)

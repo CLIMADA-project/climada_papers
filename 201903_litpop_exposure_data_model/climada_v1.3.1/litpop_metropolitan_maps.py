@@ -1,14 +1,23 @@
 """
 This file is part of CLIMADA-papers.
 
-Global LitPop: An Exposure Data Model for Disaster Risk Assessment based on Nightlight and Population Data
+Eberenz, S., Stocker, D., Röösli, T., and Bresch, D. N.:
+Exposure data for global physical risk assessment,
+Earth Syst. Sci. Data Discuss., https://doi.org/10.5194/essd-2019-189, in review, 2019. 
 
-Section 3.1
-Figures 2, A1
-Compute LitPop, Lit, and Pop for metropolitan areas and plot maps
+Compute Lit^1Pop^1, Lit^1, and Pop^1 for four metropolitan areas and plot maps
+
+Section 3.3
+Figures 4, A1
 
 Requires https://github.com/CLIMADA-project/climada_python/releases/tag/v1.2.0
 or later
+
+The required gridded population data GPWv4.10 is available from SEDAC's Beta site, please see
+https://beta.sedac.ciesin.columbia.edu/data/collection/gpw-v4/sets/browse
+
+For more guidance on the LitPop module please refer to the CLIMADA tutorial:
+https://climada-python.readthedocs.io/en/latest/tutorial/climada_entity_LitPop.html
 
 @authors: Thomas Roosli, Samuel Eberenz
 """
