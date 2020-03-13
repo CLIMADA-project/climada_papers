@@ -1,13 +1,15 @@
-# Risk assessment of building damages associated with extreme winter windstorms in the canton of Zurich, Switzerland
+# Comparing an insurer’s perspective on building damages with modelled damages from pan-European winter windstorm event sets: a case study from Zurich, Switzerland
 
 These scripts reproduce the main results of the paper:
 
 Christoph Welker (1), Thomas Röösli (2,3), David N. Bresch (2,3):
-Risk assessment of building damages associated with extreme winter windstorms in the canton of Zurich, Switzerland,
+Comparing an insurer’s perspective on building damages with modelled damages from pan-European winter windstorm event sets: a case study from Zurich, Switzerland,
 submitted to the journal Natural Hazards and Earth System Sciences (NHESS)
 
 (1) GVZ Gebäudeversicherung Kanton Zürich, Zurich, Switzerland
+
 (2) Institute for Environmental Decisions, ETH Zurich, Zurich, Switzerland
+
 (3) Federal Office of Meteorology and Climatology MeteoSwiss, Zurich, Switzerland
 
 Contact: [Thomas Röösli](mailto:thomas.roeoesli@usys.ethz.ch)
@@ -48,8 +50,8 @@ Documentation for the StromEurope module is available on Read the Docs:
 
 * [online](https://climada-python.readthedocs.io/en/stable/tutorial/climada_hazard_StormEurope.html)
 
-If script fails, revert CLIMADA version to release v1.2.0 (2018-03):
-* from [GitHub](https://github.com/CLIMADA-project/climada_python/releases/tag/v1.2.0)
+If script fails, revert CLIMADA version to release v1.4.0 (2020-03):
+* from [GitHub](https://github.com/CLIMADA-project/climada_python/releases/tag/v1.4.0)
 * from [ETH Data Archive](http://doi.org/10.5905/ethz-1007-226)
 
 
