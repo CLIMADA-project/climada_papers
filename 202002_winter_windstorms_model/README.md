@@ -15,7 +15,7 @@ submitted to the journal Natural Hazards and Earth System Sciences (NHESS)
 Contact: [Thomas Röösli](mailto:thomas.roeoesli@usys.ethz.ch)
 
 ## Content:
-one jupyter notebook and one independent script for Python 3.6 with CLIMADA 1.4.0:
+one jupyter notebook and one independent script for Python 3.6 with CLIMADA 1.4.1:
 
 ##  WISC_GVZ_Zurich_Analysis.ipynb
 damage model and risk assessment
@@ -33,7 +33,7 @@ Sections 2.2.3
 
 requires the download of the "historic storm footprints" as .netcdf files from the webpage https://wisc.climate.copernicus.eu/wisc/#/help/products#footprint_section
 
-Requires Python 3.6 and CLIMADA v1.4.0 (or later):
+Requires Python 3.6 and CLIMADA v1.4.1 (or later):
 https://github.com/CLIMADA-project/climada_python/
 Documentation: https://github.com/CLIMADA-project/climada_python/blob/master/doc/source/install.rst
 
@@ -50,9 +50,9 @@ Documentation for the StromEurope module is available on Read the Docs:
 
 * [online](https://climada-python.readthedocs.io/en/stable/tutorial/climada_hazard_StormEurope.html)
 
-If script fails, revert CLIMADA version to release v1.4.0 (2020-03):
-* from [GitHub](https://github.com/CLIMADA-project/climada_python/releases/tag/v1.4.0)
-* from [ETH Data Archive](http://doi.org/10.5905/ethz-1007-226)
+If script fails, revert CLIMADA version to release v1.4.1 (2020-03):
+* from [GitHub](https://github.com/CLIMADA-project/climada_python/releases/tag/v1.4.1)
+* from [ETH Data Archive](http://doi.org/10.5905/ethz-1007-252)
 
 
 
