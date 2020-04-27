@@ -1,11 +1,10 @@
 """
 This file is part of CLIMADA-papers.
 
-Eberenz, S., Stocker, D., Röösli, T., and Bresch, D. N.:
-Exposure data for global physical risk assessment,
-Earth Syst. Sci. Data Discuss., https://doi.org/10.5194/essd-2019-189, in review, 2019. 
+Eberenz, S., Stocker, D., Röösli, T., and Bresch, D. N.: Asset exposure data for global physical risk assessment, Earth Syst. Sci. Data, 12, 817–833, https://doi.org/10.5194/essd-12-817-2020, 2020.
 
-LitPop exposure data model evaluation for 14 countries and plotting of scatter and box plots
+
+Functionality: LitPop exposure data model evaluation for 14 countries and plotting of scatter and box plots
 Sections 2.6, 3.2, 3.3
 Figures 3, 5
 Tables (A1), A2, A3
@@ -21,6 +20,7 @@ https://climada-python.readthedocs.io/en/latest/tutorial/climada_entity_LitPop.h
 
 @author: Samuel Eberenz
 """
+
 import os
 import time
 import numpy as np
@@ -46,7 +46,7 @@ Compute full validation statistics for all selected countries:
 Pearson correlation coefficient (rho), linear regression slope beta,
 and root mean squared fraction RMSF  for variations of Lit^n * Pop^m.
 # warning: computational intensive. This can take several hours.
-Plots scatter plots per country (Figure 4).
+Plots scatter plots per country (Figure 5).
 
 - validation_plots:
 Make and save box plots (Figure 3).
@@ -73,7 +73,7 @@ else:
     # set resolution of exposure in arcsec. set to 30 for best results (slow):
     resolution = 30
 
-# name per method evaluated:
+# name per method (i.e. combination of Lit and Pop with varying exponents) evaluated:
 methods = ['Lit', 'Lit2', 'Lit3', 'Lit4', 'Lit5', 'Pop', 'Pop2', 'Lit3Pop', 'Lit2Pop', 'LitPop']
 # exponents per method:
 exponents_list = [[1, 0], [2, 0], [3, 0], [4, 0], [5, 0], [0, 1], [0, 2], [3, 1], [2, 1], [1, 1]]
@@ -113,10 +113,12 @@ for cntry in countries:
 
 
 if compute_validation:
+    """computation of normalized Gross Regional Product nGRP, skill metrics,
+    and make scatter plots"""
     rho = dict()
     adm0 = dict()
     adm1 = dict()
-
+    # loop over countries, computing nGRP and skill
     for i in countries_sel:
         print('*** ' + countries[i] + ' *** ')
         start_time_c = time.time()
@@ -138,7 +140,7 @@ if compute_validation:
         plt.legend((litpop_scatter, lit3_scatter, pop_scatter),\
                    (r'$LitPop$', r'$Lit^3$', r'$Pop$',))
         plt.xlabel('Reference nGRP')
-        plt.ylabel('Modelled nGRP')
+        plt.ylabel('Modeled nGRP')
 
         plt.savefig(os.path.join(output_path, experiment_name + '_' + countries[i] + str(resolution) + '_.pdf'), \
                     dpi=600, facecolor='w', edgecolor='w',
@@ -171,6 +173,7 @@ if compute_validation:
     df_r = df_r[cols]
     df_r.to_csv(os.path.join(output_path, experiment_name + '_' + str(resolution) + '_corr_coeffs.csv'))
 
+# defining plotting functions:
 def plot_skillpercountry(data_df, **args):
     """
     Make plot of skill scores with countries on x-axis, methods in legend
@@ -324,7 +327,7 @@ def boxplot_skillpermethod(data_df, **args):
 
 
 if validation_plots:
-
+    """ make boxplots of skills per country ecetera (for evaluation)"""
     adm1_gdp_share_all = pd.DataFrame()
     # load GDP-share for each country and combine into 1 dataframe:
     rmsf = dict()

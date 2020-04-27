@@ -2,8 +2,8 @@
 This file is part of CLIMADA-papers.
 
 Eberenz, S., Stocker, D., Röösli, T., and Bresch, D. N.:
-Exposure data for global physical risk assessment,
-Earth Syst. Sci. Data Discuss., https://doi.org/10.5194/essd-2019-189, in review, 2019. 
+Asset exposure data for global physical risk assessment,
+Earth Syst. Sci. Data, 12, 817–833, https://doi.org/10.5194/essd-12-817-2020, 2020.
 
 Compute Lit^1Pop^1, Lit^1, and Pop^1 for four metropolitan areas and plot maps
 
