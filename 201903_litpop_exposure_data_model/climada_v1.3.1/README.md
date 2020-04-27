@@ -7,35 +7,48 @@ Eberenz, S., Stocker, D., Röösli, T., and Bresch, D. N.: Asset exposure data f
 Contact: [Samuel Eberenz](mailto:samuel.eberenz@usys.ethz.ch)
 
 ## Content:
-Four independent scripts for Python 3.6 with CLIMADA 1.3.1:
+Four independent scripts for Python 3.X with CLIMADA 1.3.1.
 
 ##  litpop_data.py
+! slow to run for all countries !
+
 Reproduces LitPop based gridded asset exposure data as published in teh ETH data archive:
 LitPop: Global Exposure Data for Disaster Risk Assessment
 DOI: 10.3929/ethz-b-000331316
 https://www.research-collection.ethz.ch/handle/20.500.11850/331316
-! slow to run for all countries !
+
+(preferably access the data from the data archive)
 
 ##  litpop_world_map.py
-Plot global asset exposure data for 224 countries
-Sections 3.1
-Figure 3
+Plot global asset exposure data for 224 countries.
+
+Sections 3.1; Figure 2: World Map.
+
 Requires asset exposure data in the form of CSV as available from the ETH research repository:
 https://doi.org/10.3929/ethz-b-000331316
 Save CSV data in local folder ENTITY_DIR or set path in variable ENTITY_DIR before executing this script.
 
 ## litpop_evaluation.py
-LitPop exposure data model evaluation for 14 countries and plotting of scatter and box plots.
-Sections 2.6, 3.2, 3.3;
-Figures 3, 5;
-Tables (A1), A2, A3.
-
 ! slow to run for all countries !
+
+Runs LitPop exposure data model evaluation for 14 countries and plotting of scatter and box plots.
+
+Sections 2.6, 3.2:
+
+Figures 3, 5: Results as box plots;
+
+Tables A2, A3: results as dataframes / CSV.
+
+
 
 ## litpop_metropolitan_maps.py
 Compute Lit^1Pop^1, Lit^1, and Pop^1 for four metropolitan areas and plot maps.
+
 Section 3.3;
-Figures 4, A1.
+
+Figure 4: London and Mumbai;
+
+Figure A1: Mexico City and New York.
 
 ## Requirements
 
@@ -64,6 +77,9 @@ If script fails, revert CLIMADA version to release v1.2.0 (2018-03):
 (Download link: http://sedac.ciesin.columbia.edu/downloads/data/gpw-v4/gpw-v4-population-count-rev10/gpw-v4-population-count-rev10_2015_30_sec_tif.zip)
 
 -----
+# Update 27 April 2020:
+README updated, including citation of published paper.
+
 # Update 10 February 2020:
 World map added and scripts updated in line with revisions to manuscript.
 
