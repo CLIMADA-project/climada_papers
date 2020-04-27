@@ -2,9 +2,7 @@
 
 These scripts reproduce the main results of paper:
 
-Eberenz, S., Stocker, D., Röösli, T., and Bresch, D. N.:
-Exposure data for global physical risk assessment,
-Earth Syst. Sci. Data Discuss., https://doi.org/10.5194/essd-2019-189, in review, 2019.
+Eberenz, S., Stocker, D., Röösli, T., and Bresch, D. N.: Asset exposure data for global physical risk assessment, Earth Syst. Sci. Data, 12, 817–833, https://doi.org/10.5194/essd-12-817-2020, 2020.
 
 Contact: [Samuel Eberenz](mailto:samuel.eberenz@usys.ethz.ch)
 
