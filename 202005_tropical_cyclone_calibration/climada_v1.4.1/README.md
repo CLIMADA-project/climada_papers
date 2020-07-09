@@ -1,9 +1,13 @@
 # Calibration of regional TC IFs
 
 These scripts reproduce the main results of paper:
+
+
 "Regional tropical cyclone impact functions for globally consistent risk assessments"
 Samuel Eberenz, Samuel Lüthi, David N. Bresch
-Status: submitted
+
+
+Publication status: submitted
 
 
 Contact: [Samuel Eberenz](mailto:samuel.eberenz@usys.ethz.ch)
@@ -11,61 +15,56 @@ Contact: [Samuel Eberenz](mailto:samuel.eberenz@usys.ethz.ch)
 ## Content:
 
 #### tc_calibration_figures_and_tables.ipynb
-Jupyter notebook to reproduce the key figures and tables.
+Jupyter notebook to reproduce the key figures and tables in the paper.
 
 #### tc_calibration_main.py
 Python script to replicate the calibration.
 
 Calibration steps (set in list CALIB):
-    1:  Loading or initiating HAZARD and EXPOSURE sets (required for 2, 3, 5, 6, 7)
-    2:  With one single global impact functions, calculate EDR. Extract NRD from EM-DAT.
-        Compute ratio EDR=SED/NRD. Save to CSV file.
-        Required for CALIB 3.
-    3:  Core calibration. Loop over v_half_range to compute impact and ratio for each matched event/country.
-        Required for CALIB 4.
-    4:  Optimization: Compute cost functions and find optimized v_half for each cost function and region,
+* 1:  Loading or initiating HAZARD and EXPOSURE sets (required for 2, 3, 5, 6, 7)
+* 2:  With one single global impact functions, calculate EDR. Extract NRD from EM-DAT.
+        Compute ratio EDR=SED/NRD. Save to CSV file. Required for CALIB 3.
+* 3:  Core calibration. Loop over v_half_range to compute impact and ratio for each matched event/country. Required for CALIB 4.
+* 4:  Optimization: Compute cost functions and find optimized v_half for each cost function and region,
         Save calibration results to CSV.
-    5:  Compute annual average damage (AAD) per country for comparison with GAR 2013
-        (calibrated and uncalibrated)
-    6:  Compute damage time series, trend and significance, as well as
-        standard deviation of annual damage for EM-DAT and CLIMADA
-        per country and region.
+* 5:  Compute annual average damage (AAD) per country for comparison with GAR 2013 (calibrated and uncalibrated)
+* 6:  Compute damage time series, trend and significance, as well as standard deviation of annual damage for EM-DAT and CLIMADA per country and region.
 
-Requires: tc_calibration_functions.py, tc_calibration_config.py,
-impact_data_stable_202006.py, and if_trop_cyclone_stable_202006.py.
+Requires: *tc_calibration_functions.py*, *tc_calibration_config.py*,
+*impact_data_stable_202006.py*, and *if_trop_cyclone_stable_202006.py*.
 
-Important: Customize paths and parameters in tc_calibration_config.py before running tc_calibration_main.py.
+_Important_: You need to customize paths and parameters in *tc_calibration_config.py* before running *tc_calibration_main.py*.
 
 Please note that the preparation of the exposure and hazard files (step CALIB=1)
 and the core calibration (step CALIB=3) take a lot of resources and might need to
 be run on a supercomputing cluster. Please contact the authors if you have troubles
-replicating these resource intenstive steps.
+replicating these resource intensive steps.
 
 #### tc_calibration_config.py
 Configuration script.
 Customize paths and parameters before running tc_calibration_main.py,
 especially:
-* DATA_DIR: path to directory with input data.
-* TRACK_DIR: path to directory with TC tracks downloaded from IBtRACS.
-* TRACK_FOLDER: name of folder with subset of TC tracks to use (place in TRACK_DIR).
-* EMDAT_CSV: full path of CSV file with data downloaded from EM-DAT.
-* CALIB: choose which calibration steps to run.
-* v_step: the step size for V_half in the incremental calibration. Set to a larger value to speed up CALIB=3 at the cost of precision.
+* *DATA_DIR*: path to directory with input data.
+* *TRACK_DIR*: path to directory with TC tracks downloaded from IBtRACS.
+* *TRACK_FOLDER*: name of folder with subset of TC tracks to use (place in TRACK_DIR).
+* *EMDAT_CSV*: full path of CSV file with data downloaded from EM-DAT.
+* *CALIB*: choose which calibration steps to run.
+* *v_step*: the step size for V_half in the incremental calibration. Set to a larger value to speed up CALIB=3 at the cost of precision.
 
 #### tc_calibration_functions.py, if_trop_cyclone_stable_202006.py, impact_data_stable_202006.py
-Scripts with functions required for tc_calibration_main.py.
+Scripts with functions required for *tc_calibration_main.py*.
 
 
 ## Requirements
 
 Requires:
-    Python 3.6+ environment (best to use conda for CLIMADA repository)
-    CLIMADA repository version 1.4.1+:
+* Python 3.6+ environment (best to use conda for CLIMADA repository)
+* _CLIMADA_ repository version 1.4.1+:
         https://wcr.ethz.ch/research/climada.html
         https://github.com/CLIMADA-project/climada_python
-    TC track data from IBTrACS v4, 1980-2017 (get data online or ask the author):
+* TC track data from _IBTrACS_ v4, 1980-2017 (get data online or ask the author):
         https://www.ncdc.noaa.gov/ibtracs/
-    EM-DAT data for tropical cyclone 1980-2017 (get data from EM-DAT or ask the author):
+* _EM-DAT_ impact data for tropical cyclone 1980-2017 (get data from EM-DAT or ask the author):
         https://www.emdat.be
         https://public.emdat.be/
 
@@ -87,8 +86,9 @@ If script fails, revert CLIMADA version to release v1.4.1:
 
 -----
 
-# Updates
+## Updates
 
+* 2020-07-09: initial commit [3e5696ca0c1e463c7656379eb95c4e03fb91e32a](https://github.com/CLIMADA-project/climada_papers/commit/3e5696ca0c1e463c7656379eb95c4e03fb91e32a)
 -----
 
 www.wcr.ethz.ch
