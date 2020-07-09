@@ -7,8 +7,5 @@
 /202005_tropical_cyclone_calibration/data/*emdat*
 /202005_tropical_cyclone_calibration/data/*EMDAT*
 /202005_tropical_cyclone_calibration/data/*EM-DAT*
-/202005_tropical_cyclone_calibration/data/ibtracs_cailbration/ibtracs*.csv
-/202005_tropical_cyclone_calibration/climada_v1.4.2/.ipynb_checkpoints
-/202005_tropical_cyclone_calibration/climada_v1.4.2/__pycache__
-/202005_tropical_cyclone_calibration/climada_v1.4.2/*.ipynb
-/202005_tropical_cyclone_calibration/climada_v1.4.2/*.py
+/202005_tropical_cyclone_calibration/data/ibtracs_cailbration/*.csv
+/202005_tropical_cyclone_calibration/climada_v1.4.1/__pycache__
