@@ -14,3 +14,6 @@ Welker C., Röösli T., Bresch D. N.: Comparing an insurer’s perspective on bu
 accepted for review by the journal Natural Hazards and Earth System Sciences (NHESS)
 
 Eberenz, S., Lüthi, S., and Bresch, D. N.: Regional tropical cyclone impact functions for globally consistent risk assessments. submitted, 2020.
+
+Kam, P. M., Aznar-Siguan, G., Schewe, J., Milano, L., Ginnetti, J., Willner, S. N., McCaughey, J. W. and Bresch, D. N.: Global warming and population change both heighten future risk of human
+displacement due to river floods. submitted, 2020.
