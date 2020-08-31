@@ -2,12 +2,9 @@
 
 These scripts reproduce the main results of paper:
 
+Eberenz, S., Lüthi, S., and Bresch, D. N.: Regional tropical cyclone impact functions for globally consistent risk assessments, Nat. Hazards Earth Syst. Sci. Discuss., https://doi.org/10.5194/nhess-2020-229, in review, 2020.         
 
-"Regional tropical cyclone impact functions for globally consistent risk assessments"
-Samuel Eberenz, Samuel Lüthi, David N. Bresch
-
-
-Publication status: submitted
+Publication status: in review.
 
 
 Contact: [Samuel Eberenz](mailto:samuel.eberenz@usys.ethz.ch)
