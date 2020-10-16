@@ -9,6 +9,10 @@ https://www.research-collection.ethz.ch/handle/20.500.11850/331316
 Requires https://github.com/CLIMADA-project/climada_python/releases/tag/v1.2.0
 or later
 
+The required gridded population of the world (GPW) data V4.10 can be downloaded from:
+The GPWv4.10 is available from our Beta site, please see
+https://beta.sedac.ciesin.columbia.edu/data/collection/gpw-v4/sets/browse
+
 @author: Samuel Eberenz
 """
 import os
@@ -72,7 +76,7 @@ for i in countries_sel:
                                     'arcsec_' + countries[i] + '_' + version + '.csv'))
         if save_hdf5:
             ent.write_hdf5(os.path.join(output_path, 'Pop_norm_' + str(resolution) + \
-                                    'arcsec_' + countries[i] +  '_' + version + '.hdf5'))            
+                                    'arcsec_' + countries[i] +  '_' + version + '.hdf5'))
 
 if export_litpop_all:
     success = list()
@@ -140,7 +144,7 @@ if not 'success' in locals():
 """
 # write countries' metadata to CSV:
 countries_metadata = pd.DataFrame(columns=['country_name','iso3',\
-                                             'region_id', 'total_value', 'pc']) 
+                                             'region_id', 'total_value', 'pc'])
 if not 'success' in locals():
     success=list()
 for c in iso_cntry:
@@ -157,7 +161,7 @@ for c in iso_cntry:
                                'iso3' : c.alpha3, \
                                'region_id' : c.numeric, \
                                'total_value' : float('NaN')} , \
-                               ignore_index=True)        
+                               ignore_index=True)
 
 countries_metadata.to_csv(os.path.join(output_path, \
                                        'LitPop_countries_META_pc_' + str(yyyy) + \

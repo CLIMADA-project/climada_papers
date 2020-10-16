@@ -44,7 +44,7 @@ Plots scatter plots per country (Figure 4).
 Make and save box plots (Figure 3).
 This requires compute_validation to be run for all selected countries first.
 """
-compute_validation = True   # default: True
+compute_validation = False   # default: True
 validation_plots = True     # default: True
 
 # quick_test: make quick test to check whether engine works
@@ -282,8 +282,8 @@ def boxplot_skillpermethod(data_df, **args):
     label_y = args.get('label_y', r'$\rho_P$')
     ticks_y = args.get('ticks_y', None)
     
-    meth_labels = [r'$Lit$', r'$Lit^2$', r'$Lit^3$', r'$Lit^4$', r'$Lit^5$', \
-                   r'$Pop$', r'$Pop^2$', r'$Lit^3Pop$', r'$Lit^2Pop$', r'$LitPop$']
+    meth_labels = [r'$Lit^1$', r'$Lit^2$', r'$Lit^3$', r'$Lit^4$', r'$Lit^5$', \
+                   r'$Pop^1$', r'$Pop^2$', r'$Lit^3Pop^1$', r'$Lit^2Pop^1$', r'$Lit^1Pop^1$']
     idx = idx[order]
     meth_labels = [meth_labels[i] for i in order]
     data_df = data_df.set_index('COEFF')
@@ -327,6 +327,7 @@ if validation_plots:
                                     str(resolution) + '_adm0.csv'), index_col=0)
         adm1_reference = pd.read_csv(os.path.join(output_path, experiment_name + '_' + countries[i] + \
                                     str(resolution) + '_adm1_ref.csv'), index_col=0)
+
         adm1_gdp_share['Reference'] = adm1_reference['LitPop']
         adm1_gdp_share['country_num'] = i
         adm1_gdp_share['country'] = countries[i]
