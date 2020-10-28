@@ -38,6 +38,7 @@ https://github.com/CLIMADA-project/climada_python/blob/main/doc/tutorial/climada
 
 For post-processing please see the DEMO_Scripts and follow the tutorial. Please note that only
 dummies are provided for observational data, as we have no rights to publish the data_sets.
+Starting with the jupyter-notebook 'DemoDataAggregation.ipynb'
 
 
 4 INSTRUCTIONS FOR USE
@@ -47,10 +48,9 @@ dummies are provided for observational data, as we have no rights to publish the
 ------------------------------------------------------------------------------------------------------------
 0 PRE-PROCESSING
 
-0.1 SOCIOECONOMIC DATA SOURCES
+0.1 SOCIO-ECONOMIC DATA SOURCES
 
-
-
+0.2 Subregional aggregation
 
 
 1 DAMAGE GENENERATION
