@@ -19,6 +19,7 @@ statsmodels
 itertools
 astropy.convolution
 
+For the demo, we strongly recommend to install Jupyter-Notebook
 
 2 INSTALLATION GUIDE
 
@@ -36,22 +37,23 @@ For damage generation with CLIMADA please see the RiverFlood Tutorial
 
 https://github.com/CLIMADA-project/climada_python/blob/main/doc/tutorial/climada_hazard_RiverFlood.ipynb
 
-For post-processing please see the DEMO_Scripts and follow the tutorial. Please note that only
-dummies are provided for observational data, as we have no rights to publish the data_sets.
+For post-processing please see the DEMO_Scripts and follow the tutorial under 
+
+https://github.com/CLIMADA-project/climada_papers/tree/master/202010_flood_attribution/Demo
+
+Please note that only dummies are provided for observational data, as we have no rights to publish the data_sets.
 Starting with the jupyter-notebook 'DemoDataAggregation.ipynb'
 
+The output generated is an example for gaining the results presented in Fig.2-4 and Fig. SI1 and SI2
+for the example of Latin America. Please note that results are only partly real,
+as we only present dummies instead of real observed damages.
+Outputs are small dataframes and plots for Latin America.
 
 4 INSTRUCTIONS FOR USE
-
-
+For the use of the demo data just start the jupyter-notebook 'DemoDataAggregation.ipynb' in DEMO_scripts and
+follow the instructions. Only the input data set provided in DEMO_data is needed. Further input is generated.
 
 ------------------------------------------------------------------------------------------------------------
-0 PRE-PROCESSING
-
-0.1 SOCIO-ECONOMIC DATA SOURCES
-
-0.2 Subregional aggregation
-
 
 1 DAMAGE GENENERATION
 
