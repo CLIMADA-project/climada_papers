@@ -116,11 +116,11 @@ def func_median(x):
     two_third_quantile_flood_area = x['FloodedArea0'].quantile(0.7)  # 70
     one_third_quantile_model_damages = x['Impact_2y_0'].quantile(0.3)
     # 30
-    one_third_quantile_model_damages_1980flospros = x['ImpFix_2y_0'].quantile(0.3)  # 30
-    one_third_quantile_model_damages_2010flospros = x['Imp2010_2y_0'].quantile(0.3)
+    one_third_quantile_model_damages_1980flospros = x['ImpFix_2y_Flopros'].quantile(0.3)  # 30
+    one_third_quantile_model_damages_2010flospros = x['Imp2010_2y_Flopros'].quantile(0.3)
     two_third_quantile_model_damages = x['Impact_2y_0'].quantile(0.7)  # 70
-    two_third_quantile_model_damages_1980flospros = x['ImpFix_2y_0'].quantile(0.7)  # 70
-    two_third_quantile_model_damages_2010flospros = x['Imp2010_2y_0'].quantile(0.7)  # 70
+    two_third_quantile_model_damages_1980flospros = x['ImpFix_2y_Flopros'].quantile(0.7)  # 70
+    two_third_quantile_model_damages_2010flospros = x['Imp2010_2y_Flopros'].quantile(0.7)  # 70
     flood_area_flospros = x['FloodedAreaFlopros'].median()
     flood_area_0 = x['FloodedArea0'].median()
     # flood_vol = x['FloodVol_Flopros'].median()
@@ -157,12 +157,12 @@ def func_median(x):
                             'flood_area_onethird_quantile',
                             'flood_area_twothird_quantile',
                             'model_flood_damages_onethird_quantile', 
-                            'model_flood_damages_onethird_quantile_1980_0',
-                            'model_flood_damages_onethird_quantile_2010_0',
+                            'model_flood_damages_onethird_quantile_1980flopros',
+                            'model_flood_damages_onethird_quantile_2010flopros',
                             'model_flood_damages_twothird_quantile',
-                            'model_flood_damages_twothird_quantile_1980_0',
-                            'model_flood_damages_twothird_quantile_2010_0',
-                            'FloodedAreaflopros',
+                            'model_flood_damages_twothird_quantile_1980flopros',
+                            'model_flood_damages_twothird_quantile_2010flopros',
+                            'FloodedAreaFlopros',
                             'FloodedArea0'
                             #  'FloodedArea0'
                             ])

@@ -1,4 +1,57 @@
 
+README 
+
+-----------------------------------------------------------------------------------------------------------
+
+SYSTEM REQUIREMENTS
+
+Python (3.6+) version of CLIMADA release v1.5.1
+
+For pre- and post-processing we also recommend Python 3
+
+Tested on Python 3.7
+
+Required non-standard python packages for post-processing are:
+
+pyts.decomposition.SingularSpectrumAnalysis
+pymannkendall
+statsmodels
+itertools
+astropy.convolution
+
+
+2 INSTALLATION GUIDE
+
+A detailed description on how to install CLIMADA is provided under
+
+https://github.com/CLIMADA-project/climada_python
+
+Typical installation time including all tests (~1.5h)
+
+Post-processing (Python 3) can be done with any Python environment. 
+
+3 DEMO
+
+For damage generation with CLIMADA please see the RiverFlood Tutorial
+
+https://github.com/CLIMADA-project/climada_python/blob/main/doc/tutorial/climada_hazard_RiverFlood.ipynb
+
+For post-processing please see the DEMO_Scripts and follow the tutorial. Please note that only
+dummies are provided for observational data, as we have no rights to publish the data_sets.
+
+
+4 INSTRUCTIONS FOR USE
+
+
+
+------------------------------------------------------------------------------------------------------------
+0 PRE-PROCESSING
+
+0.1 SOCIOECONOMIC DATA SOURCES
+
+
+
+
 
 1 DAMAGE GENENERATION
 
@@ -9,7 +62,7 @@ https://github.com/CLIMADA-project/climada_python
 
 Installation requirements and instructions are provided in the corresponding documentation.
 
-In order to drive the model, spatially explicit flooded fractions and flood depth provided by the ISIMIP2a
+In order to run the model, spatially explicit flooded fractions and flood depth provided by the ISIMIP2a
 simulation round are required, these data are available under:
 
 https://files.isimip.org/cama-flood/
@@ -25,8 +78,47 @@ https://github.com/CLIMADA-project/climada_python/blob/main/doc/tutorial/climada
 The output of "schedule_sim.py" are 46 .csv files containing damage-time series for each country between 1971-2010.
 
 
-2 POSTPROCESSING
+2 POST-PROCESSING
+
+The entire post-processing analysis is done once on regional level and on subregional level. 
+Scripts ending with '...Regions.py' are used to analyse entire regions, while scripts ending with
+'...Subregions.py' are for the analysis of subregions. Datasets derived from scripts with the Ending
+'...Regions.py' have to be used as an input for Scripts with the Ending '...Regions.py', similarly 
+scripts with the Ending'...Subregions.py' have to be used as an input for Scripts with the Ending
+'...Subregions.py'
 
 2.1 DATA AGGREGATION
 
-In the first step 
+In the first step, data is aggregated to regional/subregional level and across all model-runs, so damage time-series
+aggregated to model-medians for each region/subregion are the output. Aditionally, observed damages and country specific 
+indicators are added and aggregated. For the aggregation the output files of the 
+'schedule_sim.py' script need to be accessed by both scripts: dataAggregationRegions.py and dataAggregationSubegions.py
+
+2.2 VULNERABILITY ASSESSMENT
+
+The aggregated files are then used for the vulnerability assessment in 'vulnerabilityAdjustmentRegions.py' 
+and 'vulnerabilityAdjustmentSubregions.py' , further input is not necessary. The scripts each provide a MetaData and a
+TimeSeries dataset which are then used for the attribution scripts. The MetaData contains information on explained variances 
+and correlation.
+
+2.3 ATTRIBUTION ASSESSMENT
+
+The TimeSeries output is then used as an input for the scripts 'attributionRegions.py' and 'attributionSubregions.py'.
+The Scripts again produce TimeSeries and MetaData which can than used to produce the Plots 2,3 and 4.
+Both data sets serve as input for the detection of teleconnections. MetaData contains climate (H), exposure (E) and 
+vulnerability (V) contributions as well as modeled (I) and observed trend (N) as well as significances.
+
+2.4 DRIVERS FOR CLIMATE-INDUCED TRENDS
+
+The two data sets generated during the attribution assessment are used as inputs for the scripts 'teleconnections_Regions.py'
+and 'teleconnections_SubRegions.py'. Climate Oscillation Indices need to be added and are available under:
+Southern Oscillation Index as a predictor for ENSO (https://www.ncdc.noaa.gov/teleconnections/enso/enso-tech.php)
+Monthly data for AMO, NAO and PDO were extracted from the NOAA/Climate Prediction Center
+(https://www.psl.noaa.gov/data/climateindices/list/).
+
+
+
+3 PLOTTING
+
+The plot scripts are named according to their Figures in the papers. Which datasets are needed to produce
+the plot is indicated in the script. 
