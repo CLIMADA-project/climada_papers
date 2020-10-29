@@ -50,10 +50,16 @@ as we only present dummies instead of real observed damages.
 Outputs are small dataframes and plots for Latin America.
 
 4 INSTRUCTIONS FOR USE
-For the use of the demo data just start the jupyter-notebook 'DemoDataAggregation.ipynb' in DEMO_scripts and
+For the use of the demo data just start the jupyter-notebook 'demo_data_aggregation.ipynb' in DEMO_scripts and
 follow the instructions. Only the input data set provided in DEMO_data is needed. Further input is generated.
 
 ------------------------------------------------------------------------------------------------------------
+0 PREPROCESSING
+
+The modeling of spatially explicit flood depth and fraction with CaMa-Flood and additional post-processing
+can be accessed under
+
+202010_flood_attribution/Demo/Demo_Scripts/demo_data_aggregation.ipynb
 
 1 DAMAGE GENENERATION
 
@@ -83,9 +89,9 @@ The output of "schedule_sim.py" are 46 .csv files containing damage-time series 
 2 POST-PROCESSING
 
 The entire post-processing analysis is done once on regional level and on subregional level. 
-Scripts ending with '...Regions.py' are used to analyse entire regions, while scripts ending with
-'...Subregions.py' are for the analysis of subregions. Datasets derived from scripts with the Ending
-'...Regions.py' have to be used as an input for Scripts with the Ending '...Regions.py', similarly 
+Scripts ending with '...regions.py' are used to analyse entire regions, while scripts ending with
+'...subregions.py' are for the analysis of subregions. Datasets derived from scripts with the Ending
+'...regions.py' have to be used as an input for Scripts with the Ending '...regions.py', similarly 
 scripts with the Ending'...Subregions.py' have to be used as an input for Scripts with the Ending
 '...Subregions.py'
 
@@ -94,12 +100,12 @@ scripts with the Ending'...Subregions.py' have to be used as an input for Script
 In the first step, data is aggregated to regional/subregional level and across all model-runs, so damage time-series
 aggregated to model-medians for each region/subregion are the output. Aditionally, observed damages and country specific 
 indicators are added and aggregated. For the aggregation the output files of the 
-'schedule_sim.py' script need to be accessed by both scripts: dataAggregationRegions.py and dataAggregationSubegions.py
+'schedule_sim.py' script need to be accessed by both scripts: data_aggregation_regions.py and data_aggregation_subegions.py
 
 2.2 VULNERABILITY ASSESSMENT
 
-The aggregated files are then used for the vulnerability assessment in 'vulnerabilityAdjustmentRegions.py' 
-and 'vulnerabilityAdjustmentSubregions.py' , further input is not necessary. The scripts each provide a MetaData and a
+The aggregated files are then used for the vulnerability assessment in 'vulnerability_adjustment_regions.py' 
+and 'vulnerability_adjustment_subregions.py' , further input is not necessary. The scripts each provide a MetaData and a
 TimeSeries dataset which are then used for the attribution scripts. The MetaData contains information on explained variances 
 and correlation.
 
@@ -112,8 +118,8 @@ vulnerability (V) contributions as well as modeled (I) and observed trend (N) as
 
 2.4 DRIVERS FOR CLIMATE-INDUCED TRENDS
 
-The two data sets generated during the attribution assessment are used as inputs for the scripts 'teleconnections_Regions.py'
-and 'teleconnections_SubRegions.py'. Climate Oscillation Indices need to be added and are available under:
+The two data sets generated during the attribution assessment are used as inputs for the scripts 'teleconnections_regions.py'
+and 'teleconnections_subregions.py'. Climate Oscillation Indices need to be added and are available under:
 Southern Oscillation Index as a predictor for ENSO (https://www.ncdc.noaa.gov/teleconnections/enso/enso-tech.php)
 Monthly data for AMO, NAO and PDO were extracted from the NOAA/Climate Prediction Center
 (https://www.psl.noaa.gov/data/climateindices/list/).
