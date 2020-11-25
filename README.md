@@ -8,9 +8,9 @@ Aznar-Siguan, G. and Bresch, D. N.: CLIMADA v1: a global weather and climate ris
 
 Eberenz, S., Stocker, D., Röösli, T., and Bresch, D. N.: Asset exposure data for global physical risk assessment. Earth Syst. Sci. Data, 12, 817–833, https://doi.org/10.5194/essd-12-817-2020, 2020.
 
-## Forthcoming papers:
+## Forthcoming papers & publications in preparation:
 
-Welker C., Röösli T., Bresch D. N.: Comparing an insurer’s perspective on building damages with modelled damages from pan-European winter windstorm event sets: a case study from Zurich, Switzerland.
+Welker, C., Röösli, T., and Bresch D. N.: Comparing an insurer’s perspective on building damages with modelled damages from pan-European winter windstorm event sets: a case study from Zurich, Switzerland.
 Accepted for review by the journal Natural Hazards and Earth System Sciences (NHESS). https://doi.org/10.5194/nhess-2020-115.
 
 Eberenz, S., Lüthi, S., and Bresch, D. N.: Regional tropical cyclone impact functions for globally consistent risk assessments.
