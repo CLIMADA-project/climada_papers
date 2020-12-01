@@ -263,7 +263,7 @@ for i in range(10):
                 f3_ax1.set_xticklabels(['1980','1990','2000','2010'], fontsize =7)
             
             if i ==4 and j ==0:
-                f3_ax1.set_ylabel('LOG10 Damages (2005 USD)', fontsize=8, labelpad=-1)
+                f3_ax1.set_ylabel('LOG10(Damages in 2005 USD)', fontsize=8, labelpad=-1)
             
             if j == 0 and i !=0:
                 f3_ax1.set_yticklabels(['6','8','10'], fontsize=8)

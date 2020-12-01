@@ -59,7 +59,7 @@ follow the instructions. Only the input data set provided in DEMO_data is needed
 The modeling of spatially explicit flood depth and fraction with CaMa-Flood and additional post-processing
 can be accessed under
 
-202010_flood_attribution/Demo/Demo_Scripts/demo_data_aggregation.ipynb
+
 
 1 DAMAGE GENENERATION
 

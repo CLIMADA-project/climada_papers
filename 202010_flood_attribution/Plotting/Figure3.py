@@ -217,7 +217,7 @@ for i in range(4):
         f3_ax1.set_xticklabels(['','', '', '' ],fontsize =6.5)
         
         if r in [0,1,4,7]:
-            f3_ax1.set_ylabel('Relative annual trend', fontsize=9, labelpad = 2.5)
+            f3_ax1.set_ylabel('Relative trend in %/year', fontsize=8, labelpad = 2.5)
             
         
 
