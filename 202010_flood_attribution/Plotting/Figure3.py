@@ -27,12 +27,12 @@ gs = fig3.add_gridspec(20, 14)
 plt.subplots_adjust(wspace=-0.2, hspace=0)
 
 
-DATA_ATTR_Full = pd.read_csv('/home/insauer/projects/Attribution/Floods/Paper_NC_Resubmission_data/Aggregation_attribution/AttributionMetaDataRegions.csv')
+DATA_ATTR_Full = pd.read_csv('/home/insauer/projects/NC_Submission/Data/postprocessing/AttributionMetaDataRegions.csv')
 
-DATA_ATTR = pd.read_csv('/home/insauer/projects/Attribution/Floods/Paper_NC_Resubmission_data/Aggregation_attribution/AttributionMetaDataSubregions.csv')
+DATA_ATTR = pd.read_csv('/home/insauer/projects/NC_Submission/Data/postprocessing/AttributionMetaDataSubregions.csv')
 
-DATA_FIT_Full= pd.read_csv('/home/insauer/projects/Attribution/Floods/Paper_NC_Resubmission_data/Aggregation_attribution/VulnerabilityAdjustmentMetaDataRegions.csv')
-DATA_FIT= pd.read_csv('/home/insauer/projects/Attribution/Floods/Paper_NC_Resubmission_data/Aggregation_attribution/VulnerabilityAdjustmentMetaDataSubregions.csv')
+DATA_FIT_Full= pd.read_csv('/home/insauer/projects/NC_Submission/Data/postprocessing/VulnerabilityAdjustmentMetaDataRegions.csv')
+DATA_FIT= pd.read_csv('/home/insauer/projects/NC_Submission/Data/postprocessing/VulnerabilityAdjustmentMetaDataSubregions.csv')
 
 
 region_names={'GLB': 'Global (GLB)',
@@ -80,10 +80,6 @@ for i in range(4):
         r_lin_pos = DATA_FIT.loc[DATA_FIT['Region']==regions[r]+'_Pos', 'ExpVar_model_pred_observed'].sum()
         r_lin_neg = DATA_FIT.loc[DATA_FIT['Region']==regions[r]+'_Neg', 'ExpVar_model_pred_observed'].sum()
         
-        r_rank = DATA_FIT_Full.loc[DATA_FIT_Full['Region']==regions[r], 'SP_corrcoef_pred_observed'].sum()     
-
-        r_rank_pos = DATA_FIT.loc[DATA_FIT['Region']==regions[r]+'_Pos', 'KT_corrcoef_pred_observed'].sum()
-        r_rank_neg = DATA_FIT.loc[DATA_FIT['Region']==regions[r]+'_Neg', 'KT_corrcoef_pred_observed'].sum()
         
         data_attr_reg = DATA_ATTR_Full[DATA_ATTR_Full['Region'] == regions[r]]
         data_attr_reg_pos = DATA_ATTR[DATA_ATTR['Region'] == regions[r]+'_Pos']
@@ -307,8 +303,8 @@ imp_box = mpatches.Circle((0.5,0.5), 1, facecolor='#8856a7', label ='Total Damag
 
 f3_ax4.legend(handles = [cli_box, cli2_box, exp_box,vul_box, imp_box], frameon=True, fontsize = 8, loc = 'center', edgecolor = 'k')  
 
-plt.savefig('/home/insauer/projects/Attribution/Floods/Paper_NC_Resubmission_data/Main_Figures/Alt_Fig_2b.png',bbox_inches = 'tight',dpi =600)
-plt.savefig('/home/insauer/projects/Attribution/Floods/Paper_NC_Resubmission_data/Main_Figures/Alt_Fig_2b.svg',bbox_inches = 'tight', format = 'svg')
+# plt.savefig('/home/insauer/projects/Attribution/Floods/Paper_NC_Resubmission_data/Main_Figures/Alt_Fig_2b.png',bbox_inches = 'tight',dpi =600)
+# plt.savefig('/home/insauer/projects/Attribution/Floods/Paper_NC_Resubmission_data/Main_Figures/Alt_Fig_2b.svg',bbox_inches = 'tight', format = 'svg')
 
 #f3_ax1.set_title('gs[0, :]')
 #f3_ax2 = fig3.add_subplot(gs[1, :-1])

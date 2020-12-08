@@ -343,9 +343,6 @@ def prep_table_timeMK(region, data, regLHaz, regLHazExp, regLFull, regH7,
     # cH_norm = (regH10.params[0]*100)/dam_norm
     cH7_norm = regH7[0]  # *100/nat_norm
     cE_norm = (regLHazExp[0]-regLHaz[0])*100/nat_norm
-    
-    cE10_norm = (regLHazExp[0]-regH10[0])*100/nat_norm
-    cE7_norm = regE7.slope*100/dam_norm
     cV_norm = (regLFull[0]-regLHazExp[0])*100/nat_norm
 
     cI_norm = regLFull[0]*100/nat_norm
@@ -374,7 +371,6 @@ def prep_table_timeMK(region, data, regLHaz, regLHazExp, regLFull, regH7,
                            'Change E7': regE7.slope,  # develop_taylor(regE7, 1991)[0],
                            'Change E': regE.slope,  # develop_taylor(regE, 1995)[0],
                            'Change En': cE_norm,
-                           'Change En10': cE10_norm,
                            'Change V': regV.slope,  # develop_taylor(regV, 1995)[0],
                            'Change Vn': cV_norm,
                            'Change I': regI[0],  # develop_taylor(regI, 1995)[0],
@@ -394,8 +390,7 @@ def prep_table_timeMK(region, data, regLHaz, regLHazExp, regLFull, regH7,
                            '2010_haz_loss71': regH107[0]*40,
                            '2010_haz_loss80_rel': regH10[0]*31/nat_norm,
                            '2010_haz_loss71_rel': regH107[0]*40/nat_norm,
-                           '2010_haz_loss80_rel10': regH10[0]*31/nat_2010,
-                           '2010_haz_loss71_rel10': regH107[0]*40/nat_2010
+
                            },
                           index=[0])
     return table1
@@ -437,7 +432,7 @@ def attr_regr(dataFrame):
     return normData, attrTable
 
 
-DATA = pd.read_csv('/home/insauer/projects/NC_Submission/Climada_papers/Test/VulnerabilityAdjustmentTimeSeriesSubregions.csv')
+DATA = pd.read_csv('/home/insauer/projects/NC_Submission/Data/postprocessing/VulnerabilityAdjustmentTimeSeriesSubregions.csv')
 
 
 region_names = {'NAM': 'North America',
@@ -464,6 +459,6 @@ regr = 'MK'
 
 normData, attrTable = attr_regr(DATA)
 
-attrTable.to_csv('/home/insauer/projects/NC_Submission/Climada_papers/Test/AttributionMetaDataSubregions.csv', index=False)
+attrTable.to_csv('/home/insauer/projects/NC_Submission/Data/postprocessing/AttributionMetaDataSubregions.csv', index=False)
 
-normData.to_csv('/home/insauer/projects/NC_Submission/Climada_papers/Test/AttributionTimeSeriesSubregions.csv', index=False)
+normData.to_csv('/home/insauer/projects/NC_Submission/Data/postprocessing/AttributionTimeSeriesSubregions.csv', index=False)

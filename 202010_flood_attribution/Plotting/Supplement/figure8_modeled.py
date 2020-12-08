@@ -19,12 +19,12 @@ gs = fig3.add_gridspec(20, 14)
 plt.subplots_adjust(wspace=-0.2, hspace=0)
 
 
-DATA_ATTR_Full = pd.read_csv('/home/insauer/projects/NC_Submission/Data/postprocessing/AttributionMetaDataRegions.csv')
+DATA_ATTR_Full = pd.read_csv('/home/insauer/projects/Attribution/Floods/Paper_NC_Resubmission_data/Aggregation_attribution_modeled/AttributionMetaDataRegions_mod.csv')
 
-DATA_ATTR = pd.read_csv('/home/insauer/projects/NC_Submission/Data/postprocessing/AttributionMetaDataSubregions.csv')
+DATA_ATTR = pd.read_csv('/home/insauer/projects/Attribution/Floods/Paper_NC_Resubmission_data/Aggregation_attribution_modeled/AttributionMetaDataSubregions_mod.csv')
 
-DATA_FIT_Full= pd.read_csv('/home/insauer/projects/NC_Submission/Data/postprocessing/VulnerabilityAdjustmentMetaDataRegions.csv')
-DATA_FIT= pd.read_csv('/home/insauer/projects/NC_Submission/Data/postprocessing/VulnerabilityAdjustmentMetaDataSubregions.csv')
+DATA_FIT_Full= pd.read_csv('/home/insauer/projects/Attribution/Floods/Paper_NC_Resubmission_data/Aggregation_attribution_modeled/VulnerabilityAdjustmentMetaDataRegions_mod.csv')
+DATA_FIT= pd.read_csv('/home/insauer/projects/Attribution/Floods/Paper_NC_Resubmission_data/Aggregation_attribution_modeled/VulnerabilityAdjustmentMetaDataSubregions_mod.csv')
 
 
 region_names={'GLB': 'Global (GLB)',
@@ -72,6 +72,11 @@ for i in range(4):
 
         r_lin_pos = DATA_FIT.loc[DATA_FIT['Region']==regions[r]+'_Pos', 'ExpVar_model_pred_observed'].sum()
         r_lin_neg = DATA_FIT.loc[DATA_FIT['Region']==regions[r]+'_Neg', 'ExpVar_model_pred_observed'].sum()
+        
+        r_rank = DATA_FIT_Full.loc[DATA_FIT_Full['Region']==regions[r], 'SP_corrcoef_pred_observed'].sum()     
+
+        r_rank_pos = DATA_FIT.loc[DATA_FIT['Region']==regions[r]+'_Pos', 'KT_corrcoef_pred_observed'].sum()
+        r_rank_neg = DATA_FIT.loc[DATA_FIT['Region']==regions[r]+'_Neg', 'KT_corrcoef_pred_observed'].sum()
         
         data_attr_reg = DATA_ATTR_Full[DATA_ATTR_Full['Region'] == regions[r]]
         data_attr_reg_pos = DATA_ATTR[DATA_ATTR['Region'] == regions[r]+'_Pos']
@@ -144,7 +149,7 @@ for i in range(4):
         h_neg107_sig =  data_attr_reg_neg.loc[:,'Sign H107'].sum()
 
         x=[0,1,2,4,5,6]
-        colour_code = ['#5ab4ac', '#4575b4', '#d8b365', '#5ab4ac', '#4575b4', '#d8b365']
+        colour_code = ['#4575b4', '#4575b4', '#4575b4', '#4575b4', '#4575b4', '#4575b4']
         y1= [h_pos8,h8,h_neg8,h_pos7,h7,h_neg7]
         y1err_up= [h_pos8_up,h8_up,h_neg8_up,h_pos7_up,h7_up,h_neg7_up]
         y1err_bot= [h_pos8_bot,h8_bot,h_neg8_bot,h_pos7_bot,h7_bot,h_neg7_bot]
@@ -172,13 +177,13 @@ for i in range(4):
         
         ax2_ticks_low = [-5,-5,-5,-2,-2,-5,-2,-5,-5, -5]
         
-        ax1_labels_up = ['5%', '5%','5%','2%','2%','5%', '2%', '20%','10%','5%']
+        ax1_labels_up = ['5', '5','5','2','2','5', '2', '20','10','5']
         
-        ax1_labels_low = ['-5%','-5%','-5%','-2%','-2%','-5','-2%','','-5%','-5%']
+        ax1_labels_low = ['-5','-5','-5','-2','-2','-5','-2','','-5','-5']
         
-        ax2_labels_up = ['5%','5%','5%','2%','2%', '5%','2%', '20%','10%','5%']
+        ax2_labels_up = ['5','5','5','2','2', '5','2', '20','10','5']
         
-        ax2_labels_low = ['-5%','-5%','-5%','-2%','-2%','-5%','-2%','','-5%','-5%']
+        ax2_labels_low = ['-5','-5','-5','-2','-2','-5','-2','','-5','-5']
         
         if r_lin_pos > 0.2:
         
@@ -204,7 +209,7 @@ for i in range(4):
         
         for a in range(6):
             
-            if not ((r==1 and a==0)or (r==1 and a==3)) :
+            if 1==1:# not ((r==1 and a==0)or (r==1 and a==3)) :
 
                 if y1_sig[a]<0.1:
                     if y1_sig[a] < 0.01:
@@ -223,7 +228,7 @@ for i in range(4):
             
         for a in range(6):
             
-            if not ((r==1 and a==0)or (r==1 and a==3)) :
+            if 1 ==1 :#not ((r==1 and a==0)or (r==1 and a==3)) :
 
                 if y2_sig[a]<0.1:
                     
@@ -279,7 +284,7 @@ for i in range(4):
         lab = [0,1,4,7]
         
         if r in lab:
-            f3_ax1.set_ylabel('$C_{1980}$',  fontsize = 8, labelpad=-0.5)
+            f3_ax1.set_ylabel('$C_{1980}$ in %/year',  fontsize = 8, labelpad=-0.5)
             f3_ax2.set_ylabel('$C_{2010}$',  fontsize = 8, labelpad=-0.5)
             
         
@@ -309,13 +314,6 @@ f3_ax4.axis('off')
 
 
 
-
-
-pos_box = mpatches.Rectangle((0, 0), 1,1, color='#5ab4ac', label ='$R_{+}$ subregion')
-neg_box = mpatches.Rectangle((0, 0), 1, 1, facecolor='#d8b365', label ='$R_{-}$ subregion')
-
-negs_box = mpatches.Rectangle((0, 0), 1, 1, facecolor="#4575b4", label ='Full world region $R$')
-
 circle = Line2D([0], [0], marker='o', color='w', label='non-significant',
                         markeredgecolor='gray', markersize=6)
 triangle = Line2D([0], [0], marker='^', color='w', label='significant at 10%',
@@ -336,10 +334,10 @@ empty = Line2D([0], [0], marker='o', color='w', label='',
 #         'Region with negative \n discharge trend $R_{-}$']
         #'circ','sig1','sig2','sig3']
 
-f3_ax4.legend(handles = [diam, square,triangle,circle,empty, pos_box, negs_box,neg_box], frameon=True, fontsize = 7, loc = 'center', edgecolor = 'k')  
+f3_ax4.legend(handles = [diam, square,triangle,circle,empty], frameon=True, fontsize = 7, loc = 'center', edgecolor = 'k')  
 
-# plt.savefig('/home/insauer/projects/NC_Submission/Data/postprocessing/Figure3.png',bbox_inches = 'tight',dpi =600)
-# plt.savefig('/home/insauer/projects/NC_Submission/Data/postprocessing/Figure3.svg',bbox_inches = 'tight', format = 'svg')
+plt.savefig('/home/insauer/projects/NC_Submission/Data/Figures/Supplement/SI8_Figure3_mod.png',bbox_inches = 'tight',dpi =600)
+plt.savefig('/home/insauer/projects/NC_Submission/Data/Figures/Supplement/SI8_Figure3_mod.svg',bbox_inches = 'tight', format = 'svg')
 
 #f3_ax1.set_title('gs[0, :]')
 #f3_ax2 = fig3.add_subplot(gs[1, :-1])

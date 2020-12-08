@@ -60,12 +60,6 @@ def aggregation_regions(x):
     aggregated_observed_damages_pos = (x['natcat_damages_2005_CPI_pos']).sum()
     aggregated_observed_damages_neg = (x['natcat_damages_2005_CPI_neg']).sum()
     # Use the population-weighted GDP per cap
-    aggregated_GDP_per_cap_pos = (x['gdp_Pos_RM'].sum())/(x['pop_Pos_RM'].sum())
-    aggregated_GDP_per_cap_neg = (x['gdp_Neg_RM'].sum())/(x['pop_Neg_RM'].sum())
-    aggregated_population_pos = x['pop_Pos_RM'].sum()
-    aggregated_population_neg = x['pop_Neg_RM'].sum()
-    aggregated_capstock_pos = x['CapStock_Pos'].sum()
-    aggregated_capstock_neg = x['CapStock_Neg'].sum()
     aggregated_flooded_area_pos = x['FloodedAreaPosFlopros'].sum()
     aggregated_flooded_area_neg = x['FloodedAreaNegFlopros'].sum()
     aggregated_flood_vol_pos = x['FloodVolumePosFlopros'].sum()
@@ -79,21 +73,16 @@ def aggregation_regions(x):
                       aggregated_model_damages_2010_neg,
                       aggregated_observed_damages_pos,
                       aggregated_observed_damages_neg,
-                      aggregated_GDP_per_cap_pos,
-                      aggregated_GDP_per_cap_neg,
-                      aggregated_population_pos, aggregated_population_neg,
+
                       aggregated_flooded_area_pos, aggregated_flooded_area_neg,
-                      aggregated_flood_vol_pos, aggregated_flood_vol_neg,
-                      aggregated_capstock_pos, aggregated_capstock_neg],
+                      aggregated_flood_vol_pos, aggregated_flood_vol_neg],
                      index=['Impact_2yPosFlopros', 'Impact_2yNegFlopros',
                             'ImpFix_2yPosFlopros', 'ImpFix_2yNegFlopros',
                             'Imp2010_2yPosFlopros', 'Imp2010_2yNegFlopros',
                             'natcat_damages_2005_CPI_pos',
                             'natcat_damages_2005_CPI_neg',
-                            'GDP_pcPos', 'GDP_pcNeg', 'PopPos', 'PopNeg',
                             'FloodedAreaPosFlopros', 'FloodedAreaNegFlopros',
-                            'FloodVolumePosFlopros', 'FloodVolumeNegFlopros',
-                            'CapStock_Pos', 'CapStock_Neg'])
+                            'FloodVolumePosFlopros', 'FloodVolumeNegFlopros'])
 
 
 def func_median(x):
@@ -122,18 +111,11 @@ def func_median(x):
     median_model_damages_2010_neg = x['Imp2010_2yNegFlopros'].median()
     median_observed_damages_pos = (x['natcat_damages_2005_CPI_pos']).mean()  # all the same value
     median_observed_damages_neg = (x['natcat_damages_2005_CPI_neg']).mean()  # all the same value
+
     flood_area_pos = x['FloodedAreaPosFlopros'].median()
     flood_area_neg = x['FloodedAreaNegFlopros'].median()
     flood_vol_pos = x['FloodVolumePosFlopros'].median()
     flood_vol_neg = x['FloodVolumeNegFlopros'].median()
-
-    median_capstock_pos = x['CapStock_Pos'].mean()
-    median_capstock_neg = x['CapStock_Neg'].mean()
-
-    median_GDP_per_cap_pos = x['GDP_pcPos'].mean()  # all the same value
-    median_population_pos = x['PopPos'].mean()  # all the same value
-    median_GDP_per_cap_neg = x['GDP_pcNeg'].mean()  # all the same value
-    median_population_neg = x['PopNeg'].mean()
 
     one_third_quantile_flood_area_pos = x['FloodedAreaPosFlopros'].quantile(0.3)  # 30
     two_third_quantile_flood_area_pos = x['FloodedAreaPosFlopros'].quantile(0.7)  # 70
@@ -172,12 +154,6 @@ def func_median(x):
                       flood_area_neg,
                       flood_vol_pos,
                       flood_vol_neg,
-                      median_GDP_per_cap_pos,
-                      median_population_pos,
-                      median_GDP_per_cap_neg,
-                      median_population_neg,
-                      median_capstock_pos,
-                      median_capstock_neg,
                       one_third_quantile_flood_area_pos,
                       two_third_quantile_flood_area_pos,
                       one_third_quantile_flood_area_neg,
@@ -210,12 +186,6 @@ def func_median(x):
                             'FloodedAreaNeg',
                             'FloodVolumePos',
                             'FloodVolumeNeg',
-                            'GDP_pcPos',
-                            'PopPos',
-                            'GDP_pcNeg',
-                            'PopNeg',
-                            'CapStockPos',
-                            'CapStockNeg',
                             'flood_area_onethird_quantile_Pos',
                             'flood_area_twothird_quantile_Pos',
                             'flood_area_onethird_quantile_Neg',
@@ -266,63 +236,36 @@ def add_GDP_NatCat(megaDataFrame, years, gdp_resc):
     DataFrame
          model medians of regionally aggregated damages and other indicators
     """
-    # gdp_pc  and population information is available at 
-    # Geiger, Tobias; Frieler, Katja (2017): Continuous national
-    # Gross Domestic Product (GDP) time series for 195 countries:
-    # past observations (1850-2005) harmonized with future projections according
-    # the Shared Socio-economic Pathways (2006-2100). GFZ Data Services.
-    # https://doi.org/10.5880/pik.2017.003
-    # adapt path
-    gdp_pc = pd.read_csv('/home/insauer/projects/Attribution/Floods/Data/Input_Data/Income-PPP2005_ISIMIP_merged_Maddison-pwt81_1850-2015_extended_WDI-1.csv')
-    pop = pd.read_csv('/home/insauer/projects/Attribution/Floods/Data/Input_Data/Population_ISIMIP-pwt81_1850-2009_extended_WDI_filled-with-Hyde.csv')
-    gdpop_posneg = pd.read_csv('/home/insauer/projects/Attribution/Floods/Data/Input_Data/GDP_pc_PosNeg.csv')
+
     # provide dataset with observational data assigned to each subregion...this needs to be processed previously
-    natcat = pd.read_csv('/home/insauer/projects/Attribution/Floods/Paper_NC_Review_Data/NatCat_PPP_conv/NatCatAssigned_PPP_bas_geo_corr_test3.csv')
-    # natcat=pd.read_excel('/home/insauer/projects/Attribution/Floods/Data/Input_Data/1980-2016_Masterdatei_NatCat_worldwide_no-pw_2005conversions.xlsx', index_col=0)
-    # asset rescaling to correct for the ssp transition and to convert GDP to capital stock
+    natcat = pd.read_csv('/home/insauer/projects/NC_Submission/Data/natcat_damages/natcat_subregions.csv')
+    countries = pd.read_csv('/home/insauer/projects/NC_Submission/Data/final_country_list.csv')
+    # and to convert GDP to capital stock
     # datasets can be generated with a separate code discribed in the readme.txt
     if gdp_resc:
+        # asset rescaling to correct for the ssp transition
         resc_factors = pd.read_csv('/home/insauer/projects/Attribution/Data/RescalingFactors_GDPobs_GDPjpnClean.csv')
-        # cap_factors = pd.read_csv('/home/insauer/projects/Attribution/Data/PostProcess_GDP2CapStock_cgdpoClean.csv')
-        cap_factors = pd.read_csv('/home/insauer/projects/Attribution/Floods/Data/Input_Data/PostProcess_GDP2CapStock_rgdpnaCleanRM.csv')
-        conv_cap_stock = pd.read_csv('/home/insauer/projects/Attribution/Floods/Data/Input_Data/GDP2CapStock_rgdpnaClean.csv')
-    countries = list(set(megaDataFrame['Country']).intersection(gdp_pc.iloc[:, 0]))
+        # asset rescaling to convert to capital stock
+        cap_factors = pd.read_csv('/home/insauer/projects/NC_Submission/Data/capital_stock_rescaling/totalwealth_capital_stock_rescaling.csv')
 
-    megaDataFrame['GDP_pc'] = np.nan
-    megaDataFrame['GDP'] = np.nan
-    megaDataFrame['Pop'] = np.nan
-    megaDataFrame['GDP_10y_runmean'] = np.nan
-    megaDataFrame['gdp_Pos_RM'] = np.nan
-
-    megaDataFrame['gdp_Neg_RM'] = np.nan
-    megaDataFrame['pop_Pos_RM'] = np.nan
-    megaDataFrame['pop_Neg_RM'] = np.nan
+    countries = list(set(megaDataFrame['Country']).intersection(countries.iloc[:, 0]))
 
     megaDataFrame['natcat_damages_2005_CPI_pos'] = np.nan
     megaDataFrame['natcat_damages_2005_CPI_neg'] = np.nan
-    megaDataFrame['GMT'] = np.nan
 
-    gdp_transpose = gdp_pc.T
-    gdp_transpose.columns = gdp_transpose.iloc[0]
-    gdp_transpose.drop(gdp_transpose.index[0], inplace=True)
-    gdp_runmean = gdp_transpose.rolling(window=10, min_periods=5).mean()
-
-    # skip_cntr = ['KGZ','TJK']
     for country in countries:
+        # rescaling for the fixed exposure
+        resc_fac_cnt_yr_1980 = resc_factors.loc[resc_factors['ISO'] == country, str(1980)].sum()
+        capst_fac_cnt_yr_1980 = cap_factors.loc[cap_factors['ISO'] == country, str(1980)].sum()
+
+        resc_fac_cnt_yr_2010 = resc_factors.loc[resc_factors['ISO'] == country, str(2010)].sum()
+        capst_fac_cnt_yr_2010 = cap_factors.loc[cap_factors['ISO'] == country, str(2010)].sum()
+
         for year in years:
             print(str(year) + ' ' + country)
-            
-            gdp_pc_cnt_yr = gdp_pc.loc[gdp_pc.iloc[:, 0] == country, str(year)]
+
             resc_fac_cnt_yr = resc_factors.loc[resc_factors['ISO'] == country, str(year)].sum()
             capst_fac_cnt_yr = cap_factors.loc[cap_factors['ISO'] == country, str(year)].sum()
-
-            capst_cnt_yr = conv_cap_stock.loc[conv_cap_stock['ISO'] == country, str(year)].sum()
-
-            resc_fac_cnt_yr_1980 = resc_factors.loc[resc_factors['ISO'] == country, str(1980)].sum()
-            capst_fac_cnt_yr_1980 = cap_factors.loc[cap_factors['ISO'] == country, str(1980)].sum()
-
-            resc_fac_cnt_yr_2010 = resc_factors.loc[resc_factors['ISO'] == country, str(2010)].sum()
-            capst_fac_cnt_yr_2010 = cap_factors.loc[cap_factors['ISO'] == country, str(2010)].sum()
 
             megaDataFrame.loc[(megaDataFrame['Country'] == country) &
                               (megaDataFrame['Year'] == year),
@@ -343,57 +286,6 @@ def add_GDP_NatCat(megaDataFrame, years, gdp_resc):
             megaDataFrame.loc[(megaDataFrame['Country'] == country) &
                               (megaDataFrame['Year'] == year),
                               'Imp2010_2yNegFlopros'] *= resc_fac_cnt_yr_2010 * capst_fac_cnt_yr_2010
-
-            megaDataFrame.loc[(megaDataFrame['Country'] == country) &
-                              (megaDataFrame['Year'] == year),
-                              'GDP_pc'] = np.float(gdp_pc_cnt_yr)
-            pop_cnt_yr = pop.loc[gdp_pc.iloc[:, 0] == country, str(year)]
-
-            megaDataFrame.loc[(megaDataFrame['Country'] == country) &
-                              (megaDataFrame['Year'] == year),
-                              'Pop'] = np.float(pop_cnt_yr)
-            megaDataFrame.loc[(megaDataFrame['Country'] == country) &
-                              (megaDataFrame['Year'] == year),
-                              'GDP'] = np.float(pop_cnt_yr) * np.float(gdp_pc_cnt_yr)
-
-            megaDataFrame.loc[(megaDataFrame['Country'] == country) &
-                              (megaDataFrame['Year'] == year),
-                              'GDP_10y_runmean'] = gdp_runmean.loc[str(year), country]
-
-            megaDataFrame.loc[(megaDataFrame['Country'] == country) &
-                              (megaDataFrame['Year'] == year),
-                              'gdp_Pos_RM'] = gdpop_posneg.loc[(gdpop_posneg['Country'] == country) &
-                                                               (gdpop_posneg['Year']==year),
-                                                               'GDP_RM_Pos'].mean()
-
-            megaDataFrame.loc[(megaDataFrame['Country'] == country) &
-                              (megaDataFrame['Year'] == year),
-                              'CapStock_Pos'] = gdpop_posneg.loc[(gdpop_posneg['Country'] == country) &
-                                                                 (gdpop_posneg['Year'] == year),
-                                                                 'GDP_RM_Pos'].mean() * np.float(capst_cnt_yr)
-
-            megaDataFrame.loc[(megaDataFrame['Country'] == country) &
-                              (megaDataFrame['Year'] == year),
-                              'gdp_Neg_RM'] = gdpop_posneg.loc[(gdpop_posneg['Country'] == country) &
-                                                               (gdpop_posneg['Year'] == year),
-                                                               'GDP_RM_Neg'].mean()
-
-            megaDataFrame.loc[(megaDataFrame['Country'] == country) &
-                              (megaDataFrame['Year'] == year),
-                              'CapStock_Neg'] = gdpop_posneg.loc[(gdpop_posneg['Country'] == country) &
-                                                                 (gdpop_posneg['Year'] == year),
-                                                                 'GDP_RM_Neg'].mean() * np.float(capst_cnt_yr)
-
-            megaDataFrame.loc[(megaDataFrame['Country'] == country) &
-                              (megaDataFrame['Year'] == year),
-                              'pop_Pos_RM'] = gdpop_posneg.loc[(gdpop_posneg['Country']==country) &
-                                                               (gdpop_posneg['Year']==year),
-                                                               'POP_RM_Pos'].mean()
-            megaDataFrame.loc[(megaDataFrame['Country'] == country) &
-                              (megaDataFrame['Year'] == year),
-                              'pop_Neg_RM'] = gdpop_posneg.loc[(gdpop_posneg['Country'] == country) &
-                                                               (gdpop_posneg['Year'] == year),
-                                                               'POP_RM_Neg'].mean()
 
             if year > 1979:
 
@@ -466,7 +358,7 @@ def aggregate_new_region(dataFrame):
     return dataFrame
 
 
-def region_aggregation(out_cols, dataFrame):
+def region_aggregation(cols, dataFrame):
     """
     This function is a wrapper for the aggregation and selects the columns to
     be aggregated to regional level.
@@ -481,14 +373,14 @@ def region_aggregation(out_cols, dataFrame):
     DataFrame
          regionally aggregated damages and other indicators regions
     """
-    data_region = dataFrame.groupby(['Year', 'rf_model', 'cl_model', 'Region'])\
-                                     [out_cols].apply(aggregation_regions)\
+    data_region = dataFrame.groupby(['Year', 'GHM', 'clim_forc', 'Region'])\
+                                    [cols].apply(aggregation_regions)\
                                      .reset_index()  # groupby year and model
 
     return data_region
 
 
-def model_aggregation(out_cols, dataFrame, years, select_model):
+def model_aggregation(cols, dataFrame, years, select_model):
     """
     This function is a wrapper for the multi-model aggregation and provides
     the model median for each region of all variables.
@@ -506,27 +398,25 @@ def model_aggregation(out_cols, dataFrame, years, select_model):
 
     if select_model:
 
-        dataFrame = dataFrame[dataFrame['rf_model'] == select_model]
+        dataFrame = dataFrame[dataFrame['GHM'] == select_model]
 
     data_models = dataFrame[(dataFrame['Year'] <= np.max(years)) &
                             (dataFrame['Year'] >= np.min(years))]
     # Get the median for model and datasets
     data_models = data_models.groupby(['Year', 'Region'])\
-                              [out_cols].apply(func_median).reset_index()
+                              [cols].apply(func_median).reset_index()
 
     return data_models
 
-def assemble_data_frame(path, sort, years):
+def assemble_data_frame(path, years):
     """
-    This function gathers all the data from all model_runs and
-    provides one big data set containing all model runs
+    This function gathers all the data from all model runs and
+    provides one big data set containing damage data for all model runs
 
     Parameters
     ----------
     path : string
         Path to directory on cluster where all runs are stored
-    sort : string list
-        columns used for sorting
     years : int array
 
     Returns
@@ -536,51 +426,26 @@ def assemble_data_frame(path, sort, years):
     """
     megaDataFrame = pd.DataFrame()
     list_of_model_output = os.listdir(path)
+    # loop over all model output
 
-    for i, model_output in enumerate(list_of_model_output):  # loop over all model output 
+    for i, model_output in enumerate(list_of_model_output):
 
-        [n1, n2, n3, n4, rf_model, cl_model, n7, n8, n9] = model_output.split('_')
+        [n1, n2, n3, n4, ghm, clim_forc, n7, n8, n9] = model_output.split('_')
 
         print('Loading ' + model_output)
         temp = pd.read_csv(path+model_output)
-        temp['rf_model'] = rf_model
-        temp['cl_model'] = cl_model
+        temp['GHM'] = ghm
+        temp['clim_forc'] = clim_forc
         temp = temp[temp['Year'] >= 1971]
         megaDataFrame = megaDataFrame.append(temp, ignore_index=True)
 
-    megaDataFrame = megaDataFrame.sort_values(by=sort)
+    megaDataFrame = megaDataFrame.sort_values(by=['Year', 'Country'])
 
     return megaDataFrame
 
-def get_rm(col_names, dataFrame, rm_window):
-    """
-    This function calculates running means for selected columns.
-    Not applied in the paper!
 
-    Parameters
-    ----------
-    col_names : string list
-        selected columns
-    dataFrame : DataFrame
-        full dataset
-    rm_window : int
-         window size
+path = '/home/insauer/mnt/ebm/inga/paper_results/paper_resubmission_1_12/'
 
-    Returns
-    -------
-    DataFrame
-         DataFrame containing the running means for selected columns
-    """
-    for col in col_names:
-        dataFrame[col] = dataFrame[col].replace(
-                                            [-np.inf, np.inf],
-                                            [np.nan, np.nan])
-        dataFrame[col] = runmean(dataFrame[col], rm_window)
-
-    return dataFrame
-
-path = '/home/insauer/mnt/ebm/results/floodDam/Paper_Inga_NC_20_06_20_review/dam_basin_geo/'
-sort = ['Year', 'Country']
 years = np.arange(1971, 2012)
 
 in_cols = ['Impact_2yPosFlopros',
@@ -594,32 +459,18 @@ in_cols = ['Impact_2yPosFlopros',
            'FloodVolumePosFlopros',
            'FloodVolumeNegFlopros',
            'natcat_damages_2005_CPI_pos',
-           'natcat_damages_2005_CPI_neg',
-           'gdp_Pos_RM',
-           'gdp_Neg_RM',
-           'pop_Pos_RM',
-           'pop_Neg_RM',
-           'CapStock_Pos',
-           'CapStock_Neg']
+           'natcat_damages_2005_CPI_neg']
 
 # groupby year and model...
 
-out_cols = ['Impact_2yPosFlopros', 'Impact_2yNegFlopros',
-            'ImpFix_2yPosFlopros', 'ImpFix_2yNegFlopros',
-            'Imp2010_2yPosFlopros', 'Imp2010_2yNegFlopros',
-            'natcat_damages_2005_CPI_pos', 'natcat_damages_2005_CPI_neg',
-            'GDP_pcPos', 'GDP_pcNeg', 'PopPos',
-            'PopNeg', 'FloodedAreaPosFlopros',
-            'FloodedAreaNegFlopros', 'FloodVolumePosFlopros',
-            'FloodVolumeNegFlopros', 'CapStock_Pos', 'CapStock_Neg']
 
 
 # Put all different model outputs in one dataframe
 # and add GDP and NatCat Damages for each year and country
-assDataFrame = assemble_data_frame(path, sort, years)
+assDataFrame = assemble_data_frame(path, years)
 assDataFrame = add_GDP_NatCat(assDataFrame, years, gdp_resc=True)
-assDataFrame.to_csv('/home/insauer/projects/NC_Submission/Climada_papers/Test/AssembledDataSubregions.csv', index=False)
-assDataFrame = pd.read_csv('/home/insauer/projects/Attribution/Floods/Paper_NC_Resubmission_data/Aggregation_attribution/AssembledDataSubregions.csv')
+assDataFrame.to_csv('/home/insauer/projects/NC_Submission/Data/postprocessing/AssembledDataSubregions.csv', index=False)
+assDataFrame = pd.read_csv('/home/insauer/projects/NC_Submission/Data/postprocessing/AssembledDataSubregions.csv')
 
 #  rename regions
 assDataFrame = aggregate_new_region(assDataFrame)
@@ -629,5 +480,5 @@ regDataFrame = region_aggregation(in_cols, assDataFrame)
 #regDataFrame.to_csv('/home/insauer/projects/NC_Submission/Climada_papers/Test/RegionalAggregationDataSubregions.csv', index=False)
 
 #  building model median
-modDataFrame = model_aggregation(out_cols, regDataFrame, years, None)
-modDataFrame.to_csv('/home/insauer/projects/NC_Submission/Climada_papers/Test/ModelMedianSubregions.csv', index=False)
+modDataFrame = model_aggregation(in_cols, regDataFrame, years, None)
+modDataFrame.to_csv('/home/insauer/projects/NC_Submission/Data/postprocessing/ModelMedianSubregions.csv', index=False)

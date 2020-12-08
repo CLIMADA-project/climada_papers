@@ -65,11 +65,6 @@ def rel_time_attr_MK(dataFrame71):
 
     dataFrame = dataFrame71[dataFrame71['Year'] > 1979]
 
-    exp71 = dataFrame71['Norm_Impact_2y_offset'] - \
-        dataFrame71['Norm_ImpFix_2y_offset']
-    exp = dataFrame['Norm_Impact_2y_offset'] - \
-        dataFrame['Norm_ImpFix_2y_offset']
-    vul = dataFrame['Norm_Impact_Pred'] - dataFrame['Norm_Impact_2y_offset']
 
     regLHazExp = mk.original_test(dataFrame['Norm_Impact_2y_trend'], alpha=0.1)
 
@@ -115,22 +110,13 @@ def rel_time_attr_MK(dataFrame71):
 
     regH10 = [regHaz10.slope, regHaz10.p, slopeHaz10[2], slopeHaz10[3]]
 
-    regE = mk.original_test(exp, alpha=0.1)
-    regE7 = mk.original_test(exp71, alpha=0.1)
-
-    regV = mk.original_test(vul, alpha=0.1)
-
-    regI = mk.original_test(dataFrame['Norm_Impact_Pred'], alpha=0.1)
-
-    regI = regF
-
     regNat = mk.original_test(dataFrame['natcat_flood_damages_2005_CPI'], alpha=0.1)
 
     slopeNat = stats.theilslopes(dataFrame['natcat_flood_damages_2005_CPI'], alpha=1/3)
 
     regN = [regNat.slope, regNat.p, slopeNat[2], slopeNat[3]]
 
-    return regH, regHE, regF, regH7, regH107, regH10, regE, regE7, regV, regI, regN
+    return regH, regHE, regH7, regH107, regH10, regF, regN
 
 
 
@@ -168,7 +154,7 @@ def normalise(dataFrame):
 
     # normalisation for plotting
 
-    dataFrame['Norm_Impact_2y_offset'] = dataFrame['Impact_2y_Flopros'] * offsetExp 
+    dataFrame['Norm_Impact_2y_offset'] = dataFrame['Impact_2y_Flopros'] * offsetExp
     dataFrame['Norm_ImpFix_2y_offset'] = dataFrame['ImpFix_2y_Flopros'] * offsetHaz
 
     dataFrame['Norm_Imp2010_2y_offset'] = dataFrame['Imp2010_2y_Flopros'] * offsetHaz
@@ -215,8 +201,8 @@ def normalise(dataFrame):
     return dataFrame
 
 
-def prep_table_timeMK(region, dat, regLHaz, regLHazExp, regLFull,
-                      regH7, regH107, regH10, regE, regE7, regV, regI, regN):
+def prep_table_timeMK(region, dat, regLHaz, regLHazExp, regH7, regH107,
+                      regH10, regI, regN):
     """
     Prepare output table for attribution done with Mann-Kendall and Theil-Sen slope
 
@@ -268,8 +254,6 @@ def prep_table_timeMK(region, dat, regLHaz, regLHazExp, regLFull,
 
     """
 
-    dam_param = np.nanmean(dat.loc[(dat['Year'] > 1979) &
-                        (dat['Year'] < 1991), 'Norm_Impact_Pred'])
     nat_param = np.nanmean(dat.loc[(dat['Year'] > 1979) &
                         (dat['Year'] < 1996), 'natcat_flood_damages_2005_CPI'])
     # nat_2010 =  dat.loc[(dat['Year']==2010),'natcat_flood_damages_2005_CPI'].mean()
@@ -308,7 +292,7 @@ def prep_table_timeMK(region, dat, regLHaz, regLHazExp, regLFull,
      
     cE10_norm = (regLHazExp[0]-regH10[0]) * 100 / nat_param
 
-    cV_norm = (regLFull[0]-regLHazExp[0])*100/nat_param
+    cV_norm = (regI[0]-regLHazExp[0])*100/nat_param
 
     cI_norm = regI[0]*100/nat_param
 
@@ -333,12 +317,9 @@ def prep_table_timeMK(region, dat, regLHaz, regLHazExp, regLFull,
                            'Change H7nCL': cH7_normCL,
                            'Change H7nCLup': cH7up_normCL,
                            'Change H7nCLbot': cH7bot_normCL,
-                           'Change H107': regH107[0],  # develop_taylor(regH107, 1991)[0],
-                           'Change E': regE[0],  # develop_taylor(regE, 1995)[0],
+                           'Change H107': regH107[0],  
                            'Change En': cE_norm,
                            'Change En10': cE10_norm,
-                           'Change E7': regE7.slope,  # develop_taylor(regE7, 1991)[0],
-                           'Change V': regV.slope,  # develop_taylor(regV, 1995)[0],
                            'Change Vn': cV_norm,  # develop_taylor(regV, 1995)[0],
                            'Change I': regI[0],  # develop_taylor(regI, 1995)[0],
                            'Change In': cI_norm,  # develop_taylor(regI, 1995)[0],
@@ -348,9 +329,6 @@ def prep_table_timeMK(region, dat, regLHaz, regLHazExp, regLFull,
                            'Sign H7': regH7[1],
                            'Sign H10': regH10[1],
                            'Sign H107': regH107[1],
-                           'Sign E': regE.p,
-                           'Sign E7': regE7.p,
-                           'Sign V': regV.p,
                            'Sign I': regI[1],
                            'Sign N': regN[1],
                            '2010_haz_loss80': regH10[0]*31,
@@ -401,20 +379,18 @@ def attr_regr(dataFrame):
 
         DATA_region = normalise(DATA_region)
 
-        regLHaz, regLHazExp, regLFull, regH7, regH107, regH10,\
-            regE, regE7, regV, regI, regN = rel_time_attr_MK(DATA_region)
+        regLHaz, regLHazExp, regH7, regH107, regH10, regI, regN = rel_time_attr_MK(DATA_region)
+    
         attrReg = prep_table_timeMK(test_region, DATA_region,
-                                    regLHaz, regLHazExp,
-                                    regLFull, regH7, regH107,
-                                    regH10, regE, regE7, regV,
-                                    regI, regN)
+                                    regLHaz, regLHazExp, regH7, regH107,
+                                    regH10, regI, regN)
 
         attrTable = attrTable.append(attrReg, ignore_index=True)
         normData = normData.append(DATA_region, ignore_index=True)
     return normData, attrTable
 
 
-DATA = pd.read_csv('/home/insauer/projects/NC_Submission/Climada_papers/Test/VulnerabilityAdjustmentTimeSeriesRegions.csv')
+DATA = pd.read_csv('/home/insauer/projects/NC_Submission/Data/postprocessing/VulnerabilityAdjustmentTimeSeriesRegions.csv')
 
 region_names = {
                'NAM': 'North America',
@@ -439,6 +415,6 @@ norm_names = {'Predicted_damages': 'RelPred',
 
 normData, attrTable = attr_regr(DATA)
 
-attrTable.to_csv('/home/insauer/projects/NC_Submission/Climada_papers/Test/AttributionMetaDataRegions.csv', index=False)
+attrTable.to_csv('/home/insauer/projects/NC_Submission/Data/postprocessing/AttributionMetaDataRegions.csv', index=False)
 
-normData.to_csv('/home/insauer/projects/NC_Submission/Climada_papers/Test/AttributionTimeSeriesRegions.csv', index=False)
+normData.to_csv('/home/insauer/projects/NC_Submission/Data/postprocessing/AttributionTimeSeriesRegions.csv', index=False)
