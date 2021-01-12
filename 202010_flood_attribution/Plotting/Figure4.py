@@ -144,7 +144,7 @@ for i in range(4):
         h_neg107_sig =  data_attr_reg_neg.loc[:,'Sign H107'].sum()
 
         x=[0,1,2,4,5,6]
-        colour_code = ['#5ab4ac', '#4575b4', '#d8b365', '#5ab4ac', '#4575b4', '#d8b365']
+        colour_code = ['#4575b4', '#4575b4', '#4575b4', '#4575b4', '#4575b4', '#4575b4']
         y1= [h_pos8,h8,h_neg8,h_pos7,h7,h_neg7]
         y1err_up= [h_pos8_up,h8_up,h_neg8_up,h_pos7_up,h7_up,h_neg7_up]
         y1err_bot= [h_pos8_bot,h8_bot,h_neg8_bot,h_pos7_bot,h7_bot,h_neg7_bot]
@@ -339,7 +339,7 @@ empty = Line2D([0], [0], marker='o', color='w', label='',
 f3_ax4.legend(handles = [diam, square,triangle,circle,empty, pos_box, negs_box,neg_box], frameon=True, fontsize = 7, loc = 'center', edgecolor = 'k')  
 
 # plt.savefig('/home/insauer/projects/NC_Submission/Data/postprocessing/Figure3.png',bbox_inches = 'tight',dpi =600)
-# plt.savefig('/home/insauer/projects/NC_Submission/Data/postprocessing/Figure3.svg',bbox_inches = 'tight', format = 'svg')
+plt.savefig('/home/insauer/projects/NC_Submission/Data/postprocessing/Figure3.pdf',bbox_inches = 'tight', format = 'pdf')
 
 #f3_ax1.set_title('gs[0, :]')
 #f3_ax2 = fig3.add_subplot(gs[1, :-1])

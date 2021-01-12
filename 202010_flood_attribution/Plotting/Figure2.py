@@ -14,11 +14,13 @@ import cartopy
 import cartopy.io.shapereader as shpreader
 import cartopy.crs as ccrs
 import matplotlib.patches as mpatches
-
+#from matplotlib import rc
 
 fig3 = plt.figure(constrained_layout=True, figsize=(8.3, 11.7))
 gs = fig3.add_gridspec(40, 15)
 plt.subplots_adjust(wspace=0., hspace=0)
+
+#rc('text', usetex=True)
 
 DATA_TSFull= pd.read_csv('/home/insauer/projects/NC_Submission/Data/postprocessing/AttributionTimeSeriesRegions.csv')
 DATA_TS= pd.read_csv('/home/insauer/projects/NC_Submission/Data/postprocessing/AttributionTimeSeriesSubregions.csv')
@@ -30,6 +32,8 @@ DATA_FIT= pd.read_csv('/home/insauer/projects/NC_Submission/Data/postprocessing/
 DATA_ATTR_Full = pd.read_csv('/home/insauer/projects/NC_Submission/Data/postprocessing/AttributionMetaDataRegions.csv')
 
 DATA_ATTR = pd.read_csv('/home/insauer/projects/NC_Submission/Data/postprocessing/AttributionMetaDataSubregions.csv')
+
+
 
 region_names={'GLB': 'Global (GLB)',
               'NAM':'North America (NAM)',
@@ -92,7 +96,7 @@ for i in range(10):
                 #f3_ax1.fill_between(DATA_regionFull['Year'],np.log10(DATA_regionFull['Impact_Pred_1thrd']) , np.log10(DATA_regionFull['Impact_Pred_2thrd']), color='#8856a7', alpha=0.2, linewidth = 1.)
                 if i ==5:
                 
-                    f3_ax1.set_title(' '+ region_names[regions[r]], position = (0.5,0.78), fontsize = 7)
+                    f3_ax1.set_title(' '+ region_names[regions[r]], position = (0.5,0.78), fontsize = 8)
                 
                 else:
                     
@@ -100,32 +104,10 @@ for i in range(10):
                 
                 if i ==0 and j ==0:
                     handles, labels = f3_ax1.get_legend_handles_labels()
-                    leg =f3_ax1.legend(handles[:2], labels[:2], loc ='lower left', labelspacing = 0.1, frameon=True, fontsize = 8, handlelength = 1.1 ) 
-                    f3_ax1.legend(handles[2:], labels[2:], loc ='lower right', labelspacing = 0.1, frameon=True, fontsize = 8,  handlelength = 1.1)
+                    leg =f3_ax1.legend(handles[:2], labels[:2], loc ='lower left', labelspacing = 0.1, frameon=True, fontsize = 7.5, handlelength = 1.1) 
+                    f3_ax1.legend(handles[2:], labels[2:], loc ='lower right', labelspacing = 0.1, frameon=True, fontsize = 7.5,  handlelength = 1.1)
                     f3_ax1.add_artist(leg)
-                # f3_ax1.plot(DATA_regionFull['Year'], 
-                #     np.log10(DATA_regionFull['model_flood_damages_onethird_quantile_2005flospros']),
-                #     color='#4575b4', alpha = 0.5, linestyle = '--', linewidth = 0.5)
-                
-                
-                # f3_ax1.plot(DATA_regionFull['Year'],
-                #     np.log10(DATA_regionFull['model_flood_damages_twothird_quantile_2005flospros']),
-                #     color='#4575b4', alpha = 0.5, linestyle = '--', linewidth = 0.5)
-        
-                # f3_ax1.fill_between(DATA_regionFull['Year'],np.log10(DATA_regionFull['model_flood_damages_onethird_quantile_2005flospros']) ,
-                #              np.log10(DATA_regionFull['model_flood_damages_twothird_quantile_2005flospros']),
-                #              color='#4575b4', alpha=0.2)
-            
-                # f3_ax1.plot(DATA_regionFull['Year'], 
-                #     np.log10(DATA_regionFull['model_flood_damages_onethird_quantile']),
-                #     color='#ff7f00', alpha = 0.5, linestyle = '--', linewidth = 0.5)
-                # f3_ax1.plot(DATA_regionFull['Year'],
-                #     np.log10(DATA_regionFull['model_flood_damages_twothird_quantile']),
-                #     color='#ff7f00', alpha = 0.5, linestyle = '--', linewidth = 0.5)
-        
-                # f3_ax1.fill_between(DATA_regionFull['Year'],np.log10(DATA_regionFull['model_flood_damages_onethird_quantile']) ,
-                #              np.log10(DATA_regionFull['model_flood_damages_twothird_quantile']),
-                #              color='#ff7f00', alpha=0.2)
+ 
 
                 r_lin = DATA_FIT_Full.loc[DATA_FIT_Full['Region']==regions[r], 'P_ExpVar_pred_observed'].sum()
 
@@ -152,6 +134,7 @@ for i in range(10):
                     
                  
                     f3_ax1.plot(DATA_region['Year'], np.log10(DATA_region['NormExp_Impact_2y{}_offset'.format(dis)]), label='$Loss_{HazExp}$', color='#ff7f00', linewidth = 1.)
+
                 
                     f3_ax1.plot(DATA_region['Year'], np.log10(DATA_region['NormHaz_ImpFix_2y{}_offset'.format(dis)]), label='$Loss_{Haz}$', color='#4575b4', linewidth = 1.)
                     
@@ -193,7 +176,7 @@ for i in range(10):
 
                 
             #text_LOG = 'R²='+str(round(r_log*100,1))+ '% (LOG)'
-            text_lin = 'R²='+str(round(r_lin*100,1))+ '%'
+            text_lin = '='+str(round(r_lin*100,1))+ '%'
             
             
             if r_lin> 0.2:
@@ -202,8 +185,10 @@ for i in range(10):
             
             f3_ax1.set_yticks([6, 8, 10])
             f3_ax1.set_yticklabels(['','',''])
+            if j == 0 :
+                f3_ax1.set_yticklabels(['6','8','10'], fontsize = 7.5)
             if i in [2]:
-                f3_ax1.set_ylim((5.5, 12))
+                f3_ax1.set_ylim((5, 11.5))
             
             elif i in [1]:
                 f3_ax1.set_ylim((4.5, 11.5))
@@ -212,16 +197,25 @@ for i in range(10):
                 f3_ax1.set_ylim((5, 11.5))
             
             elif i in [3]:
-                f3_ax1.set_ylim((4.5, 11))
+                f3_ax1.set_ylim((3., 10))
+                f3_ax1.set_yticks([4, 6, 8])
+                if j == 0:
+                    f3_ax1.set_yticklabels(['4','6','8'])
                 
             elif i in [6]:
-                f3_ax1.set_ylim((4, 10.5))
+                f3_ax1.set_ylim((3, 10))
+                f3_ax1.set_yticks([4, 6, 8])
+                if j == 0:
+                    f3_ax1.set_yticklabels(['4','6','8'])
                 
-            elif i in [7]:
+            elif i in [5,7]:
                 f3_ax1.set_ylim((5.5, 11.5))
             
             elif i in [8]:
-                f3_ax1.set_ylim((4.5, 11))
+                f3_ax1.set_ylim((3.5, 10.5))
+                f3_ax1.set_yticks([4, 6, 8])
+                if j == 0:
+                    f3_ax1.set_yticklabels(['4','6','8'])
             
             elif i in [0]:
                 f3_ax1.set_ylim((7, 12))
@@ -230,11 +224,12 @@ for i in range(10):
                 if j == 0:
                     f3_ax1.set_yticklabels(['8','10'])
             else:
-                f3_ax1.set_ylim((5., 11.5))
+                f3_ax1.set_ylim((3.65, 11))
             
             f3_ax1.set_xlim((1978 ,2013))
             if not (i==1 and j==1):
-                f3_ax1.annotate( xy=(1990, f3_ax1.get_ylim()[0]+0.08*(f3_ax1.get_ylim()[1]-f3_ax1.get_ylim()[0]) ) ,s=text_lin, fontsize=7 )
+                f3_ax1.annotate( xy=(1991.8, f3_ax1.get_ylim()[0]+0.08*(f3_ax1.get_ylim()[1]-f3_ax1.get_ylim()[0]) ) ,s='R²', fontsize=7, fontstyle='italic')
+                f3_ax1.annotate( xy=(1993.5, f3_ax1.get_ylim()[0]+0.08*(f3_ax1.get_ylim()[1]-f3_ax1.get_ylim()[0]) ) ,s=text_lin, fontsize=7)
             #f3_ax1.annotate( xy=(1998, f3_ax1.get_ylim()[0]+0.15*(f3_ax1.get_ylim()[1]-f3_ax1.get_ylim()[0]) ) ,s=text_log, fontsize=7 )
             
             
@@ -251,24 +246,15 @@ for i in range(10):
             
             
             if i == 9:
-                f3_ax1.set_xticklabels(['1980','1990','2000','2010'], fontsize =7)
+                f3_ax1.set_xticklabels(['1980','1990','2000','2010'], fontsize =7.5)
             
             if i ==4 and j ==0:
                 f3_ax1.set_ylabel('LOG10(Damages in 2005 USD)', fontsize=8, labelpad=-1)
             
-            if j == 0 and i !=0:
-                f3_ax1.set_yticklabels(['6','8','10'], fontsize=8)
+
             
-            if i == 4 and j ==0:
-                f3_ax1.set_xticklabels(['1980','1990','2000', '2010'],fontsize=8)
-                f3_ax1.set_xlabel('Year', fontsize=9, labelpad=-2)
-            
-            if i == 4 and j ==0:
-                f3_ax1.set_xticklabels(['1980','1990','2000', '2010'],fontsize=8)
-                f3_ax1.set_xlabel('Year', fontsize=9, labelpad=-2)
-            
-            if i == 3 and j ==1:
-                f3_ax1.set_xticklabels(['1980','1990','2000', '2010'],fontsize=8)
+            if i == 9 and j ==1:
+                f3_ax1.set_xticklabels(['1980','1990','2000', '2010'],fontsize=7.5)
                 f3_ax1.set_xlabel('Year', fontsize=9, labelpad=-2)
             
             f3_ax1.tick_params(axis="x", direction = 'in',length = 4)
@@ -288,144 +274,7 @@ for i in range(10):
     r+=1
         
         
-        # indc = np.arange(4)
-    
         
-        # if data_attr_reg.loc[:,'Sign H'].sum() < 0.1:
-        #     sigH = '*'
-        #     if data_attr_reg.loc[:,'Sign H'].sum() < 0.05:
-        #         sigH=' ** '
-        #         if data_attr_reg.loc[:,'Sign H'].sum() < 0.01:
-        #             sigH='***'
-        # else:
-        #     sigH=''
-        
-        # if data_attr_reg.loc[:,'Sign E'].sum() < 0.1:
-        #     sigE = '*'
-        #     if data_attr_reg.loc[:,'Sign E'].sum() < 0.05:
-        #         sigE=' ** '
-        #         if data_attr_reg.loc[:,'Sign E'].sum() < 0.01:
-        #             sigE='***'
-        # else:
-        #     sigE=''
-            
-        
-        # if data_attr_reg.loc[:,'Sign V'].sum() < 0.1:
-        #     sigV = '*'
-        #     if data_attr_reg.loc[:,'Sign V'].sum() < 0.05:
-        #         sigV=' ** '
-        #         if data_attr_reg.loc[:,'Sign V'].sum() < 0.01:
-        #             sigV='***'
-        # else:
-        #     sigV=''
-    
-        
-        # if data_attr_reg.loc[:,'Sign I'].sum() < 0.1:
-        #     sigI = '*'
-        #     if data_attr_reg.loc[:,'Sign I'].sum() < 0.05:
-        #         sigI=' ** '
-        #         if data_attr_reg.loc[:,'Sign I'].sum() < 0.01:
-        #             sigI='***'
-        # else:
-        #     sigI=''
-        # width = 0.5
-        # f3_ax2.bar(indc,pl, color= ['#4575b4', '#fee090', '#d73027', '#8856a7'],tick_label= ['Haz', 'Exp', 'Vul', 'Full'],width =width, align = 'center') 
-        # f3_ax2.tick_params(axis="both", direction = 'in',length = 3)
-        # f3_ax2.set_yticks([-5,5])
-        # f3_ax2.tick_params(axis = 'y', direction = 'in', length = 3)
-        
-        
-
-        # #f3_ax2.set_ylabel('Change in damage',  fontsize = 5, labelpad=+2)
-        # f3_ax2.yaxis.tick_right()
-        # f3_ax2.yaxis.set_label_position("right")
-        
-        # if i == 2 and j == 1:
-        #     f3_ax2.set_ylabel('Trends % / year', fontsize=8)
-        
-        
-        #f3_ax2.axhline(y=f3_ax2.get_ylim()[0]+((f3_ax2.get_ylim()[1]-f3_ax2.get_ylim()[0])*0.18),linewidth=0.5, color='k')
-        
-        # if i == 4 and j ==0:
-        #     f3_ax2.set_xticklabels(['$Haz_{t}$', '$Exp_{t}$', '$Vul_{t}$', '$Full_{t}$'],rotation = 90., fontsize = 8)
-        #     f3_ax2.tick_params(axis="x", direction = 'in',length = 3, pad = 5)
-        
-        # if i == 4 and j ==1:
-        #     f3_ax2.set_xticklabels(['$Haz_{t}$', '$Exp_{t}$', '$Vul_{t}$', '$Full_{t}$'],rotation = 90., fontsize = 8)
-        #     f3_ax2.tick_params(axis="x", direction = 'in',length = 3, pad = 5)
-        
-        # if pl[0]<0:
-        #     hh = pl[0] - 1.2
-        #     hh2= hh -0.5
-        # else:
-        #     hh = pl[0] - 0.5
-        #     hh2= hh+ 0.5
-        
-        # if pl[1]<0:
-        #     he = pl[1] - 1.2
-        #     he2 = he - 0.5
-        # else:
-        #     he = pl[1] - 0.5
-        #     he2 = he +0.5
-            
-        # if pl[2]<0:
-        #     hv = pl[2] - 1.2
-        #     hv2 = hv - 0.5
-        # else:
-        #     hv = pl[2] - 0.5
-        #     hv2 = hv + 0.5
-            
-        # if pl[3]<0:
-        #     hi = pl[3] - 1.2
-        #     hi2 = hi - 0.5
-        # else:
-        #     hi = pl[3] - 0.5
-        #     hi2 = hi + 0.5
-        
-        # #f3_ax2.annotate( xy=(0-width, f3_ax2.get_ylim()[0]+((f3_ax2.get_ylim()[1]-f3_ax2.get_ylim()[0])*0.02)) ,s='Haz', fontsize=3.5, color= 'k',rotation = 70.)
-        
-        # if sigH == '***':   
-        #     f3_ax2.annotate( xy=(0, hh),s=' ** ', fontsize=7, color= '#4575b4', ha='center')
-        #     f3_ax2.annotate( xy=(0, hh2),s='*', fontsize=7, color= '#4575b4', ha='center')
-        # else:   
-        #     f3_ax2.annotate( xy=(0, hh),s=sigH, fontsize=7, color= '#4575b4', ha='center')
-        
-        # if sigE == '***':
-        #     f3_ax2.annotate( xy=(1, he),s=' ** ', fontsize=7, color= '#fee090', ha = 'center')
-        #     f3_ax2.annotate( xy=(1, he2),s=' * ', fontsize=7, color= '#fee090', ha = 'center')
-        # else:
-        #     f3_ax2.annotate( xy=(1, he),s=sigE, fontsize=7, color= '#fee090', ha='center')
-        
-        # if sigV == '***':
-        #     f3_ax2.annotate( xy=(2, hv),s=' ** ', fontsize=7, color= '#d73027', ha = 'center')
-        #     f3_ax2.annotate( xy=(2, hv2),s=' * ', fontsize=7, color= '#d73027', ha = 'center')
-        # else:
-        #     f3_ax2.annotate( xy=(2, hv),s=sigV, fontsize=7, color= '#d73027', ha='center')
-        
-        # if sigI == '***':
-        #     f3_ax2.annotate( xy=(3, hi),s=' ** ', fontsize=7, color= '#8856a7', ha = 'center')
-        #     f3_ax2.annotate( xy=(3, hi2),s=' * ', fontsize=7, color= '#8856a7', ha = 'center')
-        # else:
-        #     f3_ax2.annotate( xy=(3, hi),s=sigI, fontsize=7, color= '#8856a7', ha='center')
-        
-        #f3_ax2.annotate( xy=(1-width, f3_ax2.get_ylim()[0]+((f3_ax2.get_ylim()[1]-f3_ax2.get_ylim()[0])*0.02)) ,s='Exp', fontsize=3.5, color= 'k',rotation = 70.)
-        
-        #f3_ax2.annotate( xy=(2-width/2, f3_ax2.get_ylim()[0]+((f3_ax2.get_ylim()[1]-f3_ax2.get_ylim()[0])*0.02)) ,s='Vul', fontsize=3.5, color= 'k',rotation = 70.)
-
-        #f3_ax2.annotate( xy=(3-width/2, f3_ax2.get_ylim()[0]+((f3_ax2.get_ylim()[1]-f3_ax2.get_ylim()[0])*0.02)) ,s='Imp', fontsize=3.5, color= 'k',rotation = 70.)
-#         if i==0:
-#             f3_ax2.annotate( xy=(-0.7, f3_ax2.get_ylim()[0]+0.88*(f3_ax2.get_ylim()[1]-f3_ax2.get_ylim()[0]) ) ,s='b', fontsize=8, fontweight = 'bold')
-    
 
 plt.savefig('/home/insauer/projects/NC_Submission/Data/Figures/Mainfigures/Figure2.png',bbox_inches = 'tight',dpi =600)
-plt.savefig('/home/insauer/projects/NC_Submission/Data/Figures/Mainfigures/Figure2.svg',bbox_inches = 'tight', format = 'svg')
-
-#f3_ax1.set_title('gs[0, :]')
-#f3_ax2 = fig3.add_subplot(gs[1, :-1])
-#f3_ax2.set_title('gs[1, :-1]')
-#f3_ax3 = fig3.add_subplot(gs[1:, -1])
-#f3_ax3.set_title('gs[1:, -1]')
-#f3_ax4 = fig3.add_subplot(gs[-1, 0])
-#f3_ax4.set_title('gs[-1, 0]')
-#f3_ax5 = fig3.add_subplot(gs[-1, -2])
-#f3_ax5.set_title('gs[-1, -2]')
+plt.savefig('/home/insauer/projects/NC_Submission/Data/Figures/Mainfigures/Figure2.pdf',bbox_inches = 'tight')

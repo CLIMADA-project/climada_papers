@@ -69,20 +69,20 @@ def rel_time_attr_MK(dataFrame71):
     regLHazExp = mk.original_test(dataFrame['Norm_Impact_2y_trend'], alpha=0.1)
 
     slopeLHazExp = stats.theilslopes(dataFrame['Norm_Impact_2y_trend'],
-                                     alpha=1/3)
+                                     alpha=0.1)
 
     regHE = [regLHazExp.slope, regLHazExp.p, slopeLHazExp[2], slopeLHazExp[3]]
 
     regLFull = mk.original_test(dataFrame['Norm_Impact_Pred'], alpha=0.1)
 
-    slopeLFull = stats.theilslopes(dataFrame['Norm_Impact_Pred'], alpha=1/3)
+    slopeLFull = stats.theilslopes(dataFrame['Norm_Impact_Pred'], alpha=0.1)
 
     regF = [regLFull.slope, regLFull.p, slopeLFull[2], slopeLFull[3]]
 
     regHaz = mk.original_test(dataFrame['Norm_ImpFix_2y_trend'], alpha=0.1)
 
     slopeHaz = stats.theilslopes(dataFrame['Norm_ImpFix_2y_trend'],
-                                 alpha=1/3)
+                                 alpha=0.1)
 
     regH = [regHaz.slope, regHaz.p, slopeHaz[2], slopeHaz[3]]
 
@@ -90,7 +90,7 @@ def rel_time_attr_MK(dataFrame71):
                                alpha=0.1)
 
     slopeHaz7 = stats.theilslopes(dataFrame71['Norm_ImpFix_2y_trend'],
-                                  alpha=1/3)
+                                  alpha=0.1)
 
     regH7 = [regHaz7.slope, regHaz7.p, slopeHaz7[2], slopeHaz7[3]]
 
@@ -98,7 +98,7 @@ def rel_time_attr_MK(dataFrame71):
                                  alpha=0.1)
 
     slopeHaz107 = stats.theilslopes(dataFrame71['Norm_Imp2010_2y_trend'],
-                                    alpha=1/3)
+                                    alpha=0.1)
 
     regH107 = [regHaz107.slope, regHaz107.p, slopeHaz107[2], slopeHaz107[3]]
 
@@ -106,13 +106,13 @@ def rel_time_attr_MK(dataFrame71):
                                 alpha=0.1)
 
     slopeHaz10 = stats.theilslopes(dataFrame['Norm_Imp2010_2y_trend'],
-                                   alpha=1/3)
+                                   alpha=0.1)
 
     regH10 = [regHaz10.slope, regHaz10.p, slopeHaz10[2], slopeHaz10[3]]
 
     regNat = mk.original_test(dataFrame['natcat_flood_damages_2005_CPI'], alpha=0.1)
 
-    slopeNat = stats.theilslopes(dataFrame['natcat_flood_damages_2005_CPI'], alpha=1/3)
+    slopeNat = stats.theilslopes(dataFrame['natcat_flood_damages_2005_CPI'], alpha=0.1)
 
     regN = [regNat.slope, regNat.p, slopeNat[2], slopeNat[3]]
 

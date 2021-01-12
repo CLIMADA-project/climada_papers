@@ -123,56 +123,25 @@ for i in range(4):
         h_sign_neg = data_attr_reg_neg.loc[:,'Sign H'].sum()
 
         x=[0,1,2,3,5,6,7,8,10,11,12,13]
-        colour_code = ['#4575b4','orange','brown','#8856a7',
-                       '#4575b4','orange','brown','#8856a7',
-                       '#4575b4','orange','brown','#8856a7']
+        colour_code = ['darkblue','orange','brown','#8856a7',
+                       'darkblue','orange','brown','#8856a7',
+                       'darkblue','orange','brown','#8856a7']
         y1= [h8,e8,v8,i8,h_pos8,e_pos8,v_pos8,i_pos8,h_neg8,e_neg8,v_neg8,i_neg8]
 
 
         
-        # ax1_lims_up = [10,10,10,3,3,8,10,35,20,10]
-        
-        # ax1_lims_low = [-6,-10,-5,-2.2,-3,-8,-10,-5,-10,-10]
-        
-        # ax2_lims_up = [10,10,10,2.2,3,8,10,35,15,10]
-        
-        # ax2_lims_low = [-6,-10,-5,-2.2,-3,-8,-10,-5,-10,-10]
-        
-        # ax1_ticks_up = [5,5,5,1,2,5,5,20,10,5]
-        
-        # ax1_ticks_low = [-5,-5,-5,-1,-2,-5,-5,-5,-5,-5]
-        
-        # ax2_ticks_up = [5,5,5,1,2,5,5,20,10,5]
-        
-        # ax2_ticks_low = [-5,-5,-5,-1,-2,-5,-5,-5,-5, -5]
-        
-        # ax1_labels_up = ['5%', '5%','5%','1%','2%','5%', '5%', '20%','10%','5%']
-        
-        # ax1_labels_low = ['-5%','-5%','-5%','-1%','-2%','-5','-5%','','-5%','-5%']
-        
-        # ax2_labels_up = ['5%','5%','5%','5%','2%', '5%','5%', '20%','10%','5%']
-        
-        # ax2_labels_low = ['-5%','-5%','-5%','-1%','-2%','-5%','-5%','','-5%','-5%']
-        
         if r_lin_pos > 0.2:
              f3_ax1.axvspan(4,9, facecolor='gainsboro')
-        #     f3_ax2.axvspan(-1,0.5, facecolor='gainsboro')
-        #     f3_ax1.axvspan(3,4.5, facecolor='gainsboro')
-        #     f3_ax2.axvspan(3,4.5, facecolor='gainsboro')
-        #     #f3_ax2.axvspan(4, 9, facecolor='gainsboro')
+
             
         if r_lin > 0.2:
              f3_ax1.axvspan(-1,4, facecolor='gainsboro')
-        #     f3_ax2.axvspan(1.5,3., facecolor='gainsboro')
-        #     f3_ax1.axvspan(5.5,7., facecolor='gainsboro')
-        #     f3_ax2.axvspan(5.5,7., facecolor='gainsboro')
+
             
         if r_lin_neg > 0.2:
             
             f3_ax1.axvspan(9,14, facecolor='gainsboro')
-        #     f3_ax2.axvspan(0.5,1.5, facecolor='gainsboro')
-        #     f3_ax1.axvspan(4.5,5.5, facecolor='gainsboro')
-        #     f3_ax2.axvspan(4.5,5.5, facecolor='gainsboro')
+
         
         
         for a in range(12):
@@ -181,7 +150,7 @@ for i in range(4):
                 
                 if ((a == 0)and (h_sign > 0.1)) or ((a == 4) and (h_sign_pos > 0.1)) or ((a == 8)and (h_sign_neg > 0.1)):
                     
-                    f3_ax1.bar(x[a],y1[a], color = "#4575b4", alpha = 0.5 )
+                    f3_ax1.bar(x[a],y1[a], color = "cornflowerblue")
                 
                 else:
                     
@@ -209,8 +178,8 @@ for i in range(4):
         #f3_ax1.set_yticks([ax1_ticks_low[r] , 0, ax1_ticks_up[r]])
         
         #f3_ax1.set_yticklabels([ax1_labels_low[r],'0', ax1_labels_up[r] ],fontsize =6.5)
-        
-        f3_ax1.set_xticklabels(['','', '', '' ],fontsize =6.5)
+        f3_ax1.set_xticks([])
+        #f3_ax1.set_xticklabels(['','', '', '' ],fontsize =6.5)
         
         if r in [0,1,4,7]:
             f3_ax1.set_ylabel('Relative trend in %/year', fontsize=8, labelpad = 2.5)
@@ -255,7 +224,7 @@ for i in range(4):
         f3_ax1.axvline(x=9,linewidth=0.3, color='k', linestyle = '-', alpha = 1)
         
         
-        f3_ax1.set_xlabel('R            $R_{+}$          $R_{-}$',  fontsize = 10.5, labelpad=-10)
+        f3_ax1.set_xlabel('R            $R_{+}$          $R_{-}$',  fontsize = 10.5, labelpad=-10, fontstyle = 'italic')
         f3_ax1.xaxis.set_label_position('top')
         #f3_ax2.axhline(y=-5,linewidth=0.2, color='k', linestyle = '-.')
         f3_ax1.axhline(y=0,linewidth=0.3, color='k', linestyle = '-')
@@ -281,8 +250,8 @@ f3_ax4.axis('off')
 
 
 
-cli_box = mpatches.Circle((0.5,0.5), 1, facecolor="#4575b4", label ='Significant Climate contribution')
-cli2_box = mpatches.Circle((0.5,0.5), 1, facecolor="#4575b4", alpha = 0.5, label ='Insignificant Climate contribution')
+cli_box = mpatches.Circle((0.5,0.5), 1, facecolor="darkblue", label ='Significant Climate contribution')
+cli2_box = mpatches.Circle((0.5,0.5), 1, facecolor="cornflowerblue", label ='Insignificant Climate contribution')
 exp_box = mpatches.Circle((0.5,0.5), 1, color='orange', label ='Exposure contribution')
 vul_box = mpatches.Circle((0.5,0.5), 1, facecolor='brown', label ='Vulnerability contribution')
 
@@ -304,7 +273,7 @@ imp_box = mpatches.Circle((0.5,0.5), 1, facecolor='#8856a7', label ='Total Damag
 f3_ax4.legend(handles = [cli_box, cli2_box, exp_box,vul_box, imp_box], frameon=True, fontsize = 8, loc = 'center', edgecolor = 'k')  
 
 # plt.savefig('/home/insauer/projects/Attribution/Floods/Paper_NC_Resubmission_data/Main_Figures/Alt_Fig_2b.png',bbox_inches = 'tight',dpi =600)
-# plt.savefig('/home/insauer/projects/Attribution/Floods/Paper_NC_Resubmission_data/Main_Figures/Alt_Fig_2b.svg',bbox_inches = 'tight', format = 'svg')
+plt.savefig('/home/insauer/projects/NC_Submission/Data/Figures/Mainfigures/Figure3.pdf',bbox_inches = 'tight', format = 'pdf')
 
 #f3_ax1.set_title('gs[0, :]')
 #f3_ax2 = fig3.add_subplot(gs[1, :-1])
