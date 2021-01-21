@@ -1,11 +1,11 @@
 # Calibration of regional TC IFs
 
-These scripts reproduce the main results of paper:
+These scripts reproduce the main results of the following publication (forthcoming):
 
-Eberenz, S., Lüthi, S., and Bresch, D. N.: Regional tropical cyclone impact functions for globally consistent risk assessments, Nat. Hazards Earth Syst. Sci. Discuss., https://doi.org/10.5194/nhess-2020-229, in review, 2020.         
+Eberenz, S., Lüthi, S., and Bresch, D. N.: Regional tropical cyclone impact functions for globally consistent risk assessments, Nat. Hazards Earth Syst. Sci., https://doi.org/10.5194/nhess-2020-229, 2021.         
 
-Publication status: in review.
-
+The calibrated impact functions are part of the main branch of CLIMADA v.1.5.1+ (https://github.com/CLIMADA-project/climada_python/releases) 
+in the class *climada.entity.impact_funcs.trop_cyclone.IFSTropCyclone (c.f. https://github.com/CLIMADA-project/climada_python/blob/main/climada/entity/impact_funcs/trop_cyclone.py).
 
 Contact: [Samuel Eberenz](mailto:samuel.eberenz@usys.ethz.ch)
 
@@ -13,6 +13,7 @@ Contact: [Samuel Eberenz](mailto:samuel.eberenz@usys.ethz.ch)
 
 #### tc_calibration_figures_and_tables.ipynb
 Jupyter notebook to reproduce the key figures and tables in the paper.
+The notebook was tested for CLIMADA v1.4.1 and v1.5.1.
 
 #### tc_calibration_main.py
 Python script to replicate the calibration.
@@ -27,8 +28,9 @@ Calibration steps (set in list CALIB):
 * 5:  Compute annual average damage (AAD) per country for comparison with GAR 2013 (calibrated and uncalibrated)
 * 6:  Compute damage time series, trend and significance, as well as standard deviation of annual damage for EM-DAT and CLIMADA per country and region.
 
-Requires: *tc_calibration_functions.py*, *tc_calibration_config.py*,
-*impact_data_stable_202006.py*, and *if_trop_cyclone_stable_202006.py*.
+Requires:
+* CLIMADA v.1.4.1 (not tested for CLIMADA 1.5)
+* *tc_calibration_functions.py*, *tc_calibration_config.py*, *impact_data_stable_202006.py*, and *if_trop_cyclone_stable_202006.py*.
 
 _Important_: You need to customize paths and parameters in *tc_calibration_config.py* before running *tc_calibration_main.py*.
 
@@ -65,7 +67,7 @@ Requires:
         https://www.emdat.be
         https://public.emdat.be/
 
-
+The calibration script was not tested for CLIMADA versions other than 1.4.1.
 
 ## Documentation:
 

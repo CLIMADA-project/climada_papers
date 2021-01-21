@@ -643,61 +643,6 @@ def boxplot_sorted(df, by, column, rot=0, ax=None, log=True):
     if log: ax.set_yscale('log')
     return ax
 
-def IFS_plot(IFSs, labels, colors, linestyles, title_string='', include_GLB=0, **kwargs):
-    """Plot the impact functions MDD, MDR and PAA in one graph, where
-    MDR = PAA * MDD.
-
-    Parameters:
-        axis (matplotlib.axes._subplots.AxesSubplot, optional): axis to use
-        kwargs (optional): arguments for plot matplotlib function, e.g. marker='x'
-
-    Returns:
-        matplotlib.axes._subplots.AxesSubplot
-    """
-    num_plts = IFSs[0].size()-1+include_GLB
-    num_row, num_col = u_plot._get_row_col_size(num_plts)
-    fig, axis = plt.subplots(num_row, num_col, figsize=(12, 11))
-    #fig.tight_layout()
-    if num_plts > 1:
-        axes = axis.flatten()
-    else:
-        axes = [axis]
- 
-
-    for (IFS, lbl, c, ls) in zip(IFSs, labels, colors, linestyles):
-        i_axis = 0
-        if isinstance(IFS, tuple):
-            for idf in IFS[0]._data['TC']:
-                if i_axis==9 + include_GLB:
-                    continue
-                IF0 = IFS[0]._data['TC'][idf]
-                IF1 = IFS[1]._data['TC'][idf]
-                axes[i_axis].fill_between(IF0.intensity, IF0.mdd * IF0.paa * 100, IF1.mdd * IF1.paa * 100, \
-                            color=c, alpha=0.25, label=lbl, **kwargs)
-                if lbl==labels[-1]: axes[i_axis].legend()
-                axes[i_axis].axhline(y=50, label=None, alpha=0.45, linestyle=':', c='k', linewidth=1)
-                i_axis += 1
-        else:
-            for idf in IFS._data['TC']:
-                if i_axis==9 + include_GLB:
-                    continue
-                IF = IFS._data['TC'][idf]
-                axes[i_axis].plot(IF.intensity, IF.mdd * IF.paa * 100, c=c, linestyle=ls, label=lbl, **kwargs)
-                # axes[i_axis].set_xlim((20, IF.intensity.max()))
-                axes[i_axis].set_xlim((20, 90))
-                axes[i_axis].set_ylim((0, 100))
-                title = '%s %s' % (title_string, str(IF.id))
-                if IF.name != str(IF.id):
-                    title += ': %s' % IF.name
-                if (not num_plts==9) or IF.id in [7, 8, 9]:
-                    axes[i_axis].set_xlabel('Intensity (' + IF.intensity_unit + ')')
-                if (not num_plts==9) or IF.id in [1, 4, 7]:
-                    axes[i_axis].set_ylabel('Impact (%)')
-                axes[i_axis].set_title(title)
-                if lbl==labels[-1] and IF.id in [1]: axes[i_axis].legend()
-                i_axis += 1
-    return fig, axes
-
 
 def matched_event_tables(imps_, imp_emdat_scaled, imp_emdat, region, emdat_map, \
                          labels=[''], matched_only=True):
@@ -980,25 +925,31 @@ def aai_from_yi(yearly_impact_set, column_name='all'):
         aai.loc[region, 'std'] = yearly_impact_set[region][column_name].std()
     return aai
 
-def IFS_plot(IFSs, labels, colors, linestyles, zorder, title_string='', include_GLB=0, **kwargs):
+def IFS_plot(IFSs, labels, colors, linestyles, title_string=None, include_GLB=False, figsize=None, **kwargs):
     """Plot the impact functions MDD, MDR and PAA in one graph, where
     MDR = PAA * MDD.
+
     Parameters:
         axis (matplotlib.axes._subplots.AxesSubplot, optional): axis to use
         kwargs (optional): arguments for plot matplotlib function, e.g. marker='x'
+
     Returns:
         matplotlib.axes._subplots.AxesSubplot
     """
+    if title_string is None: title_string=''
+    if figsize is None: figsize = (12, 11)
+
     num_plts = IFSs[0].size()-1+include_GLB
     num_row, num_col = u_plot._get_row_col_size(num_plts)
-    fig, axis = plt.subplots(num_row, num_col, figsize=(12, 11))
+    fig, axis = plt.subplots(num_row, num_col, figsize=figsize)
     #fig.tight_layout()
     if num_plts > 1:
         axes = axis.flatten()
     else:
         axes = [axis]
+ 
 
-    for (IFS, lbl, c, ls, zo) in zip(IFSs, labels, colors, linestyles, zorder):
+    for (IFS, lbl, c, ls) in zip(IFSs, labels, colors, linestyles):
         i_axis = 0
         if isinstance(IFS, tuple):
             for idf in IFS[0]._data['TC']:
@@ -1007,8 +958,8 @@ def IFS_plot(IFSs, labels, colors, linestyles, zorder, title_string='', include_
                 IF0 = IFS[0]._data['TC'][idf]
                 IF1 = IFS[1]._data['TC'][idf]
                 axes[i_axis].fill_between(IF0.intensity, IF0.mdd * IF0.paa * 100, IF1.mdd * IF1.paa * 100, \
-                            color=c, alpha=0.25, label=lbl, zorder=zo, **kwargs)
-                if lbl==labels[-1] and IF0.id in [1]: axes[i_axis].legend()
+                            color=c, alpha=0.25, label=lbl, **kwargs)
+                if lbl==labels[-1]: axes[i_axis].legend()
                 axes[i_axis].axhline(y=50, label=None, alpha=0.45, linestyle=':', c='k', linewidth=1)
                 i_axis += 1
         else:
@@ -1016,14 +967,14 @@ def IFS_plot(IFSs, labels, colors, linestyles, zorder, title_string='', include_
                 if i_axis==9 + include_GLB:
                     continue
                 IF = IFS._data['TC'][idf]
-                axes[i_axis].plot(IF.intensity, IF.mdd * IF.paa * 100, c=c, \
-                                  linestyle=ls, label=lbl, zorder=zo, **kwargs)
+                axes[i_axis].plot(IF.intensity, IF.mdd * IF.paa * 100, c=c, linestyle=ls, label=lbl, **kwargs)
                 # axes[i_axis].set_xlim((20, IF.intensity.max()))
                 axes[i_axis].set_xlim((20, 90))
                 axes[i_axis].set_ylim((0, 100))
                 title = '%s %s' % (title_string, str(IF.id))
                 if IF.name != str(IF.id):
-                    title += ': %s' % IF.name
+                    title = IF.name
+                    # title += ': %s' % IF.name
                 if (not num_plts==9) or IF.id in [7, 8, 9]:
                     axes[i_axis].set_xlabel('Intensity (' + IF.intensity_unit + ')')
                 if (not num_plts==9) or IF.id in [1, 4, 7]:
@@ -1032,5 +983,3 @@ def IFS_plot(IFSs, labels, colors, linestyles, zorder, title_string='', include_
                 if lbl==labels[-1] and IF.id in [1]: axes[i_axis].legend()
                 i_axis += 1
     return fig, axes
-
-
