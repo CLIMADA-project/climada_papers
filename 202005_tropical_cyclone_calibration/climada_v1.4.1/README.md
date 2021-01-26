@@ -1,11 +1,11 @@
 # Calibration of regional TC IFs
 
-These scripts reproduce the main results of the following publication (forthcoming):
+This repository contains a folder for the code used in a research article. The code replicates the figures and explains software components implemented in [CLIMADA Python](https://github.com/CLIMADA-project/climada_python).
 
-Eberenz, S., Lüthi, S., and Bresch, D. N.: Regional tropical cyclone impact functions for globally consistent risk assessments, Nat. Hazards Earth Syst. Sci., https://doi.org/10.5194/nhess-2020-229, 2021.         
+Eberenz, S., Lüthi, S., and Bresch, D. N.: Regional tropical cyclone impact functions for globally consistent risk assessments. Accepted for publication by the journal Natural Hazards and Earth System Sciences (NHESS). Initial submission: https://doi.org/10.5194/nhess-2020-229.       
 
-The calibrated impact functions are part of the main branch of CLIMADA v.1.5.1+ (https://github.com/CLIMADA-project/climada_python/releases) 
-in the class *climada.entity.impact_funcs.trop_cyclone.IFSTropCyclone (c.f. https://github.com/CLIMADA-project/climada_python/blob/main/climada/entity/impact_funcs/trop_cyclone.py).
+The calibrated impact functions are part of the main branch of [CLIMADA v.1.5.1+](https://github.com/CLIMADA-project/climada_python/releases) 
+in the class [climada.entity.impact_funcs.trop_cyclone.IFSTropCyclone](https://github.com/CLIMADA-project/climada_python/blob/main/climada/entity/impact_funcs/trop_cyclone.py).
 
 Contact: [Samuel Eberenz](mailto:samuel.eberenz@usys.ethz.ch)
 
@@ -86,7 +86,7 @@ If script fails, revert CLIMADA version to release v1.4.1:
 -----
 
 ## Updates
-
+* 2021-01-21: update of figures and tables in Jupyter Notebook after peer reveiew of publication; preparation for publication with Zenodo DOI.
 * 2020-07-09: initial commit [3e5696ca0c1e463c7656379eb95c4e03fb91e32a](https://github.com/CLIMADA-project/climada_papers/commit/3e5696ca0c1e463c7656379eb95c4e03fb91e32a)
 -----
 
