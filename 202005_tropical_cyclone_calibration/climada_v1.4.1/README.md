@@ -86,7 +86,7 @@ If script fails, revert CLIMADA version to release v1.4.1:
 -----
 
 ## Updates
-* 2021-01-21: update of figures and tables in Jupyter Notebook after peer reveiew of publication; preparation for publication with Zenodo DOI.
+* 2021-01-21: update of figures and tables in Jupyter Notebook after peer review and acceptance for publication in NHESS; preparation for publication with Zenodo DOI.
 * 2020-07-09: initial commit [3e5696ca0c1e463c7656379eb95c4e03fb91e32a](https://github.com/CLIMADA-project/climada_papers/commit/3e5696ca0c1e463c7656379eb95c4e03fb91e32a)
 -----
 
