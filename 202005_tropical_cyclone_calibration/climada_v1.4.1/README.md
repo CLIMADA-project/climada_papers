@@ -1,4 +1,4 @@
-# Regional tropical cyclone impact functions for globally consistent risk assessments (CLIMADA v.1.4.1)
+# Regional tropical cyclone impact functions for globally consistent risk assessments (CLIMADA v.1.4.1+)
 
 This repository contains a folder for the code used in a research article. The code replicates the figures and explains software components implemented in [CLIMADA Python](https://github.com/CLIMADA-project/climada_python).
 
