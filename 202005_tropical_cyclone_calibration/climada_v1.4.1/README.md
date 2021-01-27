@@ -7,6 +7,8 @@ Eberenz, S., Lüthi, S., and Bresch, D. N.: Regional tropical cyclone impact fun
 The calibrated impact functions are part of the main branch of [CLIMADA v.1.5.1+](https://github.com/CLIMADA-project/climada_python/releases) 
 in the class [climada.entity.impact_funcs.trop_cyclone.IFSTropCyclone](https://github.com/CLIMADA-project/climada_python/blob/main/climada/entity/impact_funcs/trop_cyclone.py).
 
+This is part of the [CLIMADA_papers repository](https://github.com/CLIMADA-project/climada_papers/). An archived version of this part of CLIMADA_papers is permanently available at: [![DOI](https://zenodo.org/badge/333036354.svg)](https://zenodo.org/badge/latestdoi/333036354)
+
 Contact: [Samuel Eberenz](mailto:samuel.eberenz@usys.ethz.ch)
 
 ## Content:
