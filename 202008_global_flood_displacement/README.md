@@ -3,9 +3,9 @@
 These scripts reproduce the main results of the paper:
 
 Pui Man Kam(1), Gabriela Aznar Siguan(2), Jacob Schewe(3), Leonardo Milano(4), Justin Ginetti(5), Sven Willner(3), Jamie McCaughey(1), and David N. Bresch(1,2):
-Global warming and population change both heighten future risk of human displacement due to river floods, submitted to Environmental Research Letters (ERL)
+Global warming and population change both heighten future risk of human displacement due to river floods, Environmental Research Letters (ERL), 2021. http://doi.org/10.1088/1748-9326/abd26c.
 
-Publication status: submitted
+Publication status: [published](http://doi.org/10.1088/1748-9326/abd26c).
 
 (1) Institute for Environmental Decisions, ETH Zurich, Zurich, Switzerland
 
