@@ -18,7 +18,7 @@ Eberenz, S., Lüthi, S., and Bresch, D. N., 2021: Regional tropical cyclone impa
 
 Bresch, D. N. and Aznar-Siguan, G., 2021: CLIMADA v1.4.1: Towards a globally consistent adaptation options appraisal tool, Geosci. Model Dev., https://doi.org/10.5194/gmd-2020-151 
 
-Welker, C., Röösli, T., and Bresch, D. N.: Comparing an insurer’s perspective on building damages with modelled damages from pan-European winter windstorm event sets: a case study from Zurich, Switzerland, https://www.nat-hazards-earth-syst-sci-discuss.net/nhess-2020-115
+Welker, C., Röösli, T., and Bresch, D. N., 2021: Comparing an insurer’s perspective on building damages with modelled damages from pan-European winter windstorm event sets: a case study from Zurich, Switzerland, Nat. Hazards Earth Syst. Sci., 21, 279-299, https://www.nat-hazards-earth-syst-sci-discuss.net/nhess-2020-115
 
 Westcott, M., Ward, J., Surminski, S., Sayers, P., Bresch, D. N., Bronwyn, C., 2020: Be prepared – exploring future climate-related risk for residential and commercial real-estate portfolios. Journal of Alternative Investments, https://jai.pm-research.com/content/early/2020/05/09/jai.2020.1.100.abstract 
 
