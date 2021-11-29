@@ -4,6 +4,8 @@ This repository contains a folder for each scientific peer-reviewed article that
 
 ## Published papers (since 2019):
 
+Lüthi, S., Aznar-Siguan, G., Fairless, C., and Bresch, D. N.: Globally consistent assessment of economic impacts of wildfires in CLIMADA v2.2, Geosci. Model Dev., 14, 7175–7187, https://doi.org/10.5194/gmd-14-7175-2021, 2021.
+
 Geiger, T., Gütschow, J., Bresch, D. N., Emanuel, K., and Frieler, K., 2021: Double benefit of limiting global warming for tropical cyclone exposure. Nat. Clim. Chang., https://doi.org/10.1038/s41558-021-01157-9 
 
 Ciullo, A., Martius, O., Strobl, E. and Bresch, D. N., 2021: A framework for building climate storylines based on downward counterfactuals: The case of the European Union Solidarity fund. Climate Risk Management, 33, 100349, https://doi.org/10.1016/j.crm.2021.100349 
