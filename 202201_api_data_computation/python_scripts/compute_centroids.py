@@ -9,7 +9,7 @@ import cartopy.io.shapereader as shpreader
 from config import OUT_DATA_DIR
 
 
-def make_base_centroids(out_file_path, bounds=(-180, -90, 180, 90), res_land_arcsec=150, res_ocean_arcsec=1800,
+def make_base_centroids(out_file_path, bounds=(-180, -60, 180, 60), res_land_arcsec=150, res_ocean_arcsec=1800,
                         land_buffer=0.1):
     res_land = res_land_arcsec/3600
     res_ocean = res_ocean_arcsec/3600
@@ -31,16 +31,12 @@ def make_base_centroids(out_file_path, bounds=(-180, -90, 180, 90), res_land_arc
     cent_land.lat = cent_land.lat[mask]
     cent_land.lon = cent_land.lon[mask]
 
-    cent = Centroids()
-    cent.lat = np.append(cent_land.lat, cent_ocean.lat)
-    cent.lon = np.append(cent_land.lon, cent_ocean.lon)
-    cent.meta['crs'] = 4326
-    cent.geometry.crs = 4326
-    cent.set_geometry_points()
-    cent.set_on_land()
-    #cent.set_dist_coast()
+    cent = cent_land
+    cent.append(cent_ocean)
     cent.set_region_id()
-    #cent.set_area_approx()
+    cent.set_geometry_points()
+    cent = cent.select(extent=(bounds[0], bounds[2], bounds[1], bounds[3]))
+    cent.check()
     cent.write_hdf5(out_file_path)
 
 
