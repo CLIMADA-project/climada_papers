@@ -6,7 +6,7 @@ import sys
 from config import OUT_DATA_DIR
 
 
-def main(years=['2010', '2030'], scenario='rcp26', replace=False):
+def main(years=['2010', '2030'], scenario='rcp26', replace=True):
     years_str = "_".join([str(years[0]), str(years[1])])
     path0 = os.path.join(OUT_DATA_DIR, 'flood')
     path = os.path.join(path0, 'global', scenario, years_str)

@@ -6,7 +6,7 @@ conda activate climada_env
 for year in 2010 2030 2050 2070
 do
 year2=$((year + 20))
-for rcp in rcp26 rcp45 rcp60 rcp85
+for rcp in rcp26 rcp60 rcp85
 do
         sleep_time=$((($RANDOM % 5) + 5))
 

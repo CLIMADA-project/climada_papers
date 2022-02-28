@@ -27,12 +27,15 @@ def main(years_list=['2040', '2060', '2080'], scenarios=['historical', 'rcp26', 
                     os.makedirs(path_country)
                 for country in countries:
                     if scenario!='historical':
-                        file_country = "".join({path_country, '/', f[0], '_', f[1], '_', f[2], '_', f[3], '_', f[4], '_', f[5], '_',
-                                        country.alpha_3, '_', f[7]})
+                        file_country = "".join((f[0], '_', f[1], '_', f[2], '_', f[3], '_', f[4], '_', f[5], '_',
+                                        country.alpha_3, '_', f[7]))
+
                     else:
                         file_country = "".join(
-                            {path_country, '/', f[0], '_', f[1], '_', f[2], '_', f[3], '_', f[4], '_', country.alpha_3, '_',
-                             f[6], f[7]})
+                            [f[0], '_', f[1], '_', f[2], '_', f[3], '_', f[4], '_', country.alpha_3, '_',
+                             f[6], '_', f[7]])
+                    file_country = os.path.join(path_country, file_country)
+
                     if Path(file_country).exists() and replace is False:
                         continue
                     tc_country = tc.select(reg_id=int(country.numeric))
@@ -43,5 +46,5 @@ def main(years_list=['2040', '2060', '2080'], scenarios=['historical', 'rcp26', 
 
 if __name__ == "__main__":
     main(n_tracks=10)
-    main(n_tracks=50)
+#    main(n_tracks=50)
 

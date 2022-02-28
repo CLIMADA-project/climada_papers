@@ -13,9 +13,9 @@ def main(years=[1980, 2000], scenario='hist'):
     if scenario == 'hist':
         flddph_data_dir = os.path.join(IN_DATA_DIR, 'flood/flood_flddph_hist')
     else:
-        flddph_data_dir = os.path.join(IN_DATA_DIR, 'flood/flood_flddph')
+        flddph_data_dir = os.path.join(IN_DATA_DIR, "".join(['flood/flood_flddph/', scenario]))
     centroids = Centroids.from_hdf5(
-        os.path.join(OUT_DATA_DIR, "centroids/earth_centroids_150asland_1800oceans_distcoast_region_nopoles.hdf5"))
+        os.path.join(OUT_DATA_DIR, "centroids/earth_centroids_150asland_1800asoceans_distcoast_region_nopoles.hdf5"))
     years_str  = "_".join([str(years[0]), str(years[1])])
     years = range(int(years[0]), int(years[1]))
     filename = "".join(['river_flood_150arcsec', '_', scenario, '_', years_str, '.hdf5'])
