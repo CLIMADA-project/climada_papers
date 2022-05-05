@@ -5,14 +5,16 @@ from pycountry import countries
 from config import OUT_DATA_DIR
 
 
-def main(years_list=['2040', '2060', '2080'], scenarios=['historical', 'rcp26', 'rcp60', 'rcp45', 'rcp85'], n_tracks=10, replace=False):
+def main(years_list=None, scenarios=None, n_tracks=10, replace=True):
+    if future_years is None:
+        future_years = [2040, 2060, 2080]
+    if climate_scenarios is None:
+        climate_scenarios = [26, 60, 45, 85]
     for scenario in scenarios:
+        years = years_list
         if scenario == 'historical':
             years = ['']
-        else:
-            years = years_list
-
-        for year in years:
+            for year in years:
             tracks_str = "".join([str(n_tracks), 'synth_tracks'])
             path0 = os.path.join(OUT_DATA_DIR, 'tropical_cyclones')
             path = os.path.join(path0, 'global', tracks_str, scenario, year)

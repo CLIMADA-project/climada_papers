@@ -9,7 +9,9 @@ from config import IN_DATA_DIR
 from config import OUT_DATA_DIR
 
 
-def main(years=[1980, 2000], scenario='hist'):
+def main(years=None, scenario='hist'):
+    if years is None:
+        years = [1980, 2000]
     if scenario == 'hist':
         flddph_data_dir = os.path.join(IN_DATA_DIR, 'flood/flood_flddph_hist')
     else:

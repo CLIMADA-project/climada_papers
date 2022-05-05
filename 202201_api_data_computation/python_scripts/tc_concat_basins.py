@@ -3,14 +3,19 @@ import os
 
 from config import OUT_DATA_DIR
 
+BASINS = ["SI", "NA", "SP", "WP", "SA", "EP"]
 
-def main(scenarios=['historical', 'rcp26', 'rcp60', 'rcp45', 'rcp85'], n_tracks=10):
+
+def main(scenarios=None, n_tracks=10):
+    if scenarios is None:
+        scenarios = ['historical', 'rcp26', 'rcp60', 'rcp45', 'rcp85']
     tracks_str = "".join([str(n_tracks), 'synth_tracks'])
     for scenario in scenarios:
         if scenario == 'historical':
             years = ['1980_2020']
         else:
             years = ['2040', '2060', '2080']
+
         for year in years:
             tc = TropCyclone()
             path0 = os.path.join(OUT_DATA_DIR, 'tropical_cyclones/genesis_basin/',
@@ -23,8 +28,7 @@ def main(scenarios=['historical', 'rcp26', 'rcp60', 'rcp45', 'rcp85'], n_tracks=
                 tc.read_hdf5(os.path.join(path, scenario, tc_file))
             else:
                 tc.read_hdf5(os.path.join(path, scenario, year, tc_file))
-            for basin in ["SI", "NA", "SP", "WP", "SA", "EP"]:
-
+            for basin in BASINS:
                 tc_file = "".join(['tropical_cyclone_', str(n_tracks), 'synth_tracks_150arcsec_',scenario,'_genesis_', basin, '_', year,'.hdf5'])
                 if scenario == 'historical':
                     tc_file = "".join(['tropical_cyclone_', str(n_tracks), 'synth_tracks_150arcsec_genesis_', basin, '_',year,'.hdf5'])

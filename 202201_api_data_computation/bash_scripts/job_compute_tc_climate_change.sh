@@ -15,7 +15,7 @@ do
 
         echo $basin
 
-        bsub -n 1 -W 20:00 -R "rusage[mem=100000]" python3 ../python_scripts/compute_tc_genesis_basin.py $basin 10  ''
+        bsub -n 1 -W 20:00 -R "rusage[mem=100000]" python3 ../python_scripts/compute_tc_climate_change.py $basin 10  ''
 
 done
 
@@ -31,6 +31,6 @@ do
 
         echo $basin
 
-#        bsub -W 60:00 -R "rusage[mem=100000]" python3 ../python_scripts/compute_tc_genesis_basin.py $basin 50  ''
+        bsub -W 60:00 -R "rusage[mem=100000]" python3 ../python_scripts/compute_tc_climate_change.py $basin 50  ''
 
 done
