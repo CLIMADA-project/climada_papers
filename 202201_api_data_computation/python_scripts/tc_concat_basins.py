@@ -1,6 +1,6 @@
 from climada.hazard import TropCyclone
 import os
-
+import numpy as np
 from config import OUT_DATA_DIR
 
 BASINS = ["SI", "NA", "SP", "WP", "SA", "EP"]
@@ -25,9 +25,11 @@ def main(scenarios=None, n_tracks=10):
                 tc_file = "".join(['tropical_cyclone_', str(n_tracks), 'synth_tracks_150arcsec_genesis_NI_', year, '.hdf5'])
             path = os.path.join(path0, 'NI')
             if scenario == 'historical':
-                tc.read_hdf5(os.path.join(path, scenario, tc_file))
+                tc_file = os.path.join(path, scenario, tc_file)
             else:
-                tc.read_hdf5(os.path.join(path, scenario, year, tc_file))
+                tc_file = os.path.join(path, scenario, year, tc_file)
+            tc.read_hdf5(tc_file)
+            max_event_id = np.max(tc.event_id)
             for basin in BASINS:
                 tc_file = "".join(['tropical_cyclone_', str(n_tracks), 'synth_tracks_150arcsec_',scenario,'_genesis_', basin, '_', year,'.hdf5'])
                 if scenario == 'historical':
@@ -35,9 +37,13 @@ def main(scenarios=None, n_tracks=10):
 
                 tc2 = TropCyclone()
                 if scenario == 'historical':
-                    tc2.read_hdf5(os.path.join(path0, basin, scenario, tc_file))
+                    tc2_file = os.path.join(path0, basin, scenario, tc_file)
                 else:
-                    tc2.read_hdf5(os.path.join(path0, basin, scenario, year, tc_file))
+                    tc2_file = os.path.join(path0, basin, scenario, year, tc_file)
+                tc2.read_hdf5(tc2_file)
+                tc2.event_id = tc2.event_id+max_event_id
+                tc2.write_hdf5(tc2_file)
+                max_event_id = np.max(tc2.event_id)
                 tc.append(tc2)
                 tc_file = "".join(['tropical_cyclone_'+str(n_tracks)+'synth_tracks_150arcsec_', scenario, '_global_', year, '.hdf5'])
                 if scenario == 'historical':

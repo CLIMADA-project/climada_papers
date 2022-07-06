@@ -1,5 +1,9 @@
-#OUT_DATA_DIR = "/cluster/project/climate/szelie/CLIMADA_api_data"
-#IN_DATA_DIR = "/cluster/project/climate/szelie/CLIMADA_api_data"
+import platform
 
-OUT_DATA_DIR = "/Users/szelie/climada_data_api"
-IN_DATA_DIR = "/Users/szelie/climada_data_api"
+if platform.system() == 'Darwin':
+    OUT_DATA_DIR = "/Users/szelie/OneDrive - ETH Zurich/data/climada_api"
+    IN_DATA_DIR = "/Users/szelie/OneDrive - ETH Zurich/data/climada_api"
+
+else:
+    OUT_DATA_DIR = "/cluster/project/climate/szelie/CLIMADA_api_data"
+    IN_DATA_DIR = "/cluster/project/climate/szelie/CLIMADA_api_data"

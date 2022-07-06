@@ -15,12 +15,12 @@ def main(basin='EP', n_tracks=10):
     centroids.read_hdf5(os.path.join(OUT_DATA_DIR,
                                      "centroids/earth_centroids_150asland_1800asoceans_distcoast_region_nopoles.hdf5"))
 
-    centroids = centroids.select(extent=basins_centroids[basin])
+    #centroids = centroids.select(extent=basins_centroids[basin])
 
     tc_tracks = TCTracks()
     tc_tracks.read_netcdf(os.path.join(OUT_DATA_DIR, "tracks", str(n_tracks), basin))
     tc_haz = TropCyclone()
-    #centroids_cut = centroids.select(extent=tc_tracks.get_extent(5))
+    centroids = centroids.select(extent=tc_tracks.get_extent(5))
     tc_haz.set_from_tracks(tc_tracks, centroids)
     tc_haz.check()
     path = os.path.join(path0, "historical")

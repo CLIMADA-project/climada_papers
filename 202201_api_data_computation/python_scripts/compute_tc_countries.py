@@ -6,24 +6,25 @@ from config import OUT_DATA_DIR
 
 
 def main(years_list=None, scenarios=None, n_tracks=10, replace=True):
-    if future_years is None:
-        future_years = [2040, 2060, 2080]
-    if climate_scenarios is None:
-        climate_scenarios = [26, 60, 45, 85]
+    if years_list is None:
+        years = [2040, 2060, 2080]
+    if scenarios is None:
+        scenarios = [26, 60, 45, 85]
     for scenario in scenarios:
-        years = years_list
+        str_scenario = "".join(['rcp',str(scenario)])
         if scenario == 'historical':
-            years = ['']
-            for year in years:
+            years = ['1980_2020']
+            str_scenario = scenario
+        for year in years:
             tracks_str = "".join([str(n_tracks), 'synth_tracks'])
-            path0 = os.path.join(OUT_DATA_DIR, 'tropical_cyclones')
-            path = os.path.join(path0, 'global', tracks_str, scenario, year)
+            path0 = os.path.join(OUT_DATA_DIR, 'tropical_cyclones_v2')
+            path = os.path.join(path0, 'global', tracks_str, str_scenario, str(year))
             for file in os.listdir(path):
                 f = file.split('_', 7)
                 file = os.path.join(path, file)
                 tc = TropCyclone()
                 tc.read_hdf5(file)
-                path_country = os.path.join(path0, 'countries', tracks_str, scenario, year)
+                path_country = os.path.join(path0, 'countries', tracks_str, str_scenario, str(year))
                 isExist = os.path.exists(path_country)
                 if not isExist:
                     os.makedirs(path_country)
@@ -47,6 +48,6 @@ def main(years_list=None, scenarios=None, n_tracks=10, replace=True):
 
 
 if __name__ == "__main__":
-    main(n_tracks=10)
+    main(n_tracks=10, scenarios=['historical'])
 #    main(n_tracks=50)
 

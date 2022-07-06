@@ -10,7 +10,7 @@ def main(years=None, scenario='rcp26', replace=True):
     if years is None:
         years = ['2010', '2030']
     years_str = "_".join([str(years[0]), str(years[1])])
-    path0 = os.path.join(OUT_DATA_DIR, 'flood')
+    path0 = os.path.join(OUT_DATA_DIR, 'flood_v2')
     path = os.path.join(path0, 'global', scenario, years_str)
     for file in os.listdir(path):
         file_path = os.path.join(path, file)
