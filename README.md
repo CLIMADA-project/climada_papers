@@ -4,6 +4,10 @@ This repository contains a folder for each scientific peer-reviewed article that
 
 ## Published papers (since 2019):
 
+Rana, A., Zhu, Q., Detken, A., Whalley, K., and Castet, C.: Strengthening climate-resilient development and transformation in Viet Nam, Climatic Change, 170, 4, https://doi.org/10.1007/s10584-021-03290-y, 2022.
+
+Blass, R., Kropf, C. M., Mahlstein, I., and Bresch, D. N., 2022: Automatic-generation-of-winter-storm-warnings. Technical Report MeteoSwiss No.282, MeteoSwiss, 2022.[link](https://www.meteoschweiz.admin.ch/home/service-und-publikationen/publikationen.subpage.html/de/data/publications/2022/6/automatic-generation-of-winter-storm-warnings.html)
+
 Geiger, T., Gütschow, J., Bresch, D. N., Emanuel, K., and Frieler, K., 2021: Double benefit of limiting global warming for tropical cyclone exposure. Nat. Clim. Chang., https://doi.org/10.1038/s41558-021-01157-9 
 
 Ciullo, A., Martius, O., Strobl, E. and Bresch, D. N., 2021: A framework for building climate storylines based on downward counterfactuals: The case of the European Union Solidarity fund. Climate Risk Management, 33, 100349, https://doi.org/10.1016/j.crm.2021.100349 
