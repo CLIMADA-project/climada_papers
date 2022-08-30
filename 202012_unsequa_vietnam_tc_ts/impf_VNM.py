@@ -1,11 +1,15 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on June 2021
+
+@author: C. M. Kropf
+"""
+
 import numpy as np
-from climada.entity import IFTropCyclone, ImpactFuncSet, ImpactFunc
+from climada.entity import ImpactFuncSet, ImpactFunc
 
-
-def impf(storm_threshold = 50, surge_threshold = 1):
-
-
-    # Impact function wind-people
+def impf(surge_threshold = 1):
 
     ImpfSetPeople = ImpactFuncSet()
 

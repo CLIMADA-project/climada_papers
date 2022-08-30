@@ -1,16 +1,15 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Mon Jun  7 18:33:47 2021
+Created on June 2021
 
-@author: ckropf
+@author: C. M. Kropf
 """
 
 import numpy as np
 
 from climada.entity import Measure
 from climada.entity import MeasureSet
-from climada.entity import Entity
 from climada.entity import DiscRates
 
 BASE_YEAR = 2020
@@ -31,7 +30,7 @@ def generate_litpop_base(impf_id, value_unit, haz, assign_centr_kwargs,
             exp.value_unit = value_unit
         exp.assign_centroids(haz, **assign_centr_kwargs)
         exp.gdf.region_id = 0
-        exp.gdf.loc[(exp.gdf.latitude < 11.029167) & (exp.gdf.longitude < 106.820833), 'region_id'] = 1
+        exp.gdf.loc[(exp.gdf.latitude < 11.029167) & (exp.gdf.longitude < 106.820833), 'region_id'] = 1 #define north/south regions
         exp.gdf.loc[exp.gdf['latitude'] > 19.912500, 'region_id'] = 2
         if fut_year is not None:
             exp.ref_year = fut_year
@@ -39,6 +38,7 @@ def generate_litpop_base(impf_id, value_unit, haz, assign_centr_kwargs,
     return litpop_base
 
 def measures_50():
+    #measures in 2050
 
     n_years = HORIZON - BASE_YEAR
 
@@ -86,17 +86,14 @@ def measures_50():
     return  MeasSet
 
 def measures_20():
+    #Measures in 2020
 
-    n_years = HORIZON - BASE_YEAR
-
-    TC_meas_set = MeasureSet()
 
     TS_meas1 = Measure()
     TS_meas1.name = 'Mangrove'
     TS_meas1.haz_type = 'TS'
     TS_meas1.exp_region_id = [1, 2]
     TS_meas1.color_rgb = np.array([0.16, 0.62, 0.56])
-    mangrove_maintain = 4000000
     TS_meas1.cost = 172 * 1000000 * 0.000043 * 1160 * 1000 * 150 / 10000
     TS_meas1.mdd_impact = (1, 0)
     TS_meas1.paa_impact = (1, 0)
@@ -107,7 +104,6 @@ def measures_20():
     TS_meas2.haz_type = 'TS'
     TS_meas2.color_rgb = np.array([0.91, 0.77, 0.42])
     TS_meas2.exp_region_id = [1]
-    seadyke_maintain = 200
     TS_meas2.cost = (110 * 1000000 * 0.000043) * 150 * 1000
     TS_meas2.hazard_inten_imp = (1, -2)
 
@@ -129,7 +125,7 @@ def measures_20():
     return  MeasSet
 
 
-def disc_rates(disc_rate = 0):
+def disc_rates():
 
     # number of people does not discount
     people_disc = DiscRates()

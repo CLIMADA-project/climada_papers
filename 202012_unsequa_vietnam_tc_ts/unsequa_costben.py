@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Thu Jun 24 14:31:14 2021
+Created on June 2021
 
-@author: ckropf
+@author: C. M. Kropf
 """
 
 import importlib
