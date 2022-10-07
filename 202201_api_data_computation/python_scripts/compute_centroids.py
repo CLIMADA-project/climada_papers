@@ -38,18 +38,18 @@ def make_base_centroids(out_file_path, bounds=(-180, -60, 180, 60), res_land_arc
     #cent.set_lat_lon_to_meta()
     cent.set_on_land()
     cent = cent.select(extent=(bounds[0], bounds[2], bounds[1], bounds[3]))
-    cent.set_dist_coast(scheduler="threads")
+    cent.set_dist_coast()
     #cent.set_geometry_points()
     cent.check()
     cent.write_hdf5(out_file_path)
 
 
 
-file_name = os.path.join(OUT_DATA_DIR, 'centroids','earth_centroids_150asland_1800asoceans_distcoast_region2.hdf5')
+file_name = os.path.join(OUT_DATA_DIR, 'centroids','earth_centroids_150asland_1800asoceans_distcoast_region.hdf5')
 if __name__ == "__main__":
     make_base_centroids(file_name, bounds=(-180, -90, 180, 90))
 
 
-file_name = os.path.join(OUT_DATA_DIR, 'centroids','earth_centroids_150asland_1800asoceans_distcoast_region_nopoles2.hdf5')
+file_name = os.path.join(OUT_DATA_DIR, 'centroids','earth_centroids_150asland_1800asoceans_distcoast_region_nopoles.hdf5')
 if __name__ == "__main__":
     make_base_centroids(file_name, bounds=(-180, -60, 180, 60))
