@@ -1,0 +1,7 @@
+Dep,source,target,single_link,access_cnstr,type_I,type_II,thresh_func,thresh_dist
+11,celltower,people,FALSE,FALSE,enduser,logical,1,40000
+12,education,people,TRUE,FALSE,enduser,logical,1,40000
+13,health,people,FALSE,FALSE,enduser,logical,1,100000
+14,power_line,people,TRUE,FALSE,enduser,physical,0.6,
+15,road,people,FALSE,FALSE,enduser,logical,0.6,30000
+16,wastewater,people,TRUE,FALSE,enduser,logical,0.6,
