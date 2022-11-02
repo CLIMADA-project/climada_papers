@@ -1,8 +1,7 @@
 #!/bin/bash
 PYTHON_SCRIPT=$1
 . ~/.bashrc
-conda activate climada_env
-
+. ~/venv/climada_dev/bin/activate
 for year in 1980
 do
 for scenario in hist

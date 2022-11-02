@@ -4,24 +4,28 @@ import glob
 
 from climada.hazard import Centroids
 from climada_petals.hazard.river_flood import RiverFlood
+from config import DATA_DIR
+from create_log_file import log_msg
 
-from config import IN_DATA_DIR
-from config import OUT_DATA_DIR
+CENT_FILE_PATH = os.path.join(DATA_DIR, "centroids/earth_centroids_150asland_1800asoceans_distcoast_region.hdf5")
+OUT_FILE_PATH = "".join(['river_flood_150arcsec_{scenario}_{years_str}.hdf5'])
 
 
 def main(years=None, scenario='hist'):
+    LOG_FILE = "progress_make_river_flood_global.txt"
     if years is None:
         years = [1980, 2000]
     if scenario == 'hist':
-        flddph_data_dir = os.path.join(IN_DATA_DIR, 'flood/flood_flddph_hist')
+        flddph_data_dir = os.path.join(DATA_DIR, 'flood/flood_flddph_hist')
     else:
-        flddph_data_dir = os.path.join(IN_DATA_DIR, "".join(['flood/flood_flddph/', scenario]))
-    centroids = Centroids.from_hdf5(
-        os.path.join(OUT_DATA_DIR, "centroids/earth_centroids_150asland_1800asoceans_distcoast_region.hdf5"))
-    years_str  = "_".join([str(years[0]), str(years[1])])
+        flddph_data_dir = os.path.join(DATA_DIR, "".join(['flood/flood_flddph/', scenario]))
+    log_msg(f"Started computing floods for scenario {scenario}  and years {years}\n", LOG_FILE)
+
+    centroids = Centroids.from_hdf5(CENT_FILE_PATH)
+    years_str = "_".join([str(years[0]), str(years[1])])
     years = range(int(years[0]), int(years[1]))
-    filename = "".join(['river_flood_150arcsec', '_', scenario, '_', years_str, '.hdf5'])
-    path = os.path.join(OUT_DATA_DIR, 'flood_v2','global', scenario, years_str)
+    filename = OUT_FILE_PATH.format(scenario=scenario, years_str=years_str)
+    path = os.path.join(DATA_DIR, 'flood_v2', 'global', scenario, years_str)
     file = os.path.join(path, filename)
     isExist = os.path.exists(path)
     if not isExist:
@@ -40,6 +44,7 @@ def main(years=None, scenario='hist'):
     rf_concat = rf.concat(rf_list)
     rf_concat.frequency = rf_concat.frequency / len(files_list)
     rf_concat.write_hdf5(file)
+    log_msg(f"Computing of river floods for scenario {scenario}  and years {years} done\n", LOG_FILE)
 
 
 if __name__ == "__main__":

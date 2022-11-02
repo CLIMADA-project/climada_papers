@@ -1,7 +1,7 @@
 from climada.hazard import TCTracks
 import sys
 import os
-from config import OUT_DATA_DIR
+from config import DATA_DIR
 
 
 def main(basin='EP', n_tracks=10):
@@ -11,7 +11,7 @@ def main(basin='EP', n_tracks=10):
     tc_tracks.read_ibtracs_netcdf(genesis_basin=basin, year_range=year_range)
     tc_tracks.equal_timestep(time_step_h=1)
     tc_tracks.calc_perturbed_trajectories(nb_synth_tracks=nb_syn_tracks)
-    path = os.path.join(OUT_DATA_DIR, "tracks", str(n_tracks), basin)
+    path = os.path.join(DATA_DIR, "tracks", str(n_tracks), basin)
     isExist = os.path.exists(path)
     if not isExist:
         os.makedirs(path)

@@ -1,8 +1,7 @@
 #!/bin/bash
 PYTHON_SCRIPT=$1
 . ~/.bashrc
-conda activate climada_env
-
+. ~/venv/climada_dev/bin/activate
 for year in 2010 2030 2050 2070
 do
 for rcp in rcp26 rcp60 rcp85

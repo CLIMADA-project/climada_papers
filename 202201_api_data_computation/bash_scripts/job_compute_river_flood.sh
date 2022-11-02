@@ -1,8 +1,7 @@
 #!/bin/bash
 PYTHON_SCRIPT=$1
 . ~/.bashrc
-conda activate climada_env
-
+. ~/venv/climada_dev/bin/activate
 for year in 2005 2030 2050 2070
 do
 year2=$((year + 20))
