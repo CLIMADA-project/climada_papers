@@ -13,7 +13,7 @@ def main(years_list=None, scenarios=None, n_tracks=10, replace=True):
     if years_list is None:
         years_list = [2040, 2060, 2080]
     if scenarios is None:
-        scenarios = ['rcp85']
+        scenarios =  ['rcp26','rcp45','rcp60','rcp85']
     for scenario in scenarios:
         for year in years_list:
             tracks_str = "".join([str(n_tracks), 'synth_tracks'])
