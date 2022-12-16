@@ -15,15 +15,11 @@ FILE_NAME_GLOBAL_HIST = 'tropical_cyclone_{n_tracks}synth_tracks_150arcsec_globa
 
 def main(climate_scenarios=None, n_tracks=10, years=None):
     if climate_scenarios is None:
-        climate_scenarios = ['historical', 'rcp26', 'rcp60', 'rcp45', 'rcp85']
+        climate_scenarios = ['rcp26', 'rcp60', 'rcp45', 'rcp85']
     tracks_str = "".join([str(n_tracks), 'synth_tracks'])
     for scenario in climate_scenarios:
         if years is None:
-            if scenario == 'historical':
-                years = ['1980_2020']
-            else:
-                years = ['2040', '2060', '2080']
-
+            years = ['2040', '2060', '2080']
         for year in years:
             log_msg(f"Starting concatenating basins for year {year} and scenario {scenario}\n", LOG_FILE)
 
@@ -43,7 +39,7 @@ def main(climate_scenarios=None, n_tracks=10, years=None):
             for basin in BASINS:
                 if scenario == 'historical':
                     tc2_file = FILE_NAME_HIST.format(n_tracks=n_tracks, basin=basin, year=year)
-                    tc2_file_path = os.path.join(path0, basin, scenario, year, tc2_file)
+                    tc2_file_path = os.path.join(path0, basin, scenario, tc2_file)
                 else:
                     tc2_file = FILE_NAME.format(n_tracks=n_tracks, basin=basin, year=year, scenario=scenario)
                     tc2_file_path = os.path.join(path0, basin, scenario, year, tc2_file)
@@ -67,4 +63,4 @@ def main(climate_scenarios=None, n_tracks=10, years=None):
 
 
 if __name__ == "__main__":
-    main(n_tracks=10, years=['2060', '2080'], climate_scenarios=['rcp85'])
+    main()

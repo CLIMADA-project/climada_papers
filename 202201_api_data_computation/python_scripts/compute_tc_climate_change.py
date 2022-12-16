@@ -13,7 +13,7 @@ def main(basin='EP', climate_scenarios=None, future_years=None, n_tracks=10):
     if future_years is None:
         future_years = [2040, 2060, 2080]
     if climate_scenarios is None:
-        climate_scenarios = [26, 60, 45, 85]
+        climate_scenarios = [85]
     path0 = os.path.join(DATA_DIR, 'tropical_cyclones/genesis_basin', str(n_tracks) + 'synth_tracks', basin)
     path = os.path.join(path0, "historical")
     file_name = FILE_NAME_HIST.format(n_tracks=n_tracks,

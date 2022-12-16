@@ -2,7 +2,7 @@
 . ~/.bashrc
 . ~/venv/climada_dev/bin/activate
 
-for warming_level in 1 2
+for warming_level in 1 1.5 2
 do
 sleep_time=$((($RANDOM % 5) + 5))
 

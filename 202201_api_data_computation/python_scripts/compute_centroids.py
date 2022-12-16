@@ -55,9 +55,9 @@ def make_base_centroids(out_file_path, bounds=(-180, -60, 180, 60), res_land_arc
 
 
 file_name = os.path.join('centroids', 'earth_centroids_150asland_1800asoceans_distcoast_region.hdf5')
-file_name2 = os.path.join('centroids',
+file_name_no_poles = os.path.join('centroids',
                           'earth_centroids_150asland_1800asoceans_distcoast_region_nopoles.hdf5')
 
 if __name__ == "__main__":
     make_base_centroids(file_name, bounds=(-180, -90, 180, 90))
-    make_base_centroids(file_name2, bounds=(-180, -60, 180, 60))
+    make_base_centroids(file_name_no_poles, bounds=(-180, -60, 180, 60))

@@ -14,6 +14,6 @@ do
 
         echo $basin
 
-        bsub -n 1 -W 20:00 -R "rusage[mem=100000]" python3 ../python_scripts/compute_tc_genesis_basin.py $basin 10  ''
+        bsub -n 1 -W 20:00 -R "rusage[mem=100000]" python3 ../python_scripts/compute_tc_genesis_basin.py $basin 0  ''
 
 done

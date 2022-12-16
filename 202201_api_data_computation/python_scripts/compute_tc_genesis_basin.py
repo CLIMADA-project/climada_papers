@@ -32,10 +32,10 @@ def main(basin='EP', n_tracks=10):
     if not isExist:
         os.makedirs(path)
     tracks = str(n_tracks) + 'synth_tracks'
-    file_name = OUT_FILE_NAME.format(tracks=str(n_tracks),basin=basin)
+    file_name = OUT_FILE_NAME.format(tracks=tracks, basin=basin)
     tc_haz.write_hdf5(os.path.join(path, file_name))
     log_msg(f"Finished computing TC for basin {basin}.\n", LOG_FILE)
-
+    tc_haz.appp
 
 if __name__ == "__main__":
     print(sys.argv)

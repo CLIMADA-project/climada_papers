@@ -9,14 +9,22 @@ from config import DATA_DIR
 from create_log_file import log_msg
 
 YEARS_WARMING = {'1': {
-    'rcp26': {'gfdl-esm2m': [2006, 2024], 'miroc5': [2007, 2027], 'hadgem2-es': [2006, 2022], 'ipsl-cm5a-lr': None},
+    'rcp26': {'gfdl-esm2m': [2006, 2024], 'miroc5': [2006, 2025], 'hadgem2-es': [2006, 2022], 'ipsl-cm5a-lr': None},
     'rcp60': {'gfdl-esm2m': [2006, 2026], 'miroc5': [2013, 2033], 'hadgem2-es': [2006, 2024], 'ipsl-cm5a-lr': None},
     'rcp85': {'gfdl-esm2m': [2006, 2024], 'miroc5': [2015, 2024], 'hadgem2-es': [2006, 2022], 'ipsl-cm5a-lr': None}},
+    '1.5': {
+    'rcp26': {'gfdl-esm2m': None, 'miroc5': [2038, 2058], 'hadgem2-es': [2016, 2036], 'ipsl-cm5a-lr': [2006, 2019]},
+    'rcp60': {'gfdl-esm2m': [2046, 2066], 'miroc5': [2042, 2062], 'hadgem2-es': [2022, 2042], 'ipsl-cm5a-lr': [2006, 2020]},
+    'rcp85': {'gfdl-esm2m': [2026, 2046], 'miroc5': [2023, 2043], 'hadgem2-es': [2015,2035], 'ipsl-cm5a-lr': [2006, 2019]}},
     '2': {'rcp26': {'gfdl-esm2m': None, 'miroc5': None, 'hadgem2-es': None, 'ipsl-cm5a-lr': [2019, 2039]},
-          'rcp60': {'gfdl-esm2m': [2066, 2086], 'miroc5': [2061, 2081], 'hadgem2-es': [2030, 2050],
-                    'ipsl-cm5a-lr': [2019, 2039]},
-          'rcp85': {'gfdl-esm2m': [2043, 2063], 'miroc5': [2028, 2048], 'hadgem2-es': [2027, 2047],
-                    'ipsl-cm5a-lr': [2014, 2024]}}}
+          'rcp60': {'gfdl-esm2m': [2066, 2086], 'miroc5': [2061, 2081], 'hadgem2-es': [2040, 2060], 'ipsl-cm5a-lr': [2019, 2039]},
+          'rcp85': {'gfdl-esm2m': [2043, 2063], 'miroc5': [2038, 2058], 'hadgem2-es': [2027, 2047], 'ipsl-cm5a-lr': [2014, 2024]}},
+    '3': {'rcp26': {'gfdl-esm2m': None, 'miroc5': None, 'hadgem2-es': None, 'ipsl-cm5a-lr': [2019, 2039]},
+    'rcp60': {'gfdl-esm2m': [2066, 2086], 'miroc5': [2061, 2081], 'hadgem2-es': [2030, 2050],
+              'ipsl-cm5a-lr': [2019, 2039]},
+    'rcp85': {'gfdl-esm2m': [2043, 2063], 'miroc5': [2028, 2048], 'hadgem2-es': [2027, 2047],
+              'ipsl-cm5a-lr': [2014, 2024]}}}
+
 
 CENT_FILE_PATH = os.path.join(DATA_DIR, "centroids/earth_centroids_150asland_1800asoceans_distcoast_region.hdf5")
 
