@@ -50,6 +50,7 @@ plt.rcParams['font.size'] = '11'
 cm = 1/2.54  # centimeters in inches
 fig_width = 17.4 #cm
 max_fig_height = 23.4 #cm
+horizontal_plots_height = 4 #inch
 
 
 
@@ -215,6 +216,7 @@ mean_per_imp_bin = np.round(np.sum(test.T*bins_payout[:-1],axis=1)*100).astype(i
 
 
 """Fig. 1: schematic plot on payout functions"""
+plt.rcParams['font.size'] = '11'
 fig1 = plt.figure()
 ax1 = fig1.add_subplot(111)
 fig1.set_figwidth(fig_width*cm)
@@ -223,6 +225,7 @@ ax1 = fct.plot_schematic_figure(ax1)
 plt.savefig(figures_path+'Fig1.pdf', format='pdf', bbox_inches='tight')    
 
 """Fig 2. PLOT HOSPITALS AND IDAI TRACKS"""
+
 event = '2019063S18038' # Idai
 west, south, east, north = 30, -26, 41, -10
 projection= ccrs.PlateCarree()
@@ -234,14 +237,15 @@ tracks.equal_timestep()
 tracks.calc_perturbed_trajectories(nb_synth_tracks=3)
 
 #PLOTTING
-fig1, ax1 = plt.subplots(subplot_kw={'projection':projection},figsize=(max_fig_height*cm,fig_width*cm))
-ax1.set_extent((west, east+2.4, south-1, north))
-fig1.set_figwidth(fig_width*cm)
+plt.rcParams['font.size'] = '11'
+fig2, ax2 = plt.subplots(subplot_kw={'projection':projection},figsize=(max_fig_height*cm,fig_width*cm))
+ax2.set_extent((west, east+2.4, south-1, north))
+# fig2.set_figwidth(fig_width*cm)
 
-ax1.add_geometries(admin1_geo['MOZ'], crs=ccrs.epsg('3857'))
-handles, labels = ax1.get_legend_handles_labels()
-ax1 = tracks.plot(axis=ax1, legend=False)
-ax1.scatter(hospitals_plot['longitude'], hospitals_plot['latitude'], color='k',  s=15, zorder=3)
+ax2.add_geometries(admin1_geo['MOZ'], crs=ccrs.epsg('3857'))
+handles, labels = ax2.get_legend_handles_labels()
+ax2 = tracks.plot(axis=ax2, legend=False)
+ax2.scatter(hospitals_plot['longitude'], hospitals_plot['latitude'], color='k',  s=15, zorder=3)
 #create legend
 CAT_NAMES = {
     -1: 'Tropical depression',
@@ -263,11 +267,11 @@ leg_names = [CAT_NAMES[i_col] for i_col in sorted(CAT_NAMES.keys())]
 leg_names.append('IBTrACS')
 leg_names.append('IBTrACS_p')
 new_leg_names = ['Hospital']+leg_names
-ax1.legend(new_leg_lines, new_leg_names, loc="lower right")
-ax1.set_extent((west, east+2.4, south-1, north))
-ax1.set_yticks(ax1.get_yticks()[1:])
-ax1.set_xticks(ax1.get_xticks())
-ax1.add_geometries(admin1_geo['MOZ'], crs=projection, edgecolor='k', alpha=0.2, facecolor='grey')
+ax2.legend(new_leg_lines, new_leg_names, loc="lower right")
+ax2.set_extent((west, east+2.4, south-1, north))
+ax2.set_yticks(ax2.get_yticks()[1:])
+ax2.set_xticks(ax2.get_xticks())
+ax2.add_geometries(admin1_geo['MOZ'], crs=projection, edgecolor='k', alpha=0.2, facecolor='grey')
 reg_names1 = ['Maputo', 'Maputo City',
  'Cabo Delgado',
  'Niassa',
@@ -278,39 +282,40 @@ reg_names1 = ['Maputo', 'Maputo City',
  'Inhambane',
  'Sofala',
  'Nampula']
-reg_location_x = [32, 32.8, 38.1, 36, 32, 32.6, 32, 37.5, 33.4, 34.3, 38]
-reg_location_y = [-25.4, -25.9, -12.7, -13, -15, -21, -23, -16.2, -22.6, -19, -14.7]
+reg_location_x = [32, 32.8, 38.0, 36, 32, 32.52, 32, 37.5, 33.4, 34.3, 38]
+reg_location_y = [-25.29, -25.93, -12.8, -13, -15, -21.05, -23, -16.2, -22.68, -19, -14.7]
 for idx, region in enumerate(admin1_geo['MOZ']):
-    ax1.annotate(reg_names1[idx], (reg_location_x[idx], reg_location_y[idx]))
-xlabel= ax1.get_xticks()
+    ax2.annotate(reg_names1[idx], (reg_location_x[idx], reg_location_y[idx]))
+xlabel= ax2.get_xticks()
 new_xlabel = []
 for label in xlabel:
    new_xlabel.append(str(int(label))+'°E') 
-ax1.set_xticklabels(new_xlabel)
-ylabel= ax1.get_yticks()
+ax2.set_xticklabels(new_xlabel)
+ylabel= ax2.get_yticks()
 new_ylabel = []
 for label in ylabel:
    new_ylabel.append(str(int(-label))+'°S') 
-ax1.set_yticklabels(new_ylabel)
+ax2.set_yticklabels(new_ylabel)
 plt.savefig(figures_path+'Fig2.pdf', format='pdf', bbox_inches='tight')
 
 
 """FIG 3. Idai over Central Mozambique, with hospital locations and radius of 30km"""
 rad= 30*1000 #plot this radius
 event = '2019063S18038' # Idai
+# Idai track
+idai = TCTracks.from_ibtracs_netcdf(basin=basin, storm_id=event)
+idai.equal_timestep(time_step_h=0.08) #high temporal resolution for the tropical cyclone wind field
+idai_wind = TropCyclone.from_tracks(idai, centroids=hazard.centroids)
 
+
+plt.rcParams['font.size'] = '13'
 cmap0 = LinearSegmentedColormap.from_list('', ['white', *plt.cm.GnBu(np.arange(255))])
 projection= ccrs.PlateCarree()
 
 fig3, ax3 = plt.subplots(subplot_kw={'projection':projection})
 fig3.set_figwidth(fig_width*cm)
 ax3.set_extent((30, 41, -22, -16))
-# Idai track
-idai = TCTracks.from_ibtracs_netcdf(basin=basin, storm_id=event)
-idai.equal_timestep(time_step_h=0.08) #high temporal resolution for the tropical cyclone wind field
-idai_wind = TropCyclone.from_tracks(idai, centroids=hazard.centroids)
 ax3 = idai_wind.plot_intensity(event, cmap=cmap0, axis=ax3, smooth=False, vmin=0.0, vmax=60)
-
 ax3.set_extent((30, 41, -22, -16))
 ax3.set_title('')
 ax3.set_yticks(ax3.get_yticks()[1:])
@@ -324,7 +329,6 @@ circles  = circles_metric.to_crs(crs_orig)
 circles.index = np.arange(0, circles.index.shape[0])
 
 ax3.add_geometries(circles, crs=projection, edgecolor='k', facecolor='none', label='Circle (30 km radius)')
-
 ax3.add_geometries(admin1_geo['MOZ'], crs=projection, edgecolor='k', alpha=0.2, facecolor='grey')
 
 #annotation of regions
@@ -335,8 +339,8 @@ reg_names1 = ['Tete',
  'Inhambane',
  'Sofala',
  'Nampula']
-reg_location_x = [32.4, 32.7, 32.2, 36, 33.5, 34.3, 38.5]
-reg_location_y = [-16.3, -21, -21.8, -17, -21.8, -19, -16.3]
+reg_location_x = [32.4, 32.7, 32.2, 36, 33.4, 34.3, 38.2]
+reg_location_y = [-16.4, -21, -21.8, -17, -21.8, -19, -16.3]
 for idx, region in enumerate(reg_names1):
     # ax.annotate(reg_names[idx], (region.centroid.x, region.centroid.y))
     ax3.annotate(reg_names1[idx], (reg_location_x[idx], reg_location_y[idx]))
