@@ -46,4 +46,4 @@ Aznar-Siguan, G. and Bresch, D. N., 2019: CLIMADA v1: a global weather and clima
 
 ## Forthcoming papers & publications in preparation:
 
-Röösli, T., Appenzeller, C., and Bresch, D. N., 2021: Building damage impact forecasting for winter windstorms in Switzerland, accepted. 
+Please check www.wcr.ethz.ch
