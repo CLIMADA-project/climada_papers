@@ -4,6 +4,7 @@ This repository contains a folder for each scientific peer-reviewed article that
 
 ## Published papers (since 2019):
 
+=======
 Mühlhofer, E., Koks, E. E., Kropf, C. M., Sansavini, G., Bresch, D. N., 2023: A Generalized Natural Hazard Risk Modelling Framework for Infrastructure Failure Cascades. Reliability Engineering and System Safety, 234, 109194. https://doi.org/10.1016/j.ress.2023.109194
 
 Ciullo, A., Strobl, E., Meiler, S., Martius, O., and Bresch, D. N., 2023: Increasing countries financial resilience through global catastrophe risk pooling. Nature Communications, 14, 922. https://www.nature.com/articles/s41467-023-36539-4#Sec7
@@ -21,6 +22,8 @@ Stalhandske, Z., Nesa, V., Zumwald, M., Ragettli, M. S., Galimshina, A., Holthau
 Lüthi, Aznar-Siguan, G., Fairless, C., and Bresch, D. N., 2021: Globally consistent assessment of economic impacts of wildfires in CLIMADA v2.2, Geosci. Model Dev., 14, 7175-7187, https://gmd.copernicus.org/articles/14/7175/2021/
 
 Röösli, T., Appenzeller, C., and Bresch, D. N., 2021: Towards operational impact forecasting of building damage from winter windstorms in Switzerland. Meteorol Appl. 28:e2035. http://dx.doi.org/10.1002/met.2035 
+
+Lüthi, S., Aznar-Siguan, G., Fairless, C., and Bresch, D. N.: Globally consistent assessment of economic impacts of wildfires in CLIMADA v2.2, Geosci. Model Dev., 14, 7175–7187, https://doi.org/10.5194/gmd-14-7175-2021, 2021.
 
 Geiger, T., Gütschow, J., Bresch, D. N., Emanuel, K., and Frieler, K., 2021: Double benefit of limiting global warming for tropical cyclone exposure. Nat. Clim. Chang., https://doi.org/10.1038/s41558-021-01157-9 
 
