@@ -35,8 +35,8 @@ prot_dist = 2000
 pop_years = ['2000', '2020']
 hab_years = ['1992', '2020']
 basins = ['AP', 'WP', 'IO', 'SH']
-input = '/Users/sarah/Documents/CLIMADA/coastal_ecosystems/data/' 
-output = '/Users/sarah/Documents/CLIMADA/coastal_ecosystems/results/intermediate/'
+input = '/Users/sarah/Documents/CLIMADA/coastal_ecosystems/data/'   # path to input data 
+output = '/Users/sarah/Documents/CLIMADA/coastal_ecosystems/results/intermediate/'  # path to save results
 
 # create exposure files for both years per basin
 for basin in basins:
