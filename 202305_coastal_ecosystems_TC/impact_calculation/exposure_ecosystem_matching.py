@@ -35,15 +35,15 @@ prot_dist = 2000
 pop_years = ['2000', '2020']
 hab_years = ['1992', '2020']
 basins = ['AP', 'WP', 'IO', 'SH']
-input = '/Users/USERNAME/Documents/CLIMADA/coastal_ecosystems/data/'   # path to input data 
-output = '/Users/USERNAME/Documents/CLIMADA/coastal_ecosystems/results/intermediate/'  # path to save results
+input_path = '/Users/USERNAME/Documents/CLIMADA/coastal_ecosystems/data/'   # path to input data 
+output_path = '/Users/USERNAME/Documents/CLIMADA/coastal_ecosystems/results/intermediate/'  # path to save results
 
 # create exposure files for both years per basin
 for basin in basins:
     for pop_year in pop_years:
         # Load data
         pop_fn = f'wp_{pop_year}_{basin}.shp'
-        pop = gpd.read_file(f'{input}{pop_fn})
+        pop = gpd.read_file(f'{input}{pop_fn}')
 
         # prepare dataframe
         pop['longitude'] = pop['geometry'].x
@@ -62,8 +62,8 @@ for basin in basins:
             # Load data
             rhab_fn = f'rhab_{hab_year}_{basin}.shp'    # ecosystem rank data filename
             pop_fn = f'wp_{pop_year}_{basin}.shp'   # population data filename
-            pop = gpd.read_file(f'{input}{pop_fn})
-            rhab = gpd.read_file(f'{input}{rhab_fn})
+            pop = gpd.read_file(f'{input_path}{pop_fn}')
+            rhab = gpd.read_file(f'{input_path}{rhab_fn}')
 
             # prepare dataframes
             rhab['rhab'] = rhab['Rhab_all'].round().astype(int)   # discrete habitat categories
@@ -85,7 +85,7 @@ for basin in basins:
             join_filter = join_filter.drop_duplicates(subset='exp_index', keep='first')    # drop duplicate matches between population and habitat
 
             # save data
-            join_filter.to_csv(f'{output}exp_rhab_{hab_year}_wp_{pop_year}_{basin}.csv')
+            join_filter.to_csv(f'{output_path}exp_rhab_{hab_year}_wp_{pop_year}_{basin}.csv')
 
 # create global merged habitat and population files
 for pop_year in pop_years:
@@ -98,4 +98,4 @@ for pop_year in pop_years:
 
         # concatenate basins
         basins_all = pd.concat([AP, WP, IO, SH])
-        basins_all.to_csv(f'{output}wp{pop_year}_rhab{hab_year}.csv')
+        basins_all.to_csv(f'{output_path}wp{pop_year}_rhab{hab_year}.csv')
