@@ -5,6 +5,7 @@ This repository contains a folder for each scientific peer-reviewed article that
 ## Published papers (since 2019):
 
 =======
+
 Ortner, G., Bründl, M., Kropf, C. M., Röösli, T., Bühler, Y., and Bresch, D. N.: Large-scale risk assessment on snow avalanche hazard in alpine regions, Nat. Hazards Earth Syst. Sci., https://doi.org/10.5194/nhess-2022-112, 2023. 
 
 Mühlhofer, E., Koks, E. E., Kropf, C. M., Sansavini, G., Bresch, D. N., 2023: A Generalized Natural Hazard Risk Modelling Framework for Infrastructure Failure Cascades. Reliability Engineering and System Safety, 234, 109194. https://doi.org/10.1016/j.ress.2023.109194
