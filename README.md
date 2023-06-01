@@ -14,6 +14,8 @@ Ciullo, A., Strobl, E., Meiler, S., Martius, O., and Bresch, D. N., 2023: Increa
 
 Meiler, S., Vogt, T., Bloemendaal, N., Ciullo, A., Lee, C--Y., Camargo, S., Kerry Emanuel, K., and Bresch, D. N., 2023: Intercomparison of regional loss estimates from global synthetic tropical cyclone models. Nature Communications, 13, 6156. https://www.nature.com/articles/s41467-022-33918-1
 
+Kropf, C., Ciullo, A., Otth, L., Meiler, S., Rana, A., Schmid, E., McCaughey, J. W., and Bresch, D. N., 2022: Uncertainty and sensitivity analysis for probabilistic weather and climate-risk modelling: an implementation in CLIMADA v.3.1.0. Geosci. Model Dev., 15, 7177-7201, https://doi.org/10.5194/gmd-15-7177-2022 
+
 Rana, A., Zhu, Q., Detken, A., Whalley, K., and Castet, C.: Strengthening climate-resilient development and transformation in Viet Nam, Climatic Change, 170, 4, https://doi.org/10.1007/s10584-021-03290-y, 2022.
 
 Blass, R., Kropf, C. M., Mahlstein, I., and Bresch, D. N., 2022: Automatic-generation-of-winter-storm-warnings. Technical Report MeteoSwiss No.282, MeteoSwiss, 2022.[link](https://www.meteoschweiz.admin.ch/home/service-und-publikationen/publikationen.subpage.html/de/data/publications/2022/6/automatic-generation-of-winter-storm-warnings.html)
