@@ -1,3 +1,8 @@
+"""
+Module containing functions to calculate impact per hazard category
+Author: Sarah Hülsen
+"""
+
 import copy
 import pandas as pd
 from climada.engine import Impact
