@@ -1,3 +1,8 @@
+"""
+Module containing functions to create impact functions per hazard category
+Author: Sarah Hülsen
+"""
+
 import numpy as np
 from climada.entity import ImpactFunc, ImpactFuncSet
 
