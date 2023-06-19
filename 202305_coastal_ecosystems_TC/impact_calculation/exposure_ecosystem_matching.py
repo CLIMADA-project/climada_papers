@@ -19,7 +19,7 @@ pop_years = ['2000', '2020']
 hab_years = ['1992', '2020']
 basins = ['AP', 'WP', 'IO', 'SH']
 input_path = '../data/'   # path to input data 
-output_path = '../'  # path to save results
+output_path = '../results/intermediate/'  # path to save results
 
 # create exposure files for both years per basin
 for basin in basins:
