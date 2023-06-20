@@ -6,7 +6,7 @@ Large-scale risk assessment on snow avalanche hazard in alpine regions
 
 Gregor Ortner, Michael Bründl, Chahan M. Kropf, Thomas Röösli, Yves Bühler, and David N. Bresch 
 
-[https://doi.org/10.5194/nhess-2022-112](https://doi.org/10.5194/nhess-2022-112)
+[https://doi.org/10.5194/nhess-23-2089-2023](https://doi.org/10.5194/nhess-23-2089-2023)
 
 Contact: Gregor Ortner
 
