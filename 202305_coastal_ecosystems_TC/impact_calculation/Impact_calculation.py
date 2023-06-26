@@ -3,6 +3,8 @@ Script to create calculate impact for given population exposure
 Author: Sarah Hülsen
 """
 
+from pathlib import Path
+
 from climada.entity import Exposures
 from climada.hazard import Hazard
 from modules.CatImpactFuncTC import cat_impf_set
@@ -14,8 +16,8 @@ year = '2020'   # population exposure year (e.g. 2000 or 2020)
 scenario = 'hist_STORM'  # current climate or SSP585 TC hazard (hist_STORM or clim_STORM_{model})
 
 # Data paths
-input_path = '../results/intermediate/'
-output_path = '../results/final/'
+input_path = Path('../results/intermediate/')
+output_path = Path('../results/final/')
 haz_fn = f'TC_{basin}_0300as_STORM.hdf5'
 pop_fn = f'exp_wp_{basin}_{year}.hdf5'
 
