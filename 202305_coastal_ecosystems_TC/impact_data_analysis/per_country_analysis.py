@@ -3,6 +3,7 @@ Script to perform country-level analysis of impact data
 Author: Sarah Hülsen
 """
 
+from pathlib import Path
 import pandas as pd
 import copy
 
@@ -13,8 +14,8 @@ pop_data = 'wp'
 pop_yr = '2020'
 rhab_yr = '2020'
 
-# data paths
-path = f'../results/final/'
+# data path
+path = Path('../results/final/')
 
 ## for population impacts (without rhab)
 # load impact data
