@@ -3,11 +3,12 @@ Script to perform regional analysis of impact data
 Author: Sarah Hülsen
 """
 
+from pathlib import Path
 import pandas as pd
 import copy
 
-path = f'../results/final/'
-region_path = '../data/'
+path = Path('../results/final/')
+region_path = Path('../data/')
 
 ## Split dataframes containing global impact and region information into individual df for each region
 # dictionary with regions
