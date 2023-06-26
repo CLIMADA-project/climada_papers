@@ -3,6 +3,7 @@ Script to match impact data with shapefile containing regions
 Author: Sarah Hülsen
 """
 
+from pathlib import Path
 import pandas as pd
 import geopandas as gpd
 
@@ -11,8 +12,8 @@ proj_eck4 = '+proj=eck4 +lon_0=0 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs'  
 
 
 for year in years:
-    path = f'../results/final/'
-    region_path = '../data/'
+    path = Path('../results/final/')
+    region_path = Path('../data/')
     # load geodataframe containing regions
     reg = gpd.read_file(f'{region_path}UN_regions_custom.gpkg')
 
