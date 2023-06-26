@@ -3,6 +3,7 @@ Script to analyse impact data on a global level
 Author: Sarah Hülsen
 """
 
+from pathlib import Path
 import pandas as pd
 import copy
 import numpy as np
@@ -15,8 +16,8 @@ pop_data = 'wp'
 rhab_years = ['1992',
               '2020']
 
-path = f'../results/final/'
-rhab_path = '../results/intermediate/'
+path = Path('../results/final/')
+rhab_path = Path('../results/intermediate/')
 
 # Merging population impact data (per exposure points) for all basins
 for pop_yr in pop_years:
