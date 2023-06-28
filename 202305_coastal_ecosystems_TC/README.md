@@ -4,6 +4,8 @@ These scripts can be used to reproduce the results from the paper
 
 "Global coastal protection benefits of ecosystems - past, present, and under climate change"
 
+A preprint of the paper is available at https://doi.org/10.31223/X59Q26 .
+
 Hülsen, S.; McDonald, R.I.; Chaplin-Kramer, R.; Bresch, D.N.; Sharp, R.; Worthington, T.; Kropf, C.M.
 
 See table below for an overview of input data. 
