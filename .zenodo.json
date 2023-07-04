@@ -1,0 +1,53 @@
+
+    "description": "<p>Addition of the scripts for the paper \"Global coastal protection benefits of ecosystems - past, present, and under climate change\".</p>", 
+    "license": "other-open", 
+    "title": "CLIMADA-project/climada_papers: Coastal Ecosystems TC", 
+    "version": "v3.0", 
+    "upload_type": "software", 
+    "publication_date": "2023-06-30", 
+    "creators": [
+        {
+            "affiliation": "ETH Z\u00fcrich", 
+            "name": "Sarah Hülsen"
+        }, 
+        {
+            "affiliation": "The Nature Conservancy", 
+            "name": "Robert I. McDonald"
+        },
+		{
+            "affiliation": "Global Science, WWF", 
+            "name": "Rebecca Chaplin-Kramer"
+        },
+        {
+            "affiliation": "ETH Zurich", 
+            "name": "David N. Bresch"
+        },
+		{
+            "affiliation": "SPRING Innovate", 
+            "name": "Richard Sharp"
+        },
+		{
+            "affiliation": "University of Cambridge", 
+            "name": "Thomas Worthington"
+        },
+		{
+            "affiliation": "ETH Z\u00fcrich", 
+            "name": "Chahan M. Kropf"
+        },  
+
+    ], 
+    "access_right": "open", 
+    "related_identifiers": [
+        {
+            "scheme": "url", 
+            "identifier": "https://github.com/CLIMADA-project/climada_papers/tree/v3.0", 
+            "relation": "isSupplementTo"
+        }, 
+        {
+            "scheme": "doi", 
+            "identifier": "10.31223/X59Q26", 
+            "relation": "isDocumentedBy",
+            "resource_type": "publication-article"
+        }
+    ]
+}
