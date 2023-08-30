@@ -1,18 +1,19 @@
 # An open-source radar-based hail damage model for buildings and cars
 
 The scripts here reproduce the main results of the paper:
-Schmid T., Portmann R., Villiger L. Schröer K., Bresch D. N. An open-source radar-based hail damage model for buildings and cars, Natural Hazards and Earth System Sciences (2023+)
+Schmid T., Portmann R., Villiger L., Schröer K., Bresch D. N. An open-source radar-based hail damage model for buildings and cars, Natural Hazards and Earth System Sciences (2023+)
 
 Publication status: submitted
+
 Contact: [Timo Schmid](timo.schmid@usys.ethz.ch)
 
 ## Content
 
-Notebooks/
+notebooks/
 
 Jupyter notebooks to reproduce figures that appear in the paper
 
-Scripts/
+scripts/
 
 Python scripts used to process data save intermediate results. In particular:
 * calibration_per_exposure.py performs the spatially explicit calibration of vulnerability functions and saved impact function parameters and produces impact function plots.
