@@ -9,7 +9,7 @@ Contact: [Timo Schmid](timo.schmid@usys.ethz.ch)
 
 ## Content
 
- ### notebooks/
+### notebooks/
 
 Jupyter notebooks to reproduce figures that appear in the paper
 
@@ -25,3 +25,11 @@ Python scripts used to process data save intermediate results. In particular:
 ### scClim/
 
 Contains functions used for data pre-processing, calibration, visualizing, as well as utility functions and constants.
+
+## Requirements
+Requires:
+* Python 3.9+ environment (best to use conda for CLIMADA repository)
+* _CLIMADA_ repository version 3.3+:
+        https://wcr.ethz.ch/research/climada.html
+        https://github.com/CLIMADA-project/climada_python
+* Exposure and damage data for the calibration. The hail damage data used in the paper are not public and only available within the [scClim](https://scclim.ethz.ch/) project. Calculation could be repeated with other user-provided data.

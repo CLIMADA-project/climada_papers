@@ -105,7 +105,6 @@ def correct_impact_dates(
         max_ind = event_index+max(np.array(day_adj_arr)[date_exists])+1
         min_ind = event_index+min(np.array(day_adj_arr)[date_exists])
         index_day0 = np.where(np.array(day_adj_arr)[date_exists]==0)[0][0] #make sure to get correct day0 index
-        # event_indices = np.arange(event_index-2,event_index+2+1)[date_exists]
 
         #Get Hazard info (PH,POH,MESHS) for neighbouring days too
         now_PH=haz_PH.intensity[min_ind:max_ind,dmg_gdf.centr_HL].toarray()
@@ -164,16 +163,6 @@ def correct_impact_dates(
         #calculate how many entries are moved to previous day
         prev_day = [date-dt.timedelta(days=1) for date in dmg_gdf['date_dt']]
         moved_to_previous_day += sum(np.array(prev_day)==dmg_gdf['new_date_dt'])
-        
-        # # Remaining plot functions
-        # if (plot and dmg_gdf.shape[0]>100):# or dmg_gdf.shape[0]>1000:
-        #     plot_dBZ_dates = ['23062002','20062021','21062021','12072021']
-        #     fig = sc.plot_funcs.plot_pre_process(exp_dmg,date,poh,haz_poh,ds_PH,
-        #     event_index,plot_dBZ_dates,poh_level=param_dict['poh_level'],min_day=param_dict['min_day'], 
-        #     max_day=param_dict['max_day'],extent=ZRH_EXTENT) 
-        #     fig.savefig(out_dir + '/explorative/pre_process/v%d_%s.png'%(version_id,dt.datetime.strftime(date, "%Y-%m-%d")),
-        #                 dpi=250, bbox_inches='tight') 
-        #     plt.close(fig)
         
         #Add values to dataframe 
         if param_dict['delete_nonPOH_dmgs']:
