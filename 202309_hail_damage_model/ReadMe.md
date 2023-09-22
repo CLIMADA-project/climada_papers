@@ -1,13 +1,24 @@
 # An open-source radar-based hail damage model for buildings and cars
 
 The scripts here reproduce the main results of the paper:
-Schmid T., Portmann R., Villiger L., Schröer K., Bresch D. N. An open-source radar-based hail damage model for buildings and cars, Natural Hazards and Earth System Sciences (2023+)
+Schmid T., Portmann R., Villiger L., Schröer K., Bresch D. N. (2023+) An open-source radar-based hail damage model for buildings and cars, Natural Hazards and Earth System Sciences, https://doi.org/10.5194/nhess-2023-158 
 
 Publication status: submitted
 
 Contact: [Timo Schmid](timo.schmid@usys.ethz.ch)
 
 ## Content
+
+### test_notebook.ipynb
+Jupyter notebook that runs through the calibration and model evaluation with a test dataset. The data is artificially created, but has the same format as the original data.
+The notebook contains the relevant code from 2 scripts that are used in the calibration with the real data: *calibration_main.py* and *hail_main.py*.
+
+To perform a calibration as in this publication, 3 main dataset are needed:
+* **Hazard**: Gridded data of a natural hazard. For format see *test_data/test_meshs.nc*
+* **Exposure**: Tabular data of Exposure values and coordinates.  For format see *test_data/test_exp.nc*
+* **Damage**: Tabular data of reported damages **with spatial coordinates**. For format see *test_data/test_dmg.nc*
+
+The actual data used in the paper cannot be shared as it is from private insurance companies and the Swiss national weather service. The scripts in the remaining folders reproduce the results and figures from the paper with the input data as described in the [publication]( https://doi.org/10.5194/nhess-2023-158).
 
 ### ./notebooks/
 

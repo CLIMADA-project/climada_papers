@@ -19,7 +19,8 @@ from climada.entity import ImpfTropCyclone, ImpactFunc
 
 
 def fit_emanuel_impf_to_emp_data(emp_df,pbounds,opt_var='MDR',options=None,
-                                 optimizer='Nelder-Mead',plot=True,param_start=None):
+                                 optimizer='Nelder-Mead',plot=True,param_start=None,
+                                 verbose=True):
     """Fit emanuel-type impact function to empirical data
 
     Args:
@@ -91,7 +92,7 @@ def fit_emanuel_impf_to_emp_data(emp_df,pbounds,opt_var='MDR',options=None,
             
         elif optimizer == 'Nelder-Mead':
             cons = None
-            options={'xtol': 1e-5, 'disp': True, 'maxiter': 500}
+            options={'disp': verbose, 'maxiter': 500}
         res = minimize(mse_x, x0,
                         bounds=bounds,
                         constraints=cons,
@@ -100,7 +101,8 @@ def fit_emanuel_impf_to_emp_data(emp_df,pbounds,opt_var='MDR',options=None,
 
         optimizer = res
         param_dict_result = dict(zip(param_dict.keys(), res.x))
-        print(param_dict_result)
+        if verbose:
+            print(param_dict_result)
         impf = init_impf('emanuel_HL',param_dict_result,emp_df.index.values)[0]
 
         if plot:

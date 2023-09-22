@@ -6,6 +6,5 @@ from .calibration import *
 from .pre_process import *
 from .calib_opt import *
 from .regrid import *
-from .opera import *
 from .crowd_process import *
 from .verification import *
