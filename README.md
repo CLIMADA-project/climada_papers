@@ -4,9 +4,33 @@ This repository contains a folder for each scientific peer-reviewed article that
 
 ## Published papers (since 2019):
 
+=======
+
+Hülsen, S.; McDonald, R.I.; Chaplin-Kramer, R.; Bresch, D.N.; Sharp, R.; Worthington, T.; Kropf, C.M.: Global coastal protection benefits of ecosystems - past, present, and under climate change, EarthArXiv, https://doi.org/10.31223/X59Q26 
+
+Ortner, G., Bründl, M., Kropf, C. M., Röösli, T., Bühler, Y., and Bresch, D. N.: Large-scale risk assessment on snow avalanche hazard in alpine regions, Nat. Hazards Earth Syst. Sci., https://doi.org/10.5194/nhess-2022-112, 2023. 
+
+Mühlhofer, E., Koks, E. E., Kropf, C. M., Sansavini, G., Bresch, D. N., 2023: A Generalized Natural Hazard Risk Modelling Framework for Infrastructure Failure Cascades. Reliability Engineering and System Safety, 234, 109194. https://doi.org/10.1016/j.ress.2023.109194
+
+Ciullo, A., Strobl, E., Meiler, S., Martius, O., and Bresch, D. N., 2023: Increasing countries financial resilience through global catastrophe risk pooling. Nature Communications, 14, 922. https://www.nature.com/articles/s41467-023-36539-4#Sec7
+
+Meiler, S., Vogt, T., Bloemendaal, N., Ciullo, A., Lee, C--Y., Camargo, S., Kerry Emanuel, K., and Bresch, D. N., 2023: Intercomparison of regional loss estimates from global synthetic tropical cyclone models. Nature Communications, 13, 6156. https://www.nature.com/articles/s41467-022-33918-1
+
+Kropf, C., Ciullo, A., Otth, L., Meiler, S., Rana, A., Schmid, E., McCaughey, J. W., and Bresch, D. N., 2022: Uncertainty and sensitivity analysis for probabilistic weather and climate-risk modelling: an implementation in CLIMADA v.3.1.0. Geosci. Model Dev., 15, 7177-7201, https://doi.org/10.5194/gmd-15-7177-2022 
+
 Rana, A., Zhu, Q., Detken, A., Whalley, K., and Castet, C.: Strengthening climate-resilient development and transformation in Viet Nam, Climatic Change, 170, 4, https://doi.org/10.1007/s10584-021-03290-y, 2022.
 
 Blass, R., Kropf, C. M., Mahlstein, I., and Bresch, D. N., 2022: Automatic-generation-of-winter-storm-warnings. Technical Report MeteoSwiss No.282, MeteoSwiss, 2022.[link](https://www.meteoschweiz.admin.ch/home/service-und-publikationen/publikationen.subpage.html/de/data/publications/2022/6/automatic-generation-of-winter-storm-warnings.html)
+
+Blass, Robert. Coupling Oasis LMF with CLIMADA. ETH Zurich; Zurich, 2021. https://doi.org/10.3929/ethz-b-000480061. Tutorial (and all the code) here: https://github.com/CLIMADA-project/climada_petals/blob/feature/ktools/doc/tutorial/ktools_examples.ipynb
+
+Stalhandske, Z., Nesa, V., Zumwald, M., Ragettli, M. S., Galimshina, A., Holthausen, N., Röösli, M., and Bresch, D. N., 2022: Projected Impact of Heat on Mortality and Labour Productivity under Climate Change in Switzerland. Nat. Hazards Earth Syst. Sci., 22, 2531-2541, https://doi.org/10.5194/nhess-22-2531-2022 
+
+Lüthi, Aznar-Siguan, G., Fairless, C., and Bresch, D. N., 2021: Globally consistent assessment of economic impacts of wildfires in CLIMADA v2.2, Geosci. Model Dev., 14, 7175-7187, https://gmd.copernicus.org/articles/14/7175/2021/
+
+Röösli, T., Appenzeller, C., and Bresch, D. N., 2021: Towards operational impact forecasting of building damage from winter windstorms in Switzerland. Meteorol Appl. 28:e2035. http://dx.doi.org/10.1002/met.2035 
+
+Lüthi, S., Aznar-Siguan, G., Fairless, C., and Bresch, D. N.: Globally consistent assessment of economic impacts of wildfires in CLIMADA v2.2, Geosci. Model Dev., 14, 7175–7187, https://doi.org/10.5194/gmd-14-7175-2021, 2021.
 
 Geiger, T., Gütschow, J., Bresch, D. N., Emanuel, K., and Frieler, K., 2021: Double benefit of limiting global warming for tropical cyclone exposure. Nat. Clim. Chang., https://doi.org/10.1038/s41558-021-01157-9 
 
@@ -32,4 +56,4 @@ Aznar-Siguan, G. and Bresch, D. N., 2019: CLIMADA v1: a global weather and clima
 
 ## Forthcoming papers & publications in preparation:
 
-Röösli, T., Appenzeller, C., and Bresch, D. N., 2021: Building damage impact forecasting for winter windstorms in Switzerland, accepted. 
+Please check www.wcr.ethz.ch
