@@ -11,13 +11,13 @@ FILE_NAME = 'tropical_cyclone_{n_tracks}synth_tracks_150arcsec_{scenario}_{count
 
 def main(years_list=None, scenarios=None, n_tracks=10, replace=True):
     if years_list is None:
-        years_list = [2040, 2060, 2080]
+        years_list = [2040, 2060]
     if scenarios is None:
-        scenarios =  ['rcp26','rcp45','rcp60','rcp85']
+        scenarios =  ['rcp85']
     for scenario in scenarios:
         for year in years_list:
             tracks_str = "".join([str(n_tracks), 'synth_tracks'])
-            path0 = os.path.join(DATA_DIR, 'tropical_cyclones')
+            path0 = os.path.join(DATA_DIR, 'tropical_cyclones_v3')
             path = os.path.join(path0, 'global', tracks_str, scenario, str(year))
             for file in os.listdir(path):
                 file = os.path.join(path, file)

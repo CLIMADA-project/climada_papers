@@ -1,12 +1,9 @@
 import os
 from climada.hazard import Centroids
-import numpy as np
-import geopandas as gpd
 import shapely
 from shapely.ops import unary_union
 import shapely.geometry
 import cartopy.io.shapereader as shpreader
-from config import DATA_DIR
 from create_log_file import log_msg
 
 

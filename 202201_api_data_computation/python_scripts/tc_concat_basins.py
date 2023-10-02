@@ -15,16 +15,16 @@ FILE_NAME_GLOBAL_HIST = 'tropical_cyclone_{n_tracks}synth_tracks_150arcsec_globa
 
 def main(climate_scenarios=None, n_tracks=10, years=None):
     if climate_scenarios is None:
-        climate_scenarios = ['rcp26', 'rcp60', 'rcp45', 'rcp85']
+        climate_scenarios = ['rcp85']
     tracks_str = "".join([str(n_tracks), 'synth_tracks'])
     for scenario in climate_scenarios:
         if years is None:
-            years = ['2040', '2060', '2080']
+            years = ['2040', '2060']
         for year in years:
             log_msg(f"Starting concatenating basins for year {year} and scenario {scenario}\n", LOG_FILE)
 
             tc = TropCyclone()
-            path0 = os.path.join(DATA_DIR, 'tropical_cyclones/genesis_basin/',
+            path0 = os.path.join(DATA_DIR, 'tropical_cyclones_v3/genesis_basin/',
                                  tracks_str)
 
             path = os.path.join(path0, 'NI')
@@ -34,6 +34,7 @@ def main(climate_scenarios=None, n_tracks=10, years=None):
             else:
                 tc_file = FILE_NAME.format(n_tracks=n_tracks, basin='NI', year=year, scenario=scenario)
                 tc_file_path = os.path.join(path, scenario, year, tc_file)
+
             tc.read_hdf5(tc_file_path)
             max_event_id = np.max(tc.event_id)
             for basin in BASINS:
@@ -43,6 +44,10 @@ def main(climate_scenarios=None, n_tracks=10, years=None):
                 else:
                     tc2_file = FILE_NAME.format(n_tracks=n_tracks, basin=basin, year=year, scenario=scenario)
                     tc2_file_path = os.path.join(path0, basin, scenario, year, tc2_file)
+                    all_files = os.listdir(os.path.join(path0, basin, scenario, year))
+                    if len(all_files) > 1:
+                        raise ValueError("There are several files in the directory with those characteristics")
+
                 tc2 = TropCyclone()
                 tc2.read_hdf5(tc2_file_path)
                 tc2.event_id = tc2.event_id+max_event_id #keep same event ids as in the basin files
@@ -52,7 +57,7 @@ def main(climate_scenarios=None, n_tracks=10, years=None):
                 tc_file = FILE_NAME_GLOBAL.format(n_tracks=n_tracks, scenario=scenario, year=year)
                 if scenario == 'historical':
                     tc_file = FILE_NAME_GLOBAL_HIST.format(n_tracks=n_tracks, scenario=scenario, year=year)
-                path = os.path.join(DATA_DIR, 'tropical_cyclones/global/',
+                path = os.path.join(DATA_DIR, 'tropical_cyclones_v3/global/',
                                     tracks_str, scenario, year)
 
                 isExist = os.path.exists(path)

@@ -1,9 +1,10 @@
 #!/bin/bash
-PYTHON_SCRIPT=$1
-. ~/.bashrc
-. ~/venv/climada_dev/bin/activate
-for basin in "SI" "NI" "NA" "SP" "WP" "SA" "EP"
+#SBATCH -n 1
+#SBATCH --cpus-per-task=1
+#SBATCH --time=4:00:00
+#SBATCH --mem-per-cpu=10000
 
+for basin in "NI" "SI" "NA" "SP" "WP" "SA" "EP"
 do
 
         sleep_time=$((($RANDOM % 5) + 5))
@@ -14,6 +15,6 @@ do
 
         echo $basin
 
-        bsub -R "rusage[mem=20000]" python3 ../python_scripts/compute_tc_tracks.py $basin 0  ''
+        python3 ../python_scripts/compute_tc_tracks.py $basin 10  ''
 
 done

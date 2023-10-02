@@ -1,4 +1,4 @@
-#!/bin/bash
+##!/bin/bash
 PYTHON_SCRIPT=$1
 . ~/.bashrc
 . ~/venv/climada_dev/bin/activate
@@ -16,3 +16,4 @@ do
         bsub -W 4:00 -R "rusage[mem=40000]" python3 ../python_scripts/compute_river_flood.py $year $year2 $rcp ''
 done
 done
+

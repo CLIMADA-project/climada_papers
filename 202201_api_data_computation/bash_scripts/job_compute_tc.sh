@@ -2,7 +2,7 @@
 PYTHON_SCRIPT=$1
 . ~/.bashrc
 . ~/venv/climada_dev/bin/activate
-for basin in "NI" "SI" "NA" "SP" "WP" "SA" "EP"
+for basin in "WP" #"SA" "SI" #"EP" #"NI" "SI" "NA" "SP"
 
 do
 
@@ -14,6 +14,6 @@ do
 
         echo $basin
 
-        bsub -n 1 -W 20:00 -R "rusage[mem=100000]" python3 ../python_scripts/compute_tc_genesis_basin.py $basin 0  ''
+        sbatch -n 1 --cpus-per-task=1 --time=20:00:00 --mem-per-cpu=150000 --wrap="python3 ../python_scripts/compute_tc_genesis_basin.py $basin 10"
 
 done
