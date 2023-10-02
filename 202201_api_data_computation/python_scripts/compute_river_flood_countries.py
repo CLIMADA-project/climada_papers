@@ -8,6 +8,22 @@ from create_log_file import log_msg
 
 
 def main(years=None, scenario='rcp26', replace=True):
+    """
+     Process river flood hazard data from a global scale down to individual countries.
+
+     The function reads the global river flood hazard data for a specified scenario and years,
+     then filters and saves the hazard data for each individual country.
+
+     Parameters:
+         years (list of str, optional): List of start and end year. Default is ['2010', '2030'].
+         scenario (str, optional): Scenario to consider (e.g., 'rcp26'). Default is 'rcp26'.
+         replace (bool, optional): If True, existing country-specific river flood hazard
+                                   files will be overwritten. Default is True.
+
+     Returns:
+         None
+     """
+
     LOG_FILE = "progress_make_river_flood_countries.txt"
 
     if years is None:

@@ -15,6 +15,11 @@ LOG_FILE = "progress_make_STORM_countries.txt"
 
 
 def main(replace=True):
+    """
+            Process STORM TC hazard data from a global scale down to individual countries.
+
+            The function reads the global hazard data and saves the hazard data for each individual country.
+        """
     for scenario in ['historical', 'RCP85']:
         log_msg(f"Started computing floods for scenario {scenario}\n", LOG_FILE)
         path = os.path.join(PATH_STORM_global, 'global', scenario)

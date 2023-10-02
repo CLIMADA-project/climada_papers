@@ -19,6 +19,16 @@ LOG_FILE = "progress_make_litpop.txt"
 
 
 def make_litpop(exposure):
+    """
+    Create LitPop exposures at a country level and then concatenate them to create a global exposure.
+
+    The function reads data, computes LitPop exposures for each country, and then combines
+    them to create a global exposure dataset. The results are saved to predefined output directories.
+
+    Parameters:
+        exposure (str): Type of exposure to consider (e.g., 'pop', 'default', 'assets').
+
+    """
     exposures_list = []
     for country in countries:
         try:

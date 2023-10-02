@@ -10,6 +10,20 @@ FILE_NAME = 'tropical_cyclone_{n_tracks}synth_tracks_150arcsec_{scenario}_{count
 
 
 def main(years_list=None, scenarios=None, n_tracks=10, replace=True):
+  """
+    Process tropical cyclone hazard data from a global scale down to individual countries.
+
+    The function reads the global tropical cyclone hazard data, filters and saves the hazard
+    data for each individual country based on the provided scenarios and years.
+
+    Parameters:
+        years_list (list of int, optional): List of years to consider. Default is [2040, 2060].
+        scenarios (list of str, optional): List of scenarios to consider. Default is ['rcp85'].
+        n_tracks (int, optional): Number of synthetic tracks. Default is 10.
+        replace (bool, optional): If True, existing country-specific tropical cyclone hazard
+                                  files will be overwritten. Default is True.
+
+    """
     if years_list is None:
         years_list = [2040, 2060]
     if scenarios is None:

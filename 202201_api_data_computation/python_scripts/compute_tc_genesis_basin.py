@@ -11,9 +11,21 @@ basins_centroids = {'SI': (0, 140, -60, 0), 'SP': (100, -120, -60, 0),
                     'EP': (100, -70, 0, 60)}
 
 OUT_FILE_NAME = 'tropical_cyclone_{tracks}_150arcsec_genesis_{basin}_1980_2020.hdf5'
-from pathos.pools import ProcessPool as Pool
 
 def main(basin='EP', n_tracks=10):
+    """
+    Create a TropCyclone hazard set based on TCTracks for a specific basin. Should be ran
+    after compute_tc_tracks.py
+
+    The function reads the TC tracks for the specified basin, calculates the hazard,
+    and saves the TropCyclone hazard set to an output file.
+
+    Parameters:
+        basin (str, optional): Name of the TC basin. Default is 'EP'.
+        n_tracks (int, optional): Number of synthetic tracks to consider. Default is 10.
+
+    """
+
     client = Client()
     LOG_FILE = "progress_make_tc_basin.txt"
     log_msg(f"Starting computing TC for basin {basin}.\n", LOG_FILE)
@@ -25,12 +37,7 @@ def main(basin='EP', n_tracks=10):
 
     tc_tracks = TCTracks.from_netcdf(os.path.join(DATA_DIR, "tracks", str(n_tracks), basin))
     centroids = centroids.select(extent=tc_tracks.get_extent(5))
-    pool = Pool()
     tc_haz = TropCyclone.from_tracks(tc_tracks, centroids, pool=None)
-    # pool.close()
-    # pool.join()
-    # pool.clear()
-
     tc_haz.check()
     path = os.path.join(path0, "historical")
     isExist = os.path.exists(path)

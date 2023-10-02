@@ -8,6 +8,11 @@ from create_log_file import log_msg
 from climada.util.api_client import Client
 
 def main(replace=True):
+    """
+        Process wildfire hazard data from a global scale down to individual countries.
+
+        The function reads the global wildfire hazard data and saves the hazard data for each individual country.
+    """
     client = Client()
     for scenario in ['historical']:
         path0 = os.path.join('/nfs/n2o/wcr/szelie/CLIMADA_api_data/wildfire')

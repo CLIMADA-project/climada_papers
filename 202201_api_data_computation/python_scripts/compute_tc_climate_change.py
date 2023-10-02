@@ -11,6 +11,18 @@ LOG_FILE = "compute_tc_cc.txt"
 
 
 def main(basin='EP', climate_scenarios=None, future_years=None, n_tracks=10):
+    """
+    Compute climate change scenarios for tropical cyclones for specified basins, scenarios, and years.
+
+    The function reads the historical tropical cyclone hazard data, applies the climate change scenarios,
+    and saves the modified hazard data.
+
+    Parameters:
+        basin (str, optional): Name of the tropical cyclone genesis basin. Default is 'EP'.
+        climate_scenarios (list of int, optional): List of climate scenarios (RCPs) to consider. Default is [85].
+        future_years (list of int, optional): List of years to consider for the climate change scenarios. Default is [2040, 2060, 2080].
+        n_tracks (int, optional): Number of synthetic tracks. Default is 10.
+    """
     if future_years is None:
         future_years = [2040, 2060, 2080]
     if climate_scenarios is None:

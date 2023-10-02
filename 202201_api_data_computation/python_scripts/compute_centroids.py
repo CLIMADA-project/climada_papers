@@ -9,6 +9,24 @@ from create_log_file import log_msg
 
 def make_base_centroids(out_file_path, bounds=(-180, -60, 180, 60), res_land_arcsec=150, res_ocean_arcsec=1800,
                         land_buffer=0.1):
+    """
+    Create centroids for a given bounding box, with given resolution for land and ocean, and then combine both.
+
+    The function reads the geographical boundaries, creates centroids for both land and ocean,
+    combines them, computes additional attributes, and saves the centroids to an output file.
+
+    Parameters:
+        out_file_path (str): Path for saving the output centroids.
+        bounds (tuple, optional): Boundaries for creating centroids in the format (lon_min, lat_min, lon_max, lat_max).
+                                  Default is (-180, -60, 180, 60).
+        res_land_arcsec (int, optional): Resolution for land in arcseconds. Default is 150.
+        res_ocean_arcsec (int, optional): Resolution for ocean in arcseconds. Default is 1800.
+        land_buffer (float, optional): Buffer around land in degrees, to still consider the land resolution.
+        Default is 0.1.
+
+    Returns:
+        None
+    """
     LOG_FILE = "progress_make_centroids.txt"
     log_msg(f"Started with bounds {bounds}, resolution on land {res_land_arcsec},"
             f"and resolution on ocean {res_ocean_arcsec}\n", LOG_FILE)
