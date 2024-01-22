@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Collection of functions for reading and processing data for the use in Climada 
+Collection of functions for reading and processing data for the use in Climada
 in the framework of the scClim project (scclim.ethz.ch)
  - reading hazard data from radar
  - reading exposure data from .csv/.gpkg files
@@ -15,8 +15,6 @@ import sys
 import xarray as xr
 from climada.entity import Exposures, ImpactFunc, ImpactFuncSet
 from climada.hazard import Hazard
-from climada.hazard.tag import Tag
-from climada.entity.tag import Tag as E_tag
 from climada import CONFIG
 from scipy import sparse
 import warnings
@@ -29,11 +27,11 @@ sys.path.append(str(CONFIG.local_data.func_dir))
 from scClim.constants import BAUINDEX,BAUJAHR_DICT
 
 # Hazard
-def hazard_from_radar(files, varname='MESHS', time_dim='time', forecast_init=None, 
+def hazard_from_radar(files, varname='MESHS', time_dim='time', forecast_init=None,
                       ensemble_dim=None, spatial_dims = None, country_code=None,
-                      extent=None, subdaily = False, month=None, ignore_date=False, 
+                      extent=None, subdaily = False, month=None, ignore_date=False,
                       n_year_input=None, get_xarray=False):
-    """Create a new Hail hazard from MeteoCH radar data 
+    """Create a new Hail hazard from MeteoCH radar data
     or COSMO HAILCAST ouput (single- or multi-member)
 
     Parameters
@@ -72,7 +70,7 @@ def hazard_from_radar(files, varname='MESHS', time_dim='time', forecast_init=Non
     if type(files) == xr.core.dataset.Dataset:
         netcdf = files
     else:
-        netcdf = xr.open_mfdataset(files, concat_dim=time_dim, combine='nested', 
+        netcdf = xr.open_mfdataset(files, concat_dim=time_dim, combine='nested',
                                    coords='minimal')
 
     #select month of the year if given
@@ -97,7 +95,7 @@ def hazard_from_radar(files, varname='MESHS', time_dim='time', forecast_init=Non
 
     #Select variable and set units
     varname_xr = varname #by default the varname corresponds to the xr name
-    if varname == 'MESHS' or varname == 'MESHS_4km':
+    if varname in ['MESHS', 'MESHS_4km', 'MESHS_opt_corr']:
         varname_xr = 'MZC'
         unit = 'mm'
     elif varname == 'MESHSdBZ' or varname == 'MESHSdBZ_p3':
@@ -198,9 +196,9 @@ def hazard_from_radar(files, varname='MESHS', time_dim='time', forecast_init=Non
     #set correct event_name, frequency, date
     haz.event_name = event_name
     haz.frequency = np.ones(n_ev)/n_years
-    if ignore_date: 
+    if ignore_date:
         haz.date = np.array([], int)
-    if ensemble_dim: 
+    if ensemble_dim:
         haz.date = np.array([pd.to_datetime(ts).toordinal() for ts in netcdf[time_dim].values])
 
     netcdf.close()
@@ -282,7 +280,7 @@ def read_MFZ_dmg(gdf_path,years=None):
     imp_out = gdf_to_imp(gdf,id_col='POLNR',exp_val_col='VEHVALUE')
     return(imp_out)
 
-def read_gvz_exposure(csv_file,on_grid = False,exp_n_assets=False, 
+def read_gvz_exposure(csv_file,on_grid = False,exp_n_assets=False,
                       exterior_only=False,crs = 'EPSG:2056'):
     """Read CSV file
 
@@ -320,8 +318,8 @@ def read_gvz_exposure(csv_file,on_grid = False,exp_n_assets=False,
         if exterior_only:
             # values for all cantons (see grid_cantonal_data.py (5.4.2023))
             # 0.27 is empirical powerlaw, 1560 corresponds to 99% of damages below new estimate
-            gvz_df['value'] = np.minimum(gvz_df['value'],1560*gvz_df['value']**0.27) 
-            # Note that in theory the scaling from volume to surface would be 
+            gvz_df['value'] = np.minimum(gvz_df['value'],1560*gvz_df['value']**0.27)
+            # Note that in theory the scaling from volume to surface would be
             # a powerlaw with 0.66 as exponent (2/3)
     gdf = gpd.GeoDataFrame(gvz_df, geometry = gpd.points_from_xy(gvz_df[x_coord],
                                                                  gvz_df[y_coord],
@@ -348,7 +346,7 @@ def read_gvz_dmg(csv_file, cant_insurance ,min_dmg = 0,w_rel_dmg=False,
     cant_insurance : str
         Name of cantonal building insurance company (e.g. 'GVZ')
     on_grid : bool
-        whether or not data should be interpolated on regular grid 
+        whether or not data should be interpolated on regular grid
         (not implemented yet)
     w_rel_dmg : bool
         if relative damage should be saved in gdf too
@@ -397,8 +395,8 @@ def read_gvz_dmg(csv_file, cant_insurance ,min_dmg = 0,w_rel_dmg=False,
         yearMin, yearMax = BAUJAHR_DICT[baujahr_filter]
         if sum(gvz_dmg.Baujahr.isna())/len(gvz_dmg.Baujahr)>0.01:
             raise ValueError('Over 1% of exposure points without valid Baujahr')
-        # Missing entries  for 'Baujahr' are mainly from Bern, when buildings 
-        # were renovated! i.e. they were already standing before 2002, 
+        # Missing entries  for 'Baujahr' are mainly from Bern, when buildings
+        # were renovated! i.e. they were already standing before 2002,
         # when the radar data begins ->thus set to 2000
         gvz_dmg.Baujahr[gvz_dmg.Baujahr.isna()] = 2000
         gvz_dmg = gvz_dmg.loc[(gvz_dmg.Baujahr>=yearMin) & (gvz_dmg.Baujahr<=yearMax),:]
@@ -467,7 +465,7 @@ def read_gvz_dmg(csv_file, cant_insurance ,min_dmg = 0,w_rel_dmg=False,
         return impact_data_source
 
 def gdf_to_imp(gdf,id_col,dates=None,exp_val_col=None,x_coord='lon',
-               y_coord='lat',crs = 'EPSG:4326',unit='',haz_tag='HL'):
+               y_coord='lat',crs = 'EPSG:4326',unit=''):
 
         #assign dates if not given
         if dates is None:
@@ -489,7 +487,7 @@ def gdf_to_imp(gdf,id_col,dates=None,exp_val_col=None,x_coord='lon',
         for date in dates:
             df_sel =  gdf.loc[gdf.date_dt==date,:]
             temp = df_sel.set_index(id_col)['value'].rename(date)
-            #In rare cases there are 2 damages for the same house and date, 
+            #In rare cases there are 2 damages for the same house and date,
             # then add them together
             if len(temp)!=len(np.unique(temp.index.astype(str))):
                 temp = temp.groupby(level=0).sum()
@@ -527,10 +525,6 @@ def gdf_to_imp(gdf,id_col,dates=None,exp_val_col=None,x_coord='lon',
         imp_out.at_event = imp_mat.sum(axis=1).getA1()
         imp_out.eai_exp = imp_mat.sum(axis=0).getA1()/n_years
         imp_out.aai_agg = imp_mat.sum()/n_years
-
-        #Haz Tag information
-        if haz_tag=='HL':
-            imp_out.tag = {'haz':Tag('HL'), 'exp':E_tag(),'impf_set':E_tag()}
 
         #Exposed asset value
         if exp_val_col != None:
@@ -638,7 +632,7 @@ def impf_from_csv(csv,smooth,emanuel_fit=False,PAA_only=False,plot=False,
         imp_fun1.haz_type = 'HL'
         imp_fun1.check()
 
-        # second impact function based on PAA*MDD Note that it has a bias 
+        # second impact function based on PAA*MDD Note that it has a bias
         # because of expensive buildings are damaged more often!
         imp_fun2 = ImpactFunc()
         imp_fun2.id = 2

@@ -3,7 +3,7 @@
 The scripts here reproduce the main results of the paper:
 Schmid T., Portmann R., Villiger L., Schröer K., Bresch D. N. (2023+) An open-source radar-based hail damage model for buildings and cars, Natural Hazards and Earth System Sciences, https://doi.org/10.5194/nhess-2023-158 
 
-Publication status: submitted
+Publication status: [submitted](https://doi.org/10.5194/nhess-2023-158)
 
 Contact: [Timo Schmid](timo.schmid@usys.ethz.ch)
 
@@ -18,7 +18,7 @@ To perform a calibration as in this publication, 3 main dataset are needed:
 * **Exposure**: Tabular data of Exposure values and coordinates.  For format see *test_data/test_exp.nc*
 * **Damage**: Tabular data of reported damages **with spatial coordinates**. For format see *test_data/test_dmg.nc*
 
-The actual data used in the paper cannot be shared as it is from private insurance companies and the Swiss national weather service. The scripts in the remaining folders reproduce the results and figures from the paper with the input data as described in the [publication]( https://doi.org/10.5194/nhess-2023-158).
+The actual data used in the paper cannot be shared as it is from private insurance companies and the Swiss national weather service. The scripts in the remaining folders reproduce the results and figures from the paper with the input data as described in the [publication](https://doi.org/10.5194/nhess-2023-158).
 
 ### ./notebooks/
 
@@ -43,4 +43,4 @@ Requires:
 * _CLIMADA_ repository version 3.3+:
         https://wcr.ethz.ch/research/climada.html
         https://github.com/CLIMADA-project/climada_python
-* Exposure and damage data for the calibration. The hail damage data used in the paper are not public and only available within the [scClim](https://scclim.ethz.ch/) project. Calculation could be repeated with other user-provided data.
+* Exposure and damage data for the calibration. The hail damage data used in the paper are not public and only available within the [scClim](https://scclim.ethz.ch/) project. Calculation can be reproduced with other user-provided data as shown in *test_notebook.ipynb*.

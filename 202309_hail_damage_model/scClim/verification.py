@@ -19,7 +19,7 @@ data_dir = str(CONFIG.local_data.data_dir)
 
 
 def maximum_filter_nc(da,radius,spatial_dims=['chy','chx']):
-    """Create a maximum filter of a xarray Dataarray, to analyse the highest 
+    """Create a maximum filter of a xarray Dataarray, to analyse the highest
     values in a neighbourhood of a certain radius.
 
     Args:
@@ -31,7 +31,7 @@ def maximum_filter_nc(da,radius,spatial_dims=['chy','chx']):
         da: Dataarray with maximum filter applied
     """
 
-    #create kernel 
+    #create kernel
     k_size = radius*2+1
     center_idx = radius
     kernel = np.fromfunction(lambda i,j: ((center_idx - i) ** 2 + (center_idx - j) ** 2)<=radius**2,(k_size,k_size)).astype(int)
@@ -58,7 +58,7 @@ def split_events_non_events(df, haz_var):
     at_centroid_df=df.copy()
     at_centroid_df['n_dmgs']=at_centroid_df['n_dmgs'].fillna(0)
     #at_centroid_df['dmg_val']=at_centroid_df['dmg_val'].fillna(0)
-    events=at_centroid_df.loc[(at_centroid_df[haz_var]!=0) | (at_centroid_df['n_dmgs']!=0)] 
+    events=at_centroid_df.loc[(at_centroid_df[haz_var]!=0) | (at_centroid_df['n_dmgs']!=0)]
     no_damages = at_centroid_df.loc[at_centroid_df['n_dmgs']==0]
     return events,no_damages
 
@@ -82,14 +82,14 @@ def compute_verification_stats(at_centroid_data, haz_var = 'MESHS',exposure_thre
     npred : int
         number of prediction.
     """
-    
-    #set nans in exposure value to 0 before filtering with exposure thresh 
+
+    #set nans in exposure value to 0 before filtering with exposure thresh
     #(allows also damages at exposure == 0 to be taken into account, e.g. with exposure_thresh=-1)
     at_centroid_data['n_exp']=at_centroid_data['n_exp'].fillna(0)
 
-    
+
     data=at_centroid_data[at_centroid_data['n_exp'] > exposure_thresh]
- 
+
     #make subsets events (damage or prediction), and no_damages
     # (no damage, either false alarms or non events)
     events,no_damages=split_events_non_events(data,haz_var)
@@ -97,17 +97,17 @@ def compute_verification_stats(at_centroid_data, haz_var = 'MESHS',exposure_thre
     #HITS: number of predictions with at least one observed damage (per centroid)
     A=events.groupby(haz_var).agg({'n_dmgs': lambda x: x[x != 0].count()})
     #number of prediction with no observed damage (per centroid)
-    # FALSE ALARMS: 
+    # FALSE ALARMS:
     B=events.groupby(haz_var).agg({'n_dmgs': lambda x: x[x == 0].count()})
     # non
     D=no_damages.groupby(haz_var)['n_dmgs'].count()
-    
+
     npred=np.int64(np.sum(A[1::]+B[1::]).values[0])
     Asum=np.ones(len(A.index[1::]))*np.nan
     Bsum=np.ones(len(A.index[1::]))*np.nan
     Csum=np.ones(len(A.index[1::]))*np.nan
     Dsum=np.ones(len(A.index[1::]))*np.nan
-    
+
     index=range(len(A.index[1::]))
     for i in index:
         #indexing of original dataframe (to exclude values at haz intensity 0)
@@ -120,7 +120,7 @@ def compute_verification_stats(at_centroid_data, haz_var = 'MESHS',exposure_thre
         Csum[i]=A['n_dmgs'].values[0:l].sum()
         # count number of non_events
         Dsum[i]=D.values[0:l].sum()
-    
+
     #check here: https://www.cawcr.gov.au/projects/verification/#Types_of_forecasts_and_verifications
     FAR=Bsum/(Asum+Bsum)
     POD=Asum/(Asum+Csum)
@@ -138,10 +138,10 @@ def compute_verification_stats(at_centroid_data, haz_var = 'MESHS',exposure_thre
     #Bias
     B=(Asum+Bsum)/(Asum+Csum)
     #total number of centroids with hail predictions
-    Pred=Asum+Bsum    
+    Pred=Asum+Bsum
     #total number of centroids with hail damage
     Obs=Asum+Csum
-    
+
     df=pd.DataFrame({'FAR': FAR,
                      '1-FAR': 1-FAR,
                      'POD': POD,
@@ -215,8 +215,8 @@ def get_at_gridpoints_from_xr(ds,haz_var,min_count=50,haz_range=None):
 
     #create dataframe
     at_gridpoint_df = ds_stacked.to_dataframe()
-    
-    #select relevant variables and fill nan values of n_dmg and n_exp with 0 
+
+    #select relevant variables and fill nan values of n_dmg and n_exp with 0
     at_gridpoint_df = at_gridpoint_df[['n_exp','n_dmgs',haz_var]].fillna({'n_exp':0,'n_dmgs':0,haz_var:np.nan})
 
     if haz_var == 'MESHS': #fill nan MESHS values with 0
@@ -224,7 +224,7 @@ def get_at_gridpoints_from_xr(ds,haz_var,min_count=50,haz_range=None):
 
     #select only relevant hazard range
     if haz_range is not None:
-        at_gridpoint_df = at_gridpoint_df.loc[(at_gridpoint_df[haz_var]>=haz_range[0]) & 
+        at_gridpoint_df = at_gridpoint_df.loc[(at_gridpoint_df[haz_var]>=haz_range[0]) &
                                               (at_gridpoint_df[haz_var]<=haz_range[1]),:]
 
     return at_gridpoint_df
@@ -250,7 +250,7 @@ def read_at_centroid_data(datadir,croptypes,haz_var='MESHS',sample_id=None):
         croptype (single crop or combination)
 
     """
-        
+
     at_centroid_list=[]
     for croptype in croptypes:
         # read dictionary from pickle file
@@ -259,7 +259,7 @@ def read_at_centroid_data(datadir,croptypes,haz_var='MESHS',sample_id=None):
         else:
             name = f'data_at_centroid_{haz_var}_{croptype}.p'
         with open(datadir+name, 'rb') as file:
-            at_centroid_list.append(pickle.load(file))           
+            at_centroid_list.append(pickle.load(file))
     if len(croptypes)>1:
         at_centroid_data_AGG={}
         at_centroid_data_MESHS={}
@@ -278,3 +278,249 @@ def read_at_centroid_data(datadir,croptypes,haz_var='MESHS',sample_id=None):
 
 
     return at_centroid_data_out, croptype
+
+###############################################################################
+# Hail drift verification
+
+def get_corr(arr1,arr2,valid_points,plot=True):
+    """Get correlation of values in arr1 and arr2 at 'valid_points'
+
+    Args:
+        arr1 (np.array): values (typically hazard data)
+        arr2 (np.array): values at valid points (typically damage data)
+        valid_points (np.array): which points are valid (same grid as arr2)
+        plot (bool, optional): Whether a plot is produced. Defaults to True.
+
+    Returns:
+        float: pearson correlation
+    """
+    #Flatten all arrays
+    assert(arr1.shape==arr2.shape==valid_points.shape)
+    arr1_flat = np.ravel(arr1)
+    arr2_flat = np.ravel(arr2)
+    valid_points_flat = np.ravel(valid_points)
+
+    #get locations where neither of the arrays have NaN values
+    both_valid = (~np.isnan(arr1_flat)) & (~np.isnan(arr2_flat)) & valid_points_flat
+
+
+    if plot:
+        plt.scatter(arr1_flat,arr2_flat)#,fc='none',ec='k',alpha=0.1)
+
+    #if only one valid point, return nan
+    if both_valid.sum()<=1:
+        return np.nan
+    #explicitly handle case where one array has no variation to avoid error message
+    if np.unique(arr1_flat[both_valid]).size==1 or np.unique(arr2_flat[both_valid]).size==1:
+        return np.nan
+
+    #calculate at return the pearson correlation
+    corr = np.corrcoef(arr1_flat[both_valid],arr2_flat[both_valid])
+    return corr[0,1]
+
+
+def get_shifted_corr(arr1,arr2,valid_points,shifts_x,shifts_y,return_type='df',
+                     opt_type='corr',HSS_thresh_arr1=35):
+    """Get the correlation between arr1 and a shifted arr2
+
+    Args:
+        arr1 (np.array): values to shift (e.g. hazard data)
+        arr2 (np.array): stationary values
+        valid_points (np.array): locations with valid points
+        shifts_x (np.array): array with shifts in x direction
+        shifts_y (np.array): array with shifts in y direction
+        return_type (str, optional): What object is returned. Defaults to 'df'.
+        opt_type (str, optional): Whether to optimize correlation or HSS.
+            Defaults to 'corr'.
+        HSS_thresh_arr1 (int, optional): HSS threshold to optimize. Defaults
+            to 35.
+
+    Raises:
+        ValueError: if multiple maxima are detected
+
+    Returns:
+        tuple: ([x_shift,y_shift,corr/HSS improvement],comment)
+    """
+
+    #Set up the output dataframe
+    x_y_index = pd.MultiIndex.from_product([shifts_x,shifts_y],names=['x','y'])
+    score_df = pd.DataFrame(index=x_y_index,columns=['score'])
+
+    #for each shift calculate the correlation or HSS
+    for shift_x in shifts_x:
+        for shift_y in shifts_y:
+            arr1_shifted = np.roll(arr1,(shift_x,shift_y),axis=(0,1))
+            if opt_type=='corr':
+                score = get_corr(arr1_shifted,arr2,valid_points,plot=False)
+            elif opt_type=='HSS':
+                if type(HSS_thresh_arr1) in [int,float]:
+                    score = get_HSS(arr1_shifted,arr2,valid_points,
+                                    arr1_threshold=HSS_thresh_arr1)
+                elif len(HSS_thresh_arr1)>1:
+                    #return the sum of HSS values for all thresholds
+                    score = 0
+                    for thresh in HSS_thresh_arr1:
+                        score += get_HSS(arr1_shifted,arr2,valid_points,
+                                         arr1_threshold=thresh)
+
+
+            score_df.loc[(shift_x,shift_y),'score'] = score
+
+    if return_type=='df':
+        return score_df
+    elif return_type=='best_shift':
+
+        # #if no valid correlations, return nan
+        if np.isnan(score_df.score.max()):
+            return np.array([np.nan,np.nan,np.nan]),'nan only'
+
+        elif np.isnan(score_df.loc[(0,0),'score']):
+            return np.array([np.nan,np.nan,np.nan]),'nan at 0,0'
+
+        elif (score_df['score']==0).all():
+            return np.array([np.nan,np.nan,np.nan]),f'zero only: {opt_type}'
+
+        #return the shift with the maximum correlstion
+        df_rel = score_df- score_df.loc[(0,0),'score']
+        max_shift_df = df_rel.loc[df_rel.score==df_rel.score.max()]
+        if max_shift_df.shape[0]==1:
+            return np.append(max_shift_df.index.values[0],
+                             [max_shift_df.score.values[0]]),''
+        else:
+            #get the shortest shift with a maximum correlation
+            distance=[np.sqrt(d[0]**2+d[1]**2) for d in max_shift_df.index.values]
+            closest_shift_idx = np.argmax(distance)
+
+
+            comment = f"Equal {opt_type}: {max_shift_df.index.values}"
+            return (np.append(max_shift_df.index.values[closest_shift_idx],
+                              [max_shift_df.score.values[closest_shift_idx]]),
+                              comment)
+
+
+def get_HSS(arr1,arr2,valid_points,arr1_threshold=35,arr2_threshold=0):
+    """Calculate the Heidke-Skill-Score (HSS) from 2 arrays, which are
+        converted to boolean
+
+    Args:
+        arr1 (np.array): (possibly shifted) array (typically hazard data)
+        arr2 (np.array): (stationary) array (typically damage data)
+        valid_points (np.array): which locations to consider
+        arr1_threshold (int, optional): threshold to convert arr1 to boolean.
+            Defaults to 35 (for MESHS).
+        arr2_threshold (int, optional): threshold to convert arr2 to boolean.
+            Defaults to 0 (for damages).
+
+    Returns:
+        float: HSS value
+    """
+    #Flatten all arrays
+    assert(arr1.shape==arr2.shape==valid_points.shape)
+    arr1_flat = np.ravel(arr1>arr1_threshold)
+    arr2_flat = np.ravel(arr2>arr2_threshold)
+    valid_points_flat = np.ravel(valid_points)
+
+    both_valid = (~np.isnan(arr1_flat)) & (~np.isnan(arr2_flat)) & valid_points_flat
+
+    #if only one valid point, return nan
+    if both_valid.sum()<=1:
+        return np.nan
+
+    #Select valid points and calculate contingency table variables
+    arr1_valid = arr1_flat[both_valid]
+    arr2_valid = arr2_flat[both_valid]
+
+    #True positives (hits)
+    hits = np.sum(arr1_valid & arr2_valid)
+    # False alarms
+    FA = np.sum(arr1_valid & ~arr2_valid) #Damage expected (arr1) but not observed (arr2)
+    # Misses
+    miss = np.sum(~arr1_valid & arr2_valid) #Damage not expected (arr1) but observed (arr2)
+    # Correct negatives
+    CN = np.sum(~arr1_valid & ~arr2_valid) #Damage not expected (arr1) and not observed (arr2)
+
+    HSS = 2*(hits*CN - FA*miss)/((hits+miss)*(miss+CN) + (hits+FA)*(FA+CN))
+    return HSS
+
+def get_best_shift_per_date(ds,var_to_shift,var_stationary,ds_valid_points,
+                            shifts_x,shifts_y,min_n_dmg=100,opt_type='corr',
+                            HSS_thresh_arr1=35):
+    """get the horizontal shift of two array which maximises the correlation
+    at valid points only
+
+    Args:
+        ds (xr.Dataset): xarray dataset with both variables
+        var_to_shift (str): variable which is shifted (typically hazard data)
+        var_stationary (str): stationary variable (related to valid_points)
+        ds_valid_points (xr.DataArray): dataarray with valid points (same shape
+            as var_stationary)
+        shifts_x (np.array): shifts in x direction
+        shifts_y (np.array): shifts in y direction
+        min_n_dmg (int, optional): minimum n_damges (n_dmg must be a variable
+            with ds). Defaults to 100.
+
+    Returns:
+        df_shifts: DataFrame with best shift per date
+    """
+
+    #select dates with more than min_n_dmg damage claims
+    valid_dates = ds.date[ds['n_dmgs'].sum(dim=['chx','chy'])>min_n_dmg]
+    # valid_dates = valid_dates.dt.strftime('%Y-%m-%d').values
+
+    best_x_shift = np.empty(valid_dates.size)
+    best_y_shift = np.empty(valid_dates.size)
+    corr_improvement = np.empty(valid_dates.size)
+    tot_n_dmgs = np.empty(valid_dates.size)
+    comments = np.empty(valid_dates.size,dtype=object)
+
+    if var_to_shift in ['MESHS','dBZ']: #fill NaN values with 0
+        ds[var_to_shift] = ds[var_to_shift].fillna(0)
+    elif var_to_shift in ['E_kin']: #do not fill NaN values
+        pass
+    else:
+        raise ValueError(f'Unknown if NaNs in {var_to_shift} should be filled with 0')
+
+    for i,date in enumerate(valid_dates):
+        best_shift,comment = get_shifted_corr(ds[var_to_shift].sel(date=date),
+                                   ds[var_stationary].sel(date=date),
+                                   ds_valid_points,shifts_x,shifts_y,
+                                   return_type='best_shift',opt_type=opt_type,
+                                   HSS_thresh_arr1=HSS_thresh_arr1)
+        best_x_shift[i] = best_shift[0]
+        best_y_shift[i] = best_shift[1]
+        corr_improvement[i] = best_shift[2]
+        tot_n_dmgs[i] = ds['n_dmgs'].sel(date=date).sum().item()
+        comments[i] = comment
+
+    df_shifts = pd.DataFrame(index=valid_dates,
+                             data={'x':best_x_shift,'y':best_y_shift,
+                                   'corr_improvement':corr_improvement,
+                                   'tot_n_dmg':tot_n_dmgs,'comment':comments})
+    return df_shifts
+
+def get_shifted_MESHS(df_shifts,haz_data,haz_var:str='MESHS'):
+    """Shift MESHS data according to df_shifts
+
+    Args:
+        df_shifts (pd.DataFrame): dataframe with shifts in x and y direction
+        meshs (xr.DataArray): MESHS data
+
+    Returns:
+        haz_arr_shifted: shifted hazard data
+    """
+
+    haz_arr_shifted = haz_data.copy(deep=True)
+    for date in df_shifts.index:
+        if not df_shifts.loc[date,['x','y']].isna().any():
+            x_shift = df_shifts.loc[date,'x'].astype(int)
+            y_shift = df_shifts.loc[date,'y'].astype(int)
+            haz_arr_shifted[haz_var].loc[{'date':date}] = np.roll(
+                haz_data[haz_var].sel(date=date).data,
+                (x_shift,y_shift),axis=(0,1))
+
+            #Note: for the same results, with explicit dimension handling use
+            # the line below. For consistency with the get_shifter_corr
+            # function, we use np.roll():
+            # meshs_shifted['MESHS'].loc[{'date':date}]= meshs_shifted['MESHS'].
+            # loc[{'date':date}].shift({'chy':x_shift,'chx':y_shift})
+    return haz_arr_shifted

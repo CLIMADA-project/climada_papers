@@ -24,7 +24,7 @@ from pyproj import CRS
 import scClim.hail_climada as fct
 
 def interp2d_na(zs,method='linear'):
-    """interpolate 2d array with nan values 
+    """interpolate 2d array with nan values
 
     Args:
         zs (np.array): 2d array
@@ -51,7 +51,7 @@ def interp2d_na(zs,method='linear'):
 
 
 def geocode_df(df,address_column='address',geoloc_type='Nominatim'):
-    
+
     df_out = df.copy(deep=True)
     if any(np.isin(['location','longitude','latitude'],df_out.columns)):
         raise ValueError('columns location/longitude/latitude already exists')
@@ -110,13 +110,18 @@ def assign_centroids_gdf(gdf, hazard, distance='euclidean',
         assigned = u_coord.assign_coordinates(
             np.stack([gdf.latitude.values, gdf.longitude.values], axis=1),
             hazard.centroids.coord, distance=distance, threshold=threshold)
-    gdf['centr_' + hazard.tag.haz_type] = assigned
+    try:
+        haz_type = hazard.tag.haz_type
+    except AttributeError: #CLIMADA 4.0+
+        haz_type = hazard.haz_type
+
+    gdf['centr_' + haz_type] = assigned
 
 
 def assign_centroids_imp(imp,hazard,distance='euclidean',
                         threshold=u_coord.NEAREST_NEIGHBOR_THRESHOLD):
     """
-    same as assign_centroids_gdf, but for impact object 
+    same as assign_centroids_gdf, but for impact object
 
     """
     #make sure the imp crs is epsg:4326, as it is required by the u_coord methods
@@ -125,15 +130,19 @@ def assign_centroids_imp(imp,hazard,distance='euclidean',
     gdf = gpd.GeoDataFrame(coord_df,geometry = gpd.points_from_xy(imp.coord_exp[:,1],imp.coord_exp[:,0],crs = 'EPSG:4326'))
     assign_centroids_gdf(gdf,hazard,distance,threshold)
 
-    setattr(imp,f'centr_{str(hazard.tag.haz_type)}' , gdf['centr_' + hazard.tag.haz_type] )
-    
+    try:
+        haz_type = hazard.tag.haz_type
+    except AttributeError:
+        haz_type = hazard.haz_type
+    setattr(imp,f'centr_{str(haz_type)}' , gdf['centr_' + haz_type] )
+
 
 def npy_to_netcdf(npy_file,var):
 
     #load example netcdf file with correct coords
     nc_filepath = str(CONFIG.mch_nc_example)
     ncfile = xr.open_dataset(nc_filepath)
-    
+
     if npy_file.endswith('.npy'):
         arr = np.flip(np.load(npy_file),axis=[0])
         #convert MESHS from cm to mm
@@ -141,7 +150,7 @@ def npy_to_netcdf(npy_file,var):
             arr = arr*10
         # arr = np.load(npy)
         ds_out = xr.Dataset({var: (("chy","chx"),arr)},
-                        coords = ncfile.coords).drop('time')   
+                        coords = ncfile.coords).drop('time')
     elif os.path.isdir(npy_file):
         npy_files = os.listdir(npy_file)
         for file in npy_files:
@@ -157,7 +166,7 @@ def npy_to_netcdf(npy_file,var):
             if file == npy_files[0]:
                 ds_out = ds
             else:
-                ds_out = xr.concat([ds_out,ds],dim='time')  
+                ds_out = xr.concat([ds_out,ds],dim='time')
     else:
         TypeError('npy_file is neither .npy file nor directory')
     return ds_out
@@ -171,7 +180,7 @@ def get_possible_hail(date, poh, haz_poh, extent, poh_thresh=80, buffer_km = 4,
     date : datetime
         date in question
     poh : xarray.DataArray
-        POH values 
+        POH values
     haz_poh : climada.hazard
         hazard object based on the POH values from the poh DataArray
     extent : list / array
@@ -191,15 +200,15 @@ def get_possible_hail(date, poh, haz_poh, extent, poh_thresh=80, buffer_km = 4,
     Returns
     -------
     da : xarray.DataArray, xarray.Dataset
-    
-    """    
+
+    """
     k_size = buffer_km*2+1
     center_idx = buffer_km
     kernel = np.fromfunction(lambda i,j: ((center_idx - i) ** 2 + (center_idx - j) ** 2)<=buffer_km**2,(k_size,k_size)).astype(int)
     if return_type == 'oneDay':
         #calculate convolution of POH>threshold
         # over_thresh = poh.sel(time=date) > poh_thresh
-        poh_sel = poh.sel(time=date) 
+        poh_sel = poh.sel(time=date)
         if get_likelihood:
             #here possible hail will return a likelihood based on the number of pixels with POH>threshold
             possible_hail = convolve(poh_sel> poh_thresh,kernel,mode='same') / np.sum(kernel)
@@ -216,7 +225,7 @@ def get_possible_hail(date, poh, haz_poh, extent, poh_thresh=80, buffer_km = 4,
     elif return_type == 'all':
         for date_now in poh.time:
             print(date_now.values)
-            poh_sel = poh.sel(time=date_now) 
+            poh_sel = poh.sel(time=date_now)
             if get_likelihood:
                 #here possible hail will return a likelyhood based on the number of pixels with POH>threshold
                 possible_hail = convolve(poh_sel> poh_thresh,kernel,mode='same') / np.sum(kernel)
@@ -227,20 +236,20 @@ def get_possible_hail(date, poh, haz_poh, extent, poh_thresh=80, buffer_km = 4,
                 ph_all = possible_hail
             else:
                 ph_all = np.concatenate([ph_all,possible_hail],axis=0)
-                
+
             # ds = poh_sel.to_dataset()
             # ds=ds.assign(possible_hail=(('chy','chx'),possible_hail))
-            # ds=ds.expand_dims('time')    
+            # ds=ds.expand_dims('time')
         ds_PH = poh.copy(deep=True).to_dataset()
         ds_PH=ds_PH.assign(possible_hail=(('time','chy','chx'),ph_all))
-        ds_PH=ds_PH.drop_vars('BZC')       
+        ds_PH=ds_PH.drop_vars('BZC')
         np.testing.assert_array_equal(poh.lat,ds_PH.lat)
         np.testing.assert_array_equal(poh.time,ds_PH.time)
         return ds_PH
-    
+
 def get_date_or_category(date,min_day,max_day,m2,m1,now,p1,p2,mode = 'date'):
     raise Warning("Function is deprecated, use get_date instead")
-    
+
 def get_date(in_array,date,index_day0,mode='date'):
     raise Warning("Function is deprecated, use get_date from pre_process.py instead")
 
@@ -248,7 +257,7 @@ def smooth_monotonic(x,y,plot=False):
     """
     monotonic smoother based on https://stats.stackexchange.com/questions/467126/monotonic-splines-in-python
     x must be ordered increasing!
-    
+
     """
     assert(len(y)==len(x))
     N=len(y)
@@ -269,8 +278,8 @@ def smooth_monotonic(x,y,plot=False):
         ws_new  = (D1 @ mon_cof < 0.0) * 1
         dw      = np.sum(ws != ws_new)
         ws      = ws_new
-        if(dw == 0): break  
-        
+        if(dw == 0): break
+
     if plot:
         # Monotonic and non monotonic fits
         z  = mon_cof
