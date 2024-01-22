@@ -1,9 +1,9 @@
 # An open-source radar-based hail damage model for buildings and cars
 
 The scripts here reproduce the main results of the paper:
-Schmid T., Portmann R., Villiger L., Schröer K., Bresch D. N. (2023+) An open-source radar-based hail damage model for buildings and cars, Natural Hazards and Earth System Sciences, https://doi.org/10.5194/nhess-2023-158 
+Schmid T., Portmann R., Villiger L., Schröer K., Bresch D. N. (2023+) An open-source radar-based hail damage model for buildings and cars, Natural Hazards and Earth System Sciences, https://doi.org/10.5194/nhess-2023-158
 
-Publication status: [submitted](https://doi.org/10.5194/nhess-2023-158)
+Publication status: [accepted](https://doi.org/10.5194/nhess-2023-158)
 
 Contact: [Timo Schmid](timo.schmid@usys.ethz.ch)
 
