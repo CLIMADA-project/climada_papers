@@ -5,18 +5,24 @@ from climada.hazard import Hazard, Centroids
 from pycountry import countries
 from config import DATA_DIR
 from create_log_file import log_msg
-
-CENT_FILE_PATH = os.path.join(DATA_DIR, "centroids/earth_centroids_150asland_1800asoceans_distcoast_region.hdf5")
-
+from climada.util.api_client import Client
 
 def main(replace=True):
+    """
+        Process wildfire hazard data from a global scale down to individual countries.
+
+        The function reads the global wildfire hazard data and saves the hazard data for each individual country.
+    """
+    client = Client()
     for scenario in ['historical']:
         path0 = os.path.join('/nfs/n2o/wcr/szelie/CLIMADA_api_data/wildfire')
         path = os.path.join(path0, 'global', scenario)
         files = os.listdir(path)
         for file in files:
             wf = Hazard.from_hdf5(os.path.join(path, file))
-            wf.centroids = Centroids.from_hdf5(CENT_FILE_PATH)
+            wf.centroids = client.get_centroids(res_arcsec_land=150,
+            res_arcsec_ocean=1800,
+            extent=(-180, 180, -90, 90),)
             path_country = os.path.join(path0, 'countries', scenario)
             isExist = os.path.exists(path_country)
             if not isExist:

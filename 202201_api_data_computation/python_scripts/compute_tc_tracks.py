@@ -5,6 +5,18 @@ from config import DATA_DIR
 
 
 def main(basin='EP', n_tracks=10):
+    """
+    Read tropical cyclone tracks from the IBTrACS dataset, with a given number of synthetic tracks
+    using thetc_tracks.calc_perturbed_trajectories() method
+
+    Parameters:
+        basin (str, optional): Name of the tropical cyclone genesis basin. Default is 'EP'.
+        n_tracks (int or str, optional): Number of synthetic tracks to generate. If set to 0,
+                                         no synthetic tracks are generated. Default is 10.
+
+    Returns:
+        None
+    """
     year_range = (1980, 2020)
     nb_syn_tracks = int(n_tracks)
     tc_tracks = TCTracks()

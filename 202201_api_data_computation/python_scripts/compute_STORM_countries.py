@@ -8,19 +8,26 @@ from pycountry import countries
 from config import DATA_DIR
 from create_log_file import log_msg
 
-PATH_STORM = os.path.join(DATA_DIR, 'STORM')
+PATH_STORM_global = os.path.join(DATA_DIR, 'STORM_v2')
+PATH_STORM_countries = os.path.join(DATA_DIR, 'STORM_v3')
+
 LOG_FILE = "progress_make_STORM_countries.txt"
 
 
 def main(replace=True):
+    """
+            Process STORM TC hazard data from a global scale down to individual countries.
+
+            The function reads the global hazard data and saves the hazard data for each individual country.
+        """
     for scenario in ['historical', 'RCP85']:
         log_msg(f"Started computing floods for scenario {scenario}\n", LOG_FILE)
-        path = os.path.join(PATH_STORM, 'global', scenario)
+        path = os.path.join(PATH_STORM_global, 'global', scenario)
         files = os.listdir(path)
         for file in files: #going through the different GCMs
             tc = TropCyclone.from_hdf5(os.path.join(path, file))
             tc.centroids.set_region_id()
-            path_country = os.path.join(PATH_STORM, 'countries', scenario)
+            path_country = os.path.join(PATH_STORM_countries, 'countries', scenario)
             isExist = os.path.exists(path_country)
             if not isExist:
                 os.makedirs(path_country)
