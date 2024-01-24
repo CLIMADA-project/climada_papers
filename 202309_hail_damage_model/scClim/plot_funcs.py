@@ -5,7 +5,7 @@ Ploting functions for climada and non-climada objects used in scClim
 """
 
 import numpy as np
-import pandas as pd 
+import pandas as pd
 import xarray as xr
 import sys
 import os
@@ -44,33 +44,33 @@ from scClim.constants import CH_EXTENT_EPSG2056, CMAP_VIR
 # %% General plotting functions
 def plot_canton(ax,canton='Zürich',edgecolor = 'black',facecolor = "none",
                 lakes=True,ch_border=None,zorder=0.5,lakeEdgeColor='none'):
-    
+
     ch_shp_path = str(CONFIG.ch_shp_path)
     reader = shpreader.Reader("%s/swissTLMRegio_KANTONSGEBIET_LV95.shp"%ch_shp_path)
-    
+
     if canton=='all':
-        sel_cantons = [place for place in reader.records() if 
-                       place.attributes["OBJEKTART"]=='Kanton' and 
+        sel_cantons = [place for place in reader.records() if
+                       place.attributes["OBJEKTART"]=='Kanton' and
                        place.attributes["ICC"]=='CH']
         for sel_canton in sel_cantons:
             shape_feature = cf.ShapelyFeature([sel_canton.geometry],
                                                ccrs.epsg(2056), edgecolor=edgecolor,
-                                               facecolor = facecolor)   
-            ax.add_feature(shape_feature,zorder=zorder)        
+                                               facecolor = facecolor)
+            ax.add_feature(shape_feature,zorder=zorder)
     elif type(canton)==list:
-        sel_cantons = [place for place in reader.records() if 
+        sel_cantons = [place for place in reader.records() if
                        place.attributes["NAME"] in canton]
         for sel_canton in sel_cantons:
             shape_feature = cf.ShapelyFeature([sel_canton.geometry],
                                                ccrs.epsg(2056), edgecolor=edgecolor,
-                                               facecolor = facecolor)   
+                                               facecolor = facecolor)
             ax.add_feature(shape_feature,zorder=zorder)
     elif type(canton)==str:
-        sel_canton = [place for place in reader.records() if 
+        sel_canton = [place for place in reader.records() if
                       place.attributes["NAME"]==canton][0]
         shape_feature = cf.ShapelyFeature([sel_canton.geometry],
                                            ccrs.epsg(2056), edgecolor=edgecolor,
-                                           facecolor = facecolor)   
+                                           facecolor = facecolor)
         ax.add_feature(shape_feature)
     # add lake
     if lakes:
@@ -81,21 +81,21 @@ def plot_canton(ax,canton='Zürich',edgecolor = 'black',facecolor = "none",
         geometry = geometry[lakesize>1e7] #default: 2e7
         shape_feature2 = cf.ShapelyFeature(geometry,
                                            ccrs.epsg(2056), edgecolor=lakeEdgeColor,
-                                           facecolor = "lightblue")   
+                                           facecolor = "lightblue")
         ax.add_feature(shape_feature2,zorder=zorder)#0.5,2
     if ch_border:
-        
+
         reader3 = shpreader.Reader("%s/swissTLMRegio_LANDESGEBIET_LV95.shp"%ch_shp_path)
-        sel_ctry = [place for place in reader3.records() if 
+        sel_ctry = [place for place in reader3.records() if
                     place.attributes["ICC"]=='CH'][0]
-        shape_feature3 = cf.ShapelyFeature([sel_ctry.geometry], 
+        shape_feature3 = cf.ShapelyFeature([sel_ctry.geometry],
                                            ccrs.epsg(2056), edgecolor=ch_border,
-                                           facecolor = "none")  
-        ax.add_feature(shape_feature3) 
-        shape_feature4 = cf.ShapelyFeature([sel_ctry.geometry], 
+                                           facecolor = "none")
+        ax.add_feature(shape_feature3)
+        shape_feature4 = cf.ShapelyFeature([sel_ctry.geometry],
                                            ccrs.epsg(2056), edgecolor='None',
                                            facecolor = 'white')
-        ax.add_feature(shape_feature4,zorder=0)             
+        ax.add_feature(shape_feature4,zorder=0)
 
 
 def init_fig(projection=ccrs.PlateCarree,figsize=None,ch_border = True,title=''):
@@ -105,7 +105,7 @@ def init_fig(projection=ccrs.PlateCarree,figsize=None,ch_border = True,title='')
     ax.set(title=title)
     plot_canton(ax,edgecolor="none",ch_border='grey')
     return fig, ax
-    
+
 def plot_nc(nc,ax=None,fillna='none',extent = None,title='',discrete='none',vmax=None,
             vmin=None,borders=True,cbar_lbl='',pl_type='',crs='default',canton=None,
             logScale=False,cbar_horizontal=False,extend=None,cbar=True,return_plot=False,
@@ -113,11 +113,11 @@ def plot_nc(nc,ax=None,fillna='none',extent = None,title='',discrete='none',vmax
     """
      Parameters
     ----------
-    nc : xr.DataArray 
+    nc : xr.DataArray
         with 1 timestep only
     """
-    
-    
+
+
     if crs == 'default': #PlateCaree()
         transform = ccrs.PlateCarree()
         x_dim = 'lon'
@@ -134,7 +134,7 @@ def plot_nc(nc,ax=None,fillna='none',extent = None,title='',discrete='none',vmax
         transform = crs #nc.rio.crs
         x_dim = 'x'
         y_dim = 'y'
-        
+
     if not fillna=='none':
         nc = nc.fillna(fillna)
     if not discrete=='none':
@@ -146,8 +146,8 @@ def plot_nc(nc,ax=None,fillna='none',extent = None,title='',discrete='none',vmax
 
     if logScale:
         vmin = vmin if vmin else nc.min().values
-        vmax = vmax if vmax else nc.max().values 
-        vmin = max(1,vmin) #avoid log(0)   
+        vmax = vmax if vmax else nc.max().values
+        vmin = max(1,vmin) #avoid log(0)
         vmax = max(1,vmax) #avoid empty norm
         norm = colors.LogNorm(vmin=vmin, vmax=vmax)
         kwargs['norm'] = norm
@@ -165,7 +165,7 @@ def plot_nc(nc,ax=None,fillna='none',extent = None,title='',discrete='none',vmax
         #create bool colormap
         if 'cmap' in kwargs:
             cmap = ListedColormap(['white',kwargs['cmap']])
-            # cmap = plt.cm.get_cmap(kwargs['cmap']).copy() 
+            # cmap = plt.cm.get_cmap(kwargs['cmap']).copy()
             cmap.set_under('white',alpha=0)
             kwargs['cmap'] = cmap
         if not nc.max()==0:
@@ -175,8 +175,8 @@ def plot_nc(nc,ax=None,fillna='none',extent = None,title='',discrete='none',vmax
         plot = ax.pcolormesh(nc[x_dim],nc[y_dim],nc,vmax=vmax,vmin=vmin,
                              transform=transform,**kwargs)
         if cbar:
-            add_cbar(ax,plot,cbar_lbl,extend=extend,horizontal=cbar_horizontal)   
-    
+            add_cbar(ax,plot,cbar_lbl,extend=extend,horizontal=cbar_horizontal)
+
     if borders:
         ax.add_feature(cf.BORDERS,edgecolor=border_color)
     if title:
@@ -196,17 +196,17 @@ def add_cbar(ax,plot,cbar_lbl='',extend=None,horizontal=False,pad=0.1):
         if horizontal:
             cbax = make_axes_locatable(ax).append_axes(
                 'bottom', size="6.5%", pad=pad, axes_class=plt.Axes)
-            cbar = plt.colorbar(plot, cax=cbax, orientation='horizontal', 
+            cbar = plt.colorbar(plot, cax=cbax, orientation='horizontal',
                                 extend=extend)
         else:
             cbax = make_axes_locatable(ax).append_axes(
                 'right', size="6.5%", pad=pad, axes_class=plt.Axes)
-            cbar = plt.colorbar(plot, cax=cbax, orientation='vertical', 
+            cbar = plt.colorbar(plot, cax=cbax, orientation='vertical',
                                 extend=extend)
-        cbar.set_label(cbar_lbl)   
+        cbar.set_label(cbar_lbl)
 
 def cut_cmap(cmap, minval=0.0, maxval=1.0, n=-1,return_weak=False):
-  
+
     if n == -1:
         n = cmap.N
     new_cmap = LinearSegmentedColormap.from_list(
@@ -219,7 +219,7 @@ def cut_cmap(cmap, minval=0.0, maxval=1.0, n=-1,return_weak=False):
         return new_cmap,new_cmap_light
     else:
         return new_cmap
-    
+
 def scale_bar(ax,point,length,crs='EPSG:2056',dy_label=4e3,fontsize=10,line_kwargs=None):
     """plot scale bar on map
 
@@ -239,7 +239,7 @@ def scale_bar(ax,point,length,crs='EPSG:2056',dy_label=4e3,fontsize=10,line_kwar
     scaleBar = Line2D((xy[0],xy[0]+length),(xy[1],xy[1]),
                       transform = ccrs.epsg(2056),color='black',**line_kwargs)
     ax.add_line(scaleBar)
-    ax.text(xy[0]+length, xy[1]+dy_label, f'{length/1000:.0f} km', 
+    ax.text(xy[0]+length, xy[1]+dy_label, f'{length/1000:.0f} km',
             transform=ccrs.epsg(2056),fontsize=fontsize,ha='right',va='bottom')
 
 def set_up_broken_axis(ylim1,ylim2,hspace=0.05,height_ratio=(1,3),figsize=None,
@@ -293,7 +293,7 @@ def plot_poh_sel(date,haz_poh,poh,exp_dmg,extent=None,poh_level=80):
     """
     raise DeprecationWarning('This function is deprecated. See event_definition.py for pre-processing plots')
 
-    
+
 def plot_event(date,imp,haz,act_dmgs,exp=None,dur_path=None,projection=None,extent=None,
     pl_type='default',canton=None,ch2056_filter = None,draw_grid=False,haz_var=None,
     vmax=0,vmax_haz=None,cmap_log=False,sel_dates=None,**kwargs):
@@ -304,14 +304,14 @@ def plot_event(date,imp,haz,act_dmgs,exp=None,dur_path=None,projection=None,exte
     date : datetime
         date
     imp : Impact
-        CLIMADA impact 
+        CLIMADA impact
     haz : Hazard
         CLIMADA hazard (MESHS)
     act_dmgs : dict of CLIMADA Exposure OR CLIMADA impact object
         Dictionary of actual damages read into a CLIMADA Exposure object
         The keys are the dates, formated as strings "ddmmYYYY"
     exp : CLIMADA Exposure
-        Exposure 
+        Exposure
     dur_path : str
         path to duration files with YYYY=year and XXX = variable
     projection : cartopy.crs
@@ -332,16 +332,16 @@ def plot_event(date,imp,haz,act_dmgs,exp=None,dur_path=None,projection=None,exte
     plot : matplotlib.figure.Figure
         Figure with plots
     """
-    
+
     #Determine event IDs
     event_id = haz.event_id[haz.date==date.toordinal()]
     if not imp.event_id[haz.date==date.toordinal()] == event_id:
         ValueError("Event id is not consistent between Hazard and Impact")
-    
+
     #set Projection
     if not projection:
         projection = ccrs.PlateCarree()
-    
+
     #turn off borders if canton is plotted explicitly
     shapes = True # shapes = False if canton else True
 
@@ -373,7 +373,7 @@ def plot_event(date,imp,haz,act_dmgs,exp=None,dur_path=None,projection=None,exte
                     plot = axes[0,col].pcolormesh(dur_da.lon,dur_da.lat,dur_da)
                     axes[0,col].add_feature(cf.BORDERS)
                     axes[0,col].set_title(v_name)
-                    add_cbar(axes[0,col],plot,'Duration (min)')  
+                    add_cbar(axes[0,col],plot,'Duration (min)')
                     #plt.colorbar(plot,ax=axes[0,col],shrink = 0.6)
                     dur_da.close()
                 else:
@@ -382,14 +382,14 @@ def plot_event(date,imp,haz,act_dmgs,exp=None,dur_path=None,projection=None,exte
         #plot expsure
         if exp:
             exp.plot_hexbin(gridsize = 40,axis = axes[0,0],linewidths=0.05,extent=extent)
-            axes[0,0].set_title('Exposure') 
+            axes[0,0].set_title('Exposure')
         #determine event ids
         ev_ids = [event_id]
-        if isinstance(act_dmgs,Impact): 
+        if isinstance(act_dmgs,Impact):
             ev_ids_observed = [act_dmgs.event_id[act_dmgs.date==date.toordinal()]]
         row = 1
         str_dates = [dt.datetime.strftime(date, "%d%m%Y")]
-        
+
     elif pl_type == 'temp_ev':
         #plot Hazard at +- 1 day
         #haz.plot_intensity(event=event_id-1,axis=axes[0,0])
@@ -399,7 +399,7 @@ def plot_event(date,imp,haz,act_dmgs,exp=None,dur_path=None,projection=None,exte
                   for inc_day in [-1,0,1]]
         str_dates = [dt.datetime.strftime(date+dt.timedelta(days=inc_day), "%d%m%Y")
                      for inc_day in [-1,0,1]]
-        if isinstance(act_dmgs,Impact): 
+        if isinstance(act_dmgs,Impact):
             ev_ids_observed = [act_dmgs.event_id[act_dmgs.date==(date+dt.timedelta(days=inc_day)).toordinal()]
                                for inc_day in [-1,0,1]]
 
@@ -421,7 +421,7 @@ def plot_event(date,imp,haz,act_dmgs,exp=None,dur_path=None,projection=None,exte
 
         fig,axes = plt.subplots(len(ev_ids),3,gridspec_kw={'hspace':0.1,'wspace':0.3},
                                 subplot_kw={'projection':projection},
-                                figsize=(14,4*len(ev_ids)))  
+                                figsize=(14,4*len(ev_ids)))
         if len(ev_ids)==1: axes=np.expand_dims(axes,axis=0)
         row = 0
 
@@ -444,7 +444,7 @@ def plot_event(date,imp,haz,act_dmgs,exp=None,dur_path=None,projection=None,exte
         # gl = axes[row+i,0].gridlines(draw_labels=True,transform=projection,
           # #xlocs=lon_grid,ylocs=lat_grid,
           # x_inline=False,y_inline=False,
-          # color='k',linestyle='dotted')        
+          # color='k',linestyle='dotted')
 
         #plot impact (only if it is available)
         if vmax==0:
@@ -453,7 +453,7 @@ def plot_event(date,imp,haz,act_dmgs,exp=None,dur_path=None,projection=None,exte
         else:
             vmax_ = vmax
             n_loop = 1
-        
+
         for loop in range(n_loop):
 
 
@@ -470,14 +470,14 @@ def plot_event(date,imp,haz,act_dmgs,exp=None,dur_path=None,projection=None,exte
                     norm = colors.LogNorm(vmin=vmin_log, vmax=vmax_)
                 else:
                     norm = colors.Normalize(vmin=1, vmax=vmax_)
-                    
+
                 imp.plot_hexbin_impact_exposure(event_id=ev_id,gridsize=50,
                                                 axis=axes[row+i,1],linewidths=0.05,
                                                 norm=norm,extent=extent,cmap=CMAP_IMPACT_CC,
                                                 shapes=shapes,**kwargs)
                 axes[row+i,1].set_title(f'Modelled dmg:{imp.at_event[imp.event_id==ev_id][0]:.1e} {imp.unit}')
                 cax1 = fig.get_children()[-1]
-                vmax1= cax1.dataLim.get_points()[1,1]           
+                vmax1= cax1.dataLim.get_points()[1,1]
             except:
                 axes[row+i,1].annotate('Modelled damages are zero\nor unknown',
                 xy=(0.1, 0.5), xycoords='axes fraction')
@@ -508,7 +508,7 @@ def plot_event(date,imp,haz,act_dmgs,exp=None,dur_path=None,projection=None,exte
                 vmax_ = max(vmax1,vmax2)/3
             else:
                 vmax_ = max(vmax1,vmax2)
-            
+
     if extent:
         for ax in axes.flatten():
             ax.set_extent(extent)
@@ -519,7 +519,7 @@ def plot_event(date,imp,haz,act_dmgs,exp=None,dur_path=None,projection=None,exte
             gl.xlabel_style = gl.xlabel_style = {'color':'grey'}
     if canton:
         for ax in axes.flatten():
-            plot_canton(ax,canton=canton)    
+            plot_canton(ax,canton=canton)
     return fig,ax
 
 
@@ -542,15 +542,15 @@ def scatter_from_imp_df(imp_df,unit,xmin,dmg_thresh,eval_dict):
         unit (str): unit of impacts
         xmin (float): minimum displayed values
         dmg_thresh (float): threshold used for the skill metrics calculation
-        eval_dict (dict): Dictionary of evaluation metrics and hazard, 
+        eval_dict (dict): Dictionary of evaluation metrics and hazard,
         exposure and impact info
 
     Returns:
         plt.Figure: Pyplot figure
-    """    
-    
+    """
+
     #Set up figure
-    fig,axes = plt.subplots(2,2,figsize = (7,7), 
+    fig,axes = plt.subplots(2,2,figsize = (7,7),
                             gridspec_kw={'height_ratios':[5,1],
                                          'width_ratios':[1,5]})
     ax = axes[0,1]
@@ -559,13 +559,10 @@ def scatter_from_imp_df(imp_df,unit,xmin,dmg_thresh,eval_dict):
     ax_0rep = axes[0,0]
     ax_0rep.sharey(ax)
     fig.delaxes(axes[1,0])
-    
+
     #Scatter plot wit label and annotations
     scat=ax.scatter(imp_df.imp_obs,imp_df.imp_modelled,marker='o',
-                    c = imp_df.prePost2012,facecolors = 'none', edgecolors = 'black')
-    labels = ['after 2012'] if sum(~imp_df.prePost2012)==0 else ['until 2012','after 2012']
-    l1=ax.legend(scat.legend_elements()[0],labels,loc='lower right',bbox_to_anchor=(1,0.17))
-    ax.add_artist(l1)
+                    facecolors = 'none', edgecolors = 'black')
     neither_zero = (imp_df.imp_modelled>0) & (imp_df.imp_obs>0)
     ax.annotate('n=%d\ndmg=%.1e%s'%(sum(neither_zero),
                                     imp_df.imp_modelled[neither_zero].sum(),unit),
@@ -574,8 +571,7 @@ def scatter_from_imp_df(imp_df,unit,xmin,dmg_thresh,eval_dict):
     #Plot events where the modelled damage is zero
     ax_0model.scatter(imp_df.imp_obs[imp_df.imp_modelled==0],
                       imp_df.imp_modelled[imp_df.imp_modelled==0],marker = 'o',
-                      facecolors = 'none',edgecolors = 'black',
-                      c = imp_df.prePost2012[imp_df.imp_modelled==0])
+                      facecolors = 'none',edgecolors = 'black')
     tot_0model = sum(imp_df.imp_obs[imp_df.imp_modelled==0])
     str_0model = 'n=%d\ndmg=%.1e%s\n(%.2f%%)'%(sum((imp_df.imp_modelled==0)),
                                                tot_0model,unit,
@@ -586,8 +582,7 @@ def scatter_from_imp_df(imp_df,unit,xmin,dmg_thresh,eval_dict):
     #plot events where the reported damage is zero (false alarms)
     ax_0rep.scatter(imp_df.imp_obs[imp_df.imp_obs==0],
                     imp_df.imp_modelled[imp_df.imp_obs==0],marker = 'o',
-                    facecolors = 'none',edgecolors = 'black',
-                    c = imp_df.prePost2012[imp_df.imp_obs==0])
+                    facecolors = 'none',edgecolors = 'black')
     tot_0rep = sum(imp_df.imp_modelled[imp_df.imp_obs==0])
     str_0rep = 'n=%d\ndmg=%.1e%s\n(%.2f%%)'%(sum((imp_df.imp_obs==0)),tot_0rep,
                                              unit,tot_0rep/sum(imp_df.imp_modelled))
@@ -603,13 +598,13 @@ def scatter_from_imp_df(imp_df,unit,xmin,dmg_thresh,eval_dict):
     for adj,col,lbl in zip([-1,0,1],['salmon','red','salmon'],
                            [None,'1:1 line','+- one order of\nmagnitude']):
         ax.plot([xmin,1e9],[10**(np.log10(xmin)+adj),10**(9+adj)],color = col,label = lbl)
-        
+
     ax.legend(loc = 'lower right')
     if dmg_thresh:
         ax.add_patch(Rectangle((0, 0), dmg_thresh, dmg_thresh, color="grey", alpha=0.5))
-        ax_0model.add_patch(Rectangle((0, ax_0model.get_ylim()[0]), dmg_thresh, 
+        ax_0model.add_patch(Rectangle((0, ax_0model.get_ylim()[0]), dmg_thresh,
                                       dmg_thresh, color="grey", alpha=0.5))
-        ax_0rep.add_patch(Rectangle((ax_0rep.get_xlim()[0], 0), dmg_thresh, 
+        ax_0rep.add_patch(Rectangle((ax_0rep.get_xlim()[0], 0), dmg_thresh,
                                     dmg_thresh, color="grey", alpha=0.5))
 
     fig.suptitle(f'Hazard: {eval_dict["haz_var"]}, Exposure: {eval_dict["exposure"]}, Impf: {eval_dict["impf"]}\n\
@@ -625,10 +620,10 @@ def plot_pre_process(exp_dmg,date,poh,haz_poh,ds_PH,event_index,plot_dBZ_dates,
     poh_cols =['khaki','wheat','darkred','plum','lightsteelblue']
     lines = [mlines.Line2D([], [], color=color) for color in poh_cols]
     labels = ['D-2','D-1','D0','D+1','D+2']
-    lines_pt = [mlines.Line2D([], [], color=color, marker=marker, linewidth=0) 
+    lines_pt = [mlines.Line2D([], [], color=color, marker=marker, linewidth=0)
                 for color,marker in zip(['black','blue','red'],['.','.','*'])]
     labels_pt = ['keep','move','delete']
-    
+
     #initialize gdf
     if type(exp_dmg) == geopandas.geodataframe.GeoDataFrame:
         exp_gdf = exp_dmg
@@ -641,43 +636,43 @@ def plot_pre_process(exp_dmg,date,poh,haz_poh,ds_PH,event_index,plot_dBZ_dates,
     #initialize figure
     fig_crs = ccrs.epsg(2056)
     fig,ax = plt.subplots(1,1,subplot_kw={'projection':fig_crs},figsize = (10,6))
-    
-    #plot countours 
+
+    #plot countours
     for i,day_adj in enumerate([-2,-1,0,1,2]):
         #check that the day exists in the hazard data
-        if (0 <= event_index+day_adj < haz_poh.size and 
+        if (0 <= event_index+day_adj < haz_poh.size and
             haz_poh.date[event_index]+ day_adj == haz_poh.date[event_index+day_adj]):
-            
+
             ax.contour(poh.lon,poh.lat,poh.sel(time=date+pd.Timedelta(day_adj,'d')).fillna(0),
                        transform = ccrs.PlateCarree(),levels = [poh_level],colors = poh_cols[i])
             ax.contour(poh.lon,poh.lat,ds_PH.possible_hail.sel(time=date+pd.Timedelta(day_adj,'d')),
                        transform = ccrs.PlateCarree(),levels = [0.5],
                        colors = poh_cols[i],linestyles = '--',alpha = 0.8)
-            
+
     shift_str = 'shifted' if 'shifted' in exp_gdf['category'].unique() else 'shif'
     color = exp_gdf['category'].map({'none':'red',shift_str:'blue','day0':'black'})
     size = exp_gdf['category'].map({'none':10, shift_str:1, 'day0':1})
     exp_gdf.to_crs(fig_crs).plot(ax=ax,color = color,#cmap='viridis',cax=cax,legend=True,
                       markersize = size,zorder=10,marker='*')
-    
+
     if date.strftime('%d%m%Y') in plot_dBZ_dates:
         try:
             #contour_npz(date,poh,ax)
             ds=npz_t_xr(date,poh,"dBZ")
             ax.contourf(ds.lon,ds.lat,ds.dBZ.fillna(0),transform = ccrs.PlateCarree(),
-                        levels = [35,40,45,100],colors = ['lightsalmon','red','darkred','none'],alpha=0.2) 
+                        levels = [35,40,45,100],colors = ['lightsalmon','red','darkred','none'],alpha=0.2)
         except:
             ValueError("cannot plot dBZ contours, check (hardcoded) path for files")
-            
+
     if extent: ax.set_extent(extent,crs=fig_crs)
     ax.set_title('%s, #claims: %d, within POH%d: %d%%'%
                   (dt.datetime.strftime(date, "%Y-%m-%d"),exp_gdf.shape[0],poh_level,
                   sum(exp_gdf.POH>=poh_level)/exp_gdf.shape[0]*100))
     plot_canton(ax,canton=['Zürich','Bern','Luzern','Aargau'])
-    fig.legend(lines,labels,ncol=2,bbox_to_anchor=(0.5,0.1),title = 'POH %d%%'%poh_level)  
-    fig.legend(lines_pt,labels_pt,ncol=1,bbox_to_anchor=(0.7,0.1),title ='Damage reports')   
+    fig.legend(lines,labels,ncol=2,bbox_to_anchor=(0.5,0.1),title = 'POH %d%%'%poh_level)
+    fig.legend(lines_pt,labels_pt,ncol=1,bbox_to_anchor=(0.7,0.1),title ='Damage reports')
     return fig
-    
+
 def plot_haz_hist(haz,bins=30,density=False,**kwargs):
 
     fig,ax=plt.subplots(1,1)
@@ -685,7 +680,7 @@ def plot_haz_hist(haz,bins=30,density=False,**kwargs):
     ax.set(yscale='log',xlabel='Area [km$^2$]',ylabel='count')
     if density:
         ax.set_ylabel('density')
-    
+
     return fig
 
 
@@ -740,7 +735,7 @@ def plot_skill_plot(ds_KGV_per_event,PAA_lim,MDR_lim,PAA_thresh=1e2,
                 add_legend = None# True if ax == b else False #only works with fillna(0)
                 dsNow = ds_KGV_per_event.where((ds_KGV_per_event[x]>xlim[0])&(ds_KGV_per_event[x]<xlim[1]))
                 dsNow = dsNow.where((ds_KGV_per_event[y]>ylim[0])&(ds_KGV_per_event[y]<ylim[1]))
-                
+
                 artist=dsNow.plot.scatter(x=x,y=y,hue='post2012',hue_style='discrete',
                                           add_colorbar=False,cmap=cmap_post2012,edgecolor='black',
                                           alpha=1,xscale=xscale,yscale=yscale,ylim=ylim,
@@ -768,7 +763,7 @@ def plot_skill_plot(ds_KGV_per_event,PAA_lim,MDR_lim,PAA_thresh=1e2,
                                     ls='--',
                                     color='black')
         fig.lines.extend([line1])
-            
+
     for factor,col in zip([0.1,10],['grey','grey']):
         ax1.axline(xy1=(1,1*factor),xy2=(10,10*factor), color=col,ls='--')
         ax2.axline(xy1=(1,1*factor),xy2=(10,10*factor), color=col,ls='--')
@@ -814,7 +809,7 @@ def fill_quantile(ds, var, q, col, ax,haz_var, binned=False, dim='b_sample',
     ax.fill_between(ds[haz_var][1:], ds.quantile(q[0], dim=dim)[var][1:],
                     ds.quantile(q[1], dim=dim)[var][1:],  # step='pre',
                     color=col, alpha=alpha, label=label)
-    
+
 def fill_df_quantile(df,q1,q2,ax,label=None):
     q1_arr=df.quantile(q=q1,axis=1,numeric_only=True)*100
     q2_arr=df.quantile(q=q2,axis=1,numeric_only=True)*100
@@ -822,32 +817,32 @@ def fill_df_quantile(df,q1,q2,ax,label=None):
         label = 'Q %.2f-%.2f' % (q1, q2)
     ax.fill_between(df.index,q1_arr,q2_arr,color='black',alpha=0.2,
                     label = label)
-    
+
 def impf_plot(df_all,df_roll,df_roll_cut,ds_boot_roll,ds_boot_roll_cut,haz_var,
               impf_emanuel,cut_off,plot_var='PAA',title='',dmg_bin_size=5,
               intensity_label = 'Intensity [?]',color='green'):
-    
+
     intensity_range = df_roll.index.values
     xlim = [min(intensity_range)-2, max(intensity_range)]
-    
+
     # plot rolling PAA
     paa_ylim = (0,max(df_roll[plot_var][np.isfinite(df_roll[plot_var])].max(),
                       df_roll.loc[cut_off,plot_var]*1.5)*100)
     fig, ax = plt.subplots()
-    ax.plot(df_roll.index[1:], df_roll[plot_var].iloc[1:]*100, color=color, label=plot_var) 
+    ax.plot(df_roll.index[1:], df_roll[plot_var].iloc[1:]*100, color=color, label=plot_var)
     if intensity_range[0] == 0:
         ax.scatter(df_roll.index[0], df_roll[plot_var][0]*100, color=color, alpha=0.5, marker='.')
-    fill_quantile(ds_boot_roll*100, plot_var, (0.05, 0.95), f'light{color}', ax,haz_var) 
+    fill_quantile(ds_boot_roll*100, plot_var, (0.05, 0.95), f'light{color}', ax,haz_var)
 
     sc.E.plot_monotone_fit(df_roll_cut*100, plot_var, ax, ls='--')
-    sc.E.plot_monotone_fit(ds_boot_roll_cut.quantile(0.95, dim='b_sample').to_dataframe()*100, 
+    sc.E.plot_monotone_fit(ds_boot_roll_cut.quantile(0.95, dim='b_sample').to_dataframe()*100,
                            plot_var, ax, ls='--', color='grey', label='Q 0.05-0.95')
     sc.E.plot_monotone_fit(ds_boot_roll_cut.quantile(0.05, dim='b_sample').to_dataframe()*100,
                            plot_var, ax, ls='--', color='grey', label=None)
     ax.scatter(impf_emanuel.intensity,impf_emanuel.mdd*100,marker='o',
                label='Sigmoidal fit',edgecolor='black',facecolor='none',s=10)
     sc.E.plot_dmg_bin(df_all, ax, color='red', alpha=0.1,bin_size=dmg_bin_size)
-        
+
     fig.legend(loc='upper left', bbox_to_anchor=ax.get_position())
     ax.set_title(title)
     ax.set(ylabel=f'{plot_var} [%]', xlim=xlim,ylim=paa_ylim, xlabel=intensity_label)
@@ -860,7 +855,7 @@ def impf_plot2(df_all,df_roll,df_roll_cut,ds_boot_roll,ds_boot_roll_cut,haz_var,
                impf_emanuel,cut_off,plot_var='PAA',title='',dmg_bin_size=5,
                intensity_label = 'Intensity [?]',color='green',df_boot_emanuel=None,
                quantile = (0.05,0.95),relative_bins=False,figAx=None):
-    
+
     intensity_range = df_roll.index.values
     xlim = [min(intensity_range)-2, max(intensity_range)]
     # plot rolling PAA
@@ -875,7 +870,7 @@ def impf_plot2(df_all,df_roll,df_roll_cut,ds_boot_roll,ds_boot_roll_cut,haz_var,
     iloc_cut_off = np.where(df_roll.index.values==cut_off)[0][0]
     ax.plot(df_roll.index[1:iloc_cut_off+1],
             df_roll[plot_var].iloc[1:iloc_cut_off+1]*100,
-            color=color, label=plot_var) 
+            color=color, label=plot_var)
     fill_quantile(ds_boot_roll*100, plot_var, quantile, f'light{color}', ax,
                   haz_var,alpha=0.8,cut_off=cut_off,label='bootstrap CI (5-95%)')
 
@@ -910,31 +905,31 @@ def plot_impf_pixel(ds_roll_gc,df_roll,ds_boot_roll,haz_var,cut_off,q1,q2,
 
     #Type 1 plot
     if pl_type == 1:
-        ax.plot(df_roll.index[1:], df_roll[plot_var][1:]*100, color=color, 
+        ax.plot(df_roll.index[1:], df_roll[plot_var][1:]*100, color=color,
                 label=plot_var)
-        
+
         ax.fill_between(ds1[haz_var], ds1[plot_var]*100, ds2[plot_var]* 100,
-                        color='orange', alpha=0.3, 
+                        color='orange', alpha=0.3,
                         label='pixel-wise Q%d-Q%d' % (q1*100, q2*100))
         fill_quantile(ds_boot_roll*100, plot_var, (0.05, 0.95), f'light{color}',
                       ax,haz_var,alpha=0.9)
-        
+
         weighted_PAA = ds_roll_gc[['PAA', 'MDR']].weighted(weights=ds_roll_gc.exp_val.fillna(0)).mean(dim='index')
         ax.plot(df_roll.index[1:], weighted_PAA[plot_var]*100, color='black', label=plot_var)
-        
+
 
     #Type 2 plot
     elif pl_type == 2:
         ax.plot(impf_emanuel.intensity,impf_emanuel.mdd*100,
                 label='Sigmoidal fit',color='black')
-        
+
         dsQ0 = get_emp_quantile(ds_roll_gc, 0)
         for quantile in np.flip([0.8,0.85,0.9,0.95]):
             color = (1-(quantile-0.7)*3,0,(quantile-0.7)*3)
             dsQ = get_emp_quantile(ds_roll_gc, quantile)
             ax.fill_between(dsQ0[haz_var], dsQ0[plot_var]*100, dsQ[plot_var]
                             * 100,color=color, alpha=1, label='pixel-wise Q%d' % (quantile*100))
-        
+
         weighted_PAA = ds_roll_gc[['PAA', 'MDR']].weighted(weights=ds_roll_gc.exp_val.fillna(0)).mean(dim='index')
 
     #Type 3 plot
@@ -946,18 +941,18 @@ def plot_impf_pixel(ds_roll_gc,df_roll,ds_boot_roll,haz_var,cut_off,q1,q2,
                 label=plot_var)
         ax.fill_between(ds1[haz_var], dsMean[plot_var]*100, dsMean[plot_var]*100,
                         color=color, alpha=1, label='pixel-wise mean')
-        
+
         ax.fill_between(ds1[haz_var], dsMean[plot_var]*100/2, dsMean[plot_var]*100*2,
                         color=color, alpha=0.5, label='pixel-wise mean')
-        
+
         weighted_PAA = ds_roll_gc[['PAA', 'MDR']].weighted(weights=ds_roll_gc.exp_val.fillna(0)).mean(dim='index')
         ax.plot(df_roll.index[1:], weighted_PAA[plot_var]*100, color='black', label=plot_var)
 
 
     ax.legend()
     ax.add_patch(Rectangle((cut_off, 0), cut_off*3, ax.get_ylim()[1], color="grey", alpha=0.5))
-    ax.set(title=title,ylabel=plot_var,ylim=[0,min(100,ax.get_ylim()[1])],xlabel=intensity_label)  
-    return fig,ax      
+    ax.set(title=title,ylabel=plot_var,ylim=[0,min(100,ax.get_ylim()[1])],xlabel=intensity_label)
+    return fig,ax
 
 def get_emp_quantile(ds_roll_gc, q):
     ds_roll_gc['PAA'] = ds_roll_gc.n_dmgs/ds_roll_gc.n_exp

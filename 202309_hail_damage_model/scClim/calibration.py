@@ -88,7 +88,7 @@ def get_exposed_assets(exposure, variable, exposure_type, variable_2 = None):
     variable : str
         hazard variable name
     exposure_type : str
-        type of exposure provided. "GVZ" or "agriculture"
+        type of exposure provided. "buildings" or "agriculture"
     variable_2:
 
     Returns
@@ -105,7 +105,7 @@ def get_exposed_assets(exposure, variable, exposure_type, variable_2 = None):
     """
 
     #count number of exposed assets per MESHS
-    if exposure_type == 'GVZ':
+    if exposure_type == 'buildings':
         all_count = exposure.gdf.groupby(variable).VersicherungsID.count().rename('count_all')
         count_centr = exposure.gdf.groupby('centr_HL').VersicherungsID.count().rename('counts')
     elif exposure_type == 'agriculture':
@@ -173,7 +173,7 @@ def get_damaged_assets(damage, variable, date_now, exposure_type,
         variable: str
                 hazard variable name
         exposure_type: str
-            type of exposure ('agriculture' or 'GVZ')
+            type of exposure ('agriculture' or 'buildings')
 
         Returns
         -------
@@ -455,7 +455,7 @@ def empirical_calibration_per_exposure(hazard_object, exposure_object, damages,
             either dictionary of exposure objects, dictionary of impact objects
             or a single impact objects hat contain damage claims
     exposure_type: str
-            type of exposure ('agriculture' or 'GVZ')
+            type of exposure ('agriculture' or 'buildings')
     variable: str
             hazard variable name
     hazard_object_2: climada.hazard
