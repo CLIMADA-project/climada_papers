@@ -6,6 +6,8 @@ This repository contains a folder for each scientific peer-reviewed article that
 
 =======
 
+Schmid T., Portmann R., Villiger L., Schröer K., Bresch D. N. (2023) An open-source radar-based hail damage model for buildings and cars, Natural Hazards and Earth System Sciences, https://doi.org/10.5194/nhess-2023-158
+
 Hülsen, S.; McDonald, R.I.; Chaplin-Kramer, R.; Bresch, D.N.; Sharp, R.; Worthington, T.; Kropf, C.M.: Global coastal protection benefits of ecosystems - past, present, and under climate change, EarthArXiv, https://doi.org/10.31223/X59Q26 
 
 Ortner, G., Bründl, M., Kropf, C. M., Röösli, T., Bühler, Y., and Bresch, D. N.: Large-scale risk assessment on snow avalanche hazard in alpine regions, Nat. Hazards Earth Syst. Sci., https://doi.org/10.5194/nhess-2022-112, 2023. 
