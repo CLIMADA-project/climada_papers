@@ -11,3 +11,5 @@
 /202005_tropical_cyclone_calibration/data/ibtracs_cailbration/*.csv
 /202005_tropical_cyclone_calibration/climada_v1.4.1/__pycache__
 /202005_tropical_cyclone_calibration/climada_v1.4.1/.ipynb_checkpoints/*
+
+*.ipynb_checkpoints/
