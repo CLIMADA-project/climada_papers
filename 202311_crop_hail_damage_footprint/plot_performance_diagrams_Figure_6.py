@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """ 
-Plot Figure 5 : Performance diagramm
+Plot Figure 6 : Performance diagramm
 Uses the 'Tkagg' backend of matplotlib to manually place labels
-of the bias plot.
+of the bias plot. Ideally run in Spyder.
 
 Created on Tue Feb  7 13:22:01 2023
 
