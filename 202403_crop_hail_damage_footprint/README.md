@@ -1,7 +1,7 @@
 # Crop hail damage footprint model
 These scripts can be used to reproduce the figures and analyses as well as apply the model developed in the following paper:
 
-- **Portmann R., Schmid T., Villiger L., Bresch D., Calanca P.** Modelling crop hail damage footprints with single-polarization radar: The roles of spatial resolution, hail intensity, and cropland density, submitted to Natural Hazards and Earth System Sciences.
+- **Portmann R., Schmid T., Villiger L., Bresch D. N., Calanca P.** Modelling crop hail damage footprints with single-polarization radar: The roles of spatial resolution, hail intensity, and cropland density, submitted to Natural Hazards and Earth System Sciences.
 
 **Corresponding Author**: 
 Raphael Portmann, Agroscope Reckenholz, Zurich, Switzerland\
