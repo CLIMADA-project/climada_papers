@@ -2,7 +2,7 @@
 """
 Created on Thu Mar 30 14:00:01 2023
 
-Get damage, and exposure information at hazard centroid for each date. 
+Load exposure and damage data at 1km resolution. Get hazard information at exposure centroids for each date and each resolution.  
 The resulting intermediate files are the basis for most figures and stored in a subfolder data/data_at_centroid
 
 how to use:
@@ -48,12 +48,13 @@ def main(croptypes, hazard_vars, resolutions):
     croptypes=list(croptypes)
     hazard_vars=list(hazard_vars)
     
-    # read standard data
+    # read standard data with 1km spatial resolution
     print('reading damage and exposure data...')
     client=Client()
     exposure={}
     damages={}
     for croptype in croptypes:
+        print(f'GET DATA FOR: {croptype}')
         exposure[croptype] = client.get_exposures('crops', properties={'res_km': '1', 'crop': croptype})
         ds = client.get_dataset_info(data_type='hail_damage_crops', properties={'res_km': '1','crop': croptype})
         _, [impact_file] = client.download_dataset(ds)
@@ -125,7 +126,7 @@ parser.add_argument(
             "-res", "--resolutions in km(can be one or several of 1, 2, 4, 8, 16, 32",
             dest    = "resolutions",
             nargs   = '+',
-            default = ['1','2','4','8','16','33'],
+            default = ['1','2','4','8','16','32'],
           )       
 
 args = parser.parse_args()   

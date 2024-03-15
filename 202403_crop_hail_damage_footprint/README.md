@@ -39,7 +39,7 @@ The scripts use hazard (hail), exposure (crops), and damage (hail_damage_crops) 
 `plot_performance_diagrams_Figure_6.py`
    - Skript to reproduce Figure 6 of the paper (suggest to use Spyder to allow for manual placement of bias labels)
 
-`plot_skill_exposure_density_Figure_67.ipynb`
+`plot_skill_exposure_density_Figure_7.ipynb`
    - Skript to reproduce Figure 7 of the paper
 
 `plot_performance_diagrams_sensitivity_Figure_8.py`
