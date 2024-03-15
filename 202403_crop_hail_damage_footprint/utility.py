@@ -1700,7 +1700,7 @@ def plot_CH_map(ncols=2,nrows=2, proj=ccrs.epsg(2056),stamen_map=True,
                 lakesize = np.array([a.area for a in reader2.geometries()])
                 geometry = geometry[lakesize>2e7]
                 shape_feature2 = cf.ShapelyFeature(geometry,
-                                                   ccrs.epsg(2056), edgecolor='blue',facecolor = "lightblue")   
+                                                   ccrs.epsg(2056), edgecolor=None,facecolor = "lightblue")   
                 ax.add_feature(shape_feature2,zorder=lakeszorder)#0.5,2
             if cantons == True:
                 reader = shapereader.Reader("%s/swissTLMRegio_KANTONSGEBIET_LV95.shp"%ch_shp_path)
