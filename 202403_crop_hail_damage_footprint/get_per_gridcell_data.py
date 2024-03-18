@@ -91,7 +91,12 @@ def main(croptypes, hazard_vars, resolutions):
             
             for j,res in enumerate(resolutions):
                 print(f'...and resolution: {res}km')
-     
+
+                #link damages, exposures and hazard information per grid cell and event
+                #values_at_centroid_all is a panndas Dataframe with a row for each grid cell that has at least one exposed or damaged field
+                #Columns are MESHS, number of exposed fields (n_exp), number of damaged fields (n_dmgs), date and hazard centroid ID (centr_HL)
+                #It also includes percent assets affected (PAA) and mean damge ratio (MDR). Thes columns are useful to calibrate empircal damage functions
+                #but they are not used in this study.
                 _, _, _, _, values_at_centroid_all,_ =\
                     empirical_calibration_per_exposure(hazard_object = haz[res],
                                                        exposure_object = exposure[croptype],
