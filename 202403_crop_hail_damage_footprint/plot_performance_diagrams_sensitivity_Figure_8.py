@@ -48,7 +48,7 @@ th=20 #exposure threshold to label
 score='1-FAR'  #score on horizontal axis
 clab='CSI' #score shown in shading
 labels=['a)','b)']
-titles=[r'exposure (n$_{thresh}$=20)','hazard (POH)']
+titles=[r'exposure ($n_{\mathrm{thresh}}$=20)','hazard (POH)']
 font_s=16 #fontsizes
 font_l=20
 figsize=(14,10)
@@ -123,5 +123,5 @@ plt.clabel(hs[0],manual=True,fontsize=font_s)
 plt.clabel(hs[1],manual=True,fontsize=font_s)
 
 #save figure
-#fig.savefig(f'{figdir}/Figure_Performance_diagram_field_crops_POH_exp.png',dpi=300,bbox_inches='tight')
-#fig.savefig(f'{figdir}/Figure_Performance_diagram_field_crops_POH_exp.pdf',dpi=300,bbox_inches='tight')
+fig.savefig(f'{figdir}/Figure_Performance_diagram_field_crops_POH_exp.png',dpi=300,bbox_inches='tight')
+fig.savefig(f'{figdir}/Figure_Performance_diagram_field_crops_POH_exp.pdf',dpi=300,bbox_inches='tight')

@@ -27,7 +27,7 @@ from climada.hazard import Hazard, Centroids
 from climada.engine import Impact
 
 import shapely.geometry as sg
-
+import colorcet as cc
 import geopandas as gpd
 from pyproj import CRS
 from scipy import sparse
@@ -1493,7 +1493,7 @@ def plot_skill_haz_threshold(at_centroid_data_wheat,at_centroid_data_grapevine,v
     """
     
      #, '4km', '8km']
-    labels=['a)','b)','c)','d)','e)','f)','g)','h)','i)']
+    labels=['(a)','(b)','(c)','(d)','(e)','(f)','(g)','(h)','(i)']
     
     font_s=18
     font_l=18
@@ -1535,9 +1535,9 @@ def plot_skill_haz_threshold(at_centroid_data_wheat,at_centroid_data_grapevine,v
     #plot bias
     col='green'
     ax.axvline(44,color=col,linewidth=1)
-    ax.text(44,0.99,'B=1',color=col,ha='left',va='top')
+    ax.text(44,0.99,' FB=1',color=col,ha='left',va='top')
     ax.axvline(30,color=col,linewidth=1,linestyle='dashed')
-    ax.text(30,0.99,'B=2',color=col,ha='left',va='top')
+    ax.text(30,0.99,' FB=2',color=col,ha='left',va='top')
     ax.set_xlabel(unit,fontsize=font_l)
 
     #set up secondary axis
@@ -1575,9 +1575,9 @@ def plot_skill_haz_threshold(at_centroid_data_wheat,at_centroid_data_grapevine,v
     
     #plot vertical lines for bias
     ax.axvline(46,color=col,linewidth=1)
-    ax.text(46,0.99,'B=1',color=col,ha='left',va='top')
+    ax.text(46,0.99,' FB=1',color=col,ha='left',va='top')
     ax.axvline(34,color=col,linewidth=1,linestyle='dashed')
-    ax.text(34,0.99,'B=2',color=col,ha='left',va='top')
+    ax.text(34,0.99,' FB=2',color=col,ha='left',va='top')
 
     ax.set_ylim([0,1])
     ax.set_xlabel(unit,fontsize=font_l)
@@ -1865,7 +1865,7 @@ def plot_diagram_points(at_centroid_data_var,variable,opt_resolutions,exp_thresh
 
             if labeled==True:
                 ax.plot(x,y,color='k',linewidth=1)
-                ax.scatter(df[score][opt_threshs],df.POD.loc[opt_threshs],color=colors[i],marker=markers[i],s=100,edgecolor='k',label=res,zorder=10)
+                ax.scatter(df[score][opt_threshs],df.POD.loc[opt_threshs],color=colors[i],marker=markers[i],s=100,edgecolor='k',label=res[:-2]+' km',zorder=10)
                 x,y=df[score][opt_threshs],df.POD.loc[opt_threshs]  
 
             else:
@@ -1875,7 +1875,8 @@ def plot_diagram_points(at_centroid_data_var,variable,opt_resolutions,exp_thresh
             if labeled==True:
                 #Annotate resolutions
                 if label_resolutions==True:
-                    ax.annotate(f'{res}',(x.values[-1],y.values[-1]),
+                    res_name=res[:-2]+' km'
+                    ax.annotate(f'{res_name}',(x.values[-1],y.values[-1]),
                                 xytext=(x.values[-1]+0.005,y.values[-1]-0.005),
                                 xycoords='data',
                                fontsize=fontsize,va='top',bbox=dict(facecolor='white', edgecolor='none',alpha=0.5))   
@@ -1885,12 +1886,12 @@ def plot_diagram_points(at_centroid_data_var,variable,opt_resolutions,exp_thresh
                 if res=='1km':
                     for k,thresh in enumerate(opt_threshs):
                         if loc_thresh_labels=='l':
-                            ax.annotate(f'{thresh}{unit}',(x.values[k],y.values[k]),
+                            ax.annotate(f'{thresh} {unit}',(x.values[k],y.values[k]),
                                         xytext=(x.values[k]-0.005,y.values[k]),
                                         xycoords='data',
                                        fontsize=fontsize,va='center',ha='right',bbox=dict(facecolor='white', edgecolor='none',alpha=0.5))   
                         elif loc_thresh_labels=='r':
-                            ax.annotate(f'{thresh}{unit}',(x.values[k],y.values[k]),
+                            ax.annotate(f'{thresh} {unit}',(x.values[k],y.values[k]),
                                         xytext=(x.values[k]+0.005,y.values[k]),
                                         xycoords='data',
                                        fontsize=fontsize,va='center',ha='left',bbox=dict(facecolor='white', edgecolor='none',alpha=0.5))   
