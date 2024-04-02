@@ -2,7 +2,7 @@
 These scripts reproduce the main results of the paper:
 Projections and uncertainties of winter windstorm damage in Europe in a changing climate
 
-Luca G. Severino (1), Chahan M. Kropf (2,3) Hilla Afargan-Gerstman (1), Christopher Fairles (2), Andries Jan de Vries (4), Daniela I.V. Domeisen (4,1), and David N. Bresch (2,3)
+Luca G. Severino (1), Chahan M. Kropf (2,3) Hilla Afargan-Gerstman (1), Christopher Fairless (2), Andries Jan de Vries (4), Daniela I.V. Domeisen (4,1), and David N. Bresch (2,3)
 1 Institute for Atmospheric and Climate Science, ETH Zürich, Zürich, Switzerland
 2 Institute for Environmental Decisions, ETH Zürich, Zürich, Switzerland
 3 Federal Office of Meteorology and Climatology MeteoSwiss, Zürich, Switzerland
