@@ -57,7 +57,7 @@ markers=['.','d','o']
 font_s=16
 font_l=20
 matplotlib.rcParams.update({'font.size': font_l, 'axes.labelsize':font_l})
-labels=['a)','b)','c)','d)','e)','f)','g)']
+labels=['(a)','(b)','(c)','(d)','(e)','(f)','(g)']
 #figsize
 figsize=(14,10)
 th=0 #exposure threshold to label
@@ -119,5 +119,5 @@ plt.clabel(hs[0],manual=True,fontsize=font_s)
 plt.clabel(hs[1],manual=True,fontsize=font_s)
 
 #save figure
-#fig.savefig(f'{figdir}/Figure_Performance_diagram_field_crops_grapevine_{exp_threshs[0]}.png',dpi=300,bbox_inches='tight')
-#fig.savefig(f'{figdir}/Figure_Performance_diagram_field_crops_grapevine_{exp_threshs[0]}.pdf',dpi=300,bbox_inches='tight')
+fig.savefig(f'{figdir}/Figure_Performance_diagram_field_crops_grapevine_{exp_threshs[0]}.png',dpi=300,bbox_inches='tight')
+fig.savefig(f'{figdir}/Figure_Performance_diagram_field_crops_grapevine_{exp_threshs[0]}.pdf',dpi=300,bbox_inches='tight')
