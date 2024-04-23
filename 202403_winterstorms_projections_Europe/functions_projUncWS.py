@@ -5,15 +5,135 @@ import copy as cp
 import pandas as pd
 from scipy import sparse
 import cartopy.crs as ccrs
-##from timeit import default_timer as timer
-#from os import# mkdir, remove, rmdir
-
-#from climada.engine import Impact, ImpactCalc
-#from climada.entity import ImpactFunc,ImpactFuncSet
 from climada.hazard import Hazard,Centroids
 
+def read_sfc(filepath, datestart, dateend):
+    """Read in a time slice of a surface field from datestart to dateend.
+    Try using datetime64 and if that doesn't work decode times manually.
+    Args:
+        filepath (string) = directory where files are located
+        datestart (string) = start date for time slice
+        dateend (string) = end date for time slice
+    """
+
+    #First try opening and doing the select assuming everything is working ok with the time axis
+    try:
+        dat = \
+        xr.open_mfdataset\
+        (filepath, coords="minimal", join="override", decode_times=True, use_cftime=True).\
+        sel(time=slice(datestart, dateend))
+        try:
+            dat=dat.rename({"longitude":"lon", "latitude":"lat"}) #problematic coord names
+            print("changing longitude --> lon, latitude --> lat")
+        except: pass
+
+    except:
+        dat = xr.open_mfdataset(filepath, coords="minimal", join="override", decode_times = False)
+        try:
+            dat=dat.rename({"longitude":"lon", "latitude":"lat"}) #problematic coord names
+        except: pass
+
+        dat = xr.decode_cf(dat, use_cftime = True)
+        dat = dat.sel(time=slice(datestart, dateend))
+        datetimeindex = dat.indexes['time'].to_datetimeindex()
+        dat['time'] = datetimeindex
+        print("Something's wierd about the time axis, decoding manually")
+
+    return dat
+
+def read_field(filepath, datestart, dateend,latmin,latmax,lonmin,lonmax,plev):
+    """Read in a time slice from datestart to dateend and calculate the zonal mean.
+    Try using datetime64 and if that doesn't work decode times manually.
+    Args:
+        filepath (string) = path to files e.g., "/path/to/files/*.nc"
+        datestart (string) = start date for time slice
+        dateend (string) = end date for time slice
+    """
+
+    try:
+        dat = xr.open_mfdataset(filepath, coords="minimal", join="override",
+                 decode_times=True, use_cftime=True).\
+                 sel(time=slice(datestart, dateend),lat=slice(latmin,latmax),lon=slice(lonmin,lonmax))
+
+        if len(plev) == 1:
+            dat = dat.sel(plev=plev,method="nearest", tolerance=1) #avoid issue for models with inaccurate plevs
+        else:
+            dat = dat.sel(plev=slice(plev[0]+1,plev[1]-1)) #manual tolerance of 1 because method="nearest" is not implemented for slices
+
+    except:
+        print("Something's wierd about the time axis, decoding manually")
+        dat = xr.open_mfdataset(filepath, coords="minimal", join="override",
+                   decode_times=False)
+
+        dat=xr.decode_cf(dat, use_cftime=True)
+
+        dat=dat.sel(time=slice(datestart, dateend),lat=slice(latmin,latmax),lon=slice(lonmin,lonmax))
+        if len(plev) == 1:
+            dat = dat.sel(plev=plev,method="nearest", tolerance=1) #avoid issue for models with inaccurate plevs
+        else:
+            dat = dat.sel(plev=slice(plev[0]+1,plev[1]-1))  #manual tolerance of 1 because method="nearest" is not implemented for slices
+
+        datetimeindex=dat.indexes['time'].to_datetimeindex()
+        dat['time'] = datetimeindex
+
+    return dat
+
+def get_lat_lon_res(ds):
+    """Function to obtain the average lat and lon gridspacing from a dataset of a non regular model grid.
+    Args:
+        ds (xr.dataset or xr.dataarry) = input dataset from which average lat and lon resolutions must be calculated
+    Ouputs:
+        latres, lonres = average latitudinal and longitudinal resolutions
+    """
+    lat = ds.coords['lat']
+    lon = ds.coords['lon']
+    difflat = lat - lat.shift(lat=1)
+    latres = difflat.mean().to_numpy()
+    difflon = lon - lon.shift(lon=1)
+    lonres = difflon.mean().to_numpy()
+    return latres, lonres
+
+def def_domain(ds,min_lat,max_lat,min_lon,max_lon):
+    """Function that takes xr.dataset or xr.dataarry and box coordinates from a domain and crops the dataset or datarray to
+    the domain defined by the box coordinates.
+    Args:
+        ds (xr.dataset or xr.dataarry) = input dataset which lat and lon needs to be cropped
+        min_lat, max_lat = minimum and maximum latitudinal coordinates
+        min_lon, max_lon = minimum and maximum longitudinal coordinates
+    Ouputs:
+        ds = xr.dataset or xr.dataarry cropped to the input domain
+    """
+    LatIndexer, LonIndexer = 'lat', 'lon'
+    ds = ds.loc[{LatIndexer: slice(min_lat, max_lat),
+                      LonIndexer: slice(min_lon, max_lon)}]
+    return ds
+
+def norm_lon(ds):
+    """Function that takes xr.dataset or xr.dataarry and normalizes its longitude coordinate
+    Args:
+        ds (xr.dataset or xr.dataarry) = input dataset which lon coordinates needs to be normalized
+
+    Ouputs:
+        ds = xr.dataset or xr.dataarry with normalized lon coordinates
+    """
+    ds.coords['lon'] = (ds.coords['lon'] + 180) % 360 - 180
+    return ds.sortby(ds.lon)
+
+def get_ONDJFM_day(ds, months=[1,2,3,10,11,12],timedim="day"):
+    """Function that takes xr.dataset or xr.dataarry and months of the year and returns a dataset corresponding to
+    the specified months
+    Args:
+        ds (xr.dataset or xr.dataarry) = input dataset from which monthly data needs to be selected
+        months = months which are requested, in ordinal format (1=January, 2=February, ...,12=December)
+        timedim = name of the temporal coordinate of the dataset
+
+    Ouputs:
+        ds = xr.dataset or xr.dataarry corresponding to the months selected
+    """
+    return ds.isel({timedim:ds[timedim].dt.month.isin(months)})
+
 ## Define functions
-def set_centroids(da,stack=True,haztype='WS',timeres="day",plot=False, printout=False):
+def set_centroids(da,stack=True,haztype='WS',timeres="day",plot=False):
     '''Function which takes a xarray.DataArray as an input and returns a climada.hazard object, with centroids corresponding to
         latitude and longitude of the DataArray.'''
 
@@ -56,13 +176,8 @@ def set_centroids(da,stack=True,haztype='WS',timeres="day",plot=False, printout=
     haz.fraction = haz.intensity.copy()
     haz.fraction.data.fill(1)
     haz.centroids.set_meta_to_lat_lon()
-    haz.centroids.set_geometry_points()
+    #haz.centroids.set_geometry_points()
     haz.check()
-    if printout:
-        print('Lat resolution original: '+str(-latreso)+' ,rounded: '+str(-latres)+
-              '\nLon resolution original: '+str(lonreso)+' ,rounded: '+str(lonres))
-        print('lat: '+str(n_lat)+', lon: '+str(n_lon))
-        print('Check centroids borders:', haz.centroids.total_bounds)
     if plot:
         haz.centroids.plot()
 
@@ -74,16 +189,6 @@ def sel_reg_exp(reg_ids,exp):
     sel_exp = cp.deepcopy(exp)
     sel_exp.gdf = sel_exp.gdf.where(sel_exp.gdf['region_id'].isin(reg_ids)).dropna()
     return sel_exp
-
-def get_lat_lon_res(ds):
-    '''Function to obtain the average lat and lon gridspacing from a dataset of a non regular model grid. '''
-    lat = ds.coords['lat']
-    lon = ds.coords['lon']
-    difflat = lat - lat.shift(lat=1)
-    latres = difflat.mean().to_numpy()
-    difflon = lon - lon.shift(lon=1)
-    lonres = difflon.mean().to_numpy()
-    return latres, lonres
 
 def make_fn(addlist,basename="",sep="_",filetype=''):
     """Function to facilitate the creation of file names that takes a list of
