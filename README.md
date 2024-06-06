@@ -5,6 +5,9 @@ This repository contains a folder for each scientific peer-reviewed article that
 ## Published papers (since 2019):
 
 =======
+Mühlhofer, E., DN Bresch, EE Koks (2024) Infrastructure failure cascades quintuple risk of storm and flood-induced service disruptions across the globe, One Earth 7 (4), 714-729, https://doi.org/10.1016/j.oneear.2024.03.010 
+
+Mühlhofer, E., Chahan M Kropf, Lukas Riedel, David N Bresch, Elco Koks (2024) OpenStreetMap for multi-faceted climate risk assessments, Environ. Res. Commun. 6 015005, https://doi.org/10.1088/2515-7620/ad15ab
 
 Schmid T., Portmann R., Villiger L., Schröer K., Bresch D. N. (2023) An open-source radar-based hail damage model for buildings and cars, Natural Hazards and Earth System Sciences, https://doi.org/10.5194/nhess-2023-158
 
