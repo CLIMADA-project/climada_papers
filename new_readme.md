@@ -1,3 +1,6 @@
+# READ ME
+This repository contains an overview of the publications an corresponding software components implemented in [CLIMADA Python](https://github.com/CLIMADA-project/climada_python). Please see (file) for a list of publications and Zenodo DOI links.
+
 # How to publish code for a CLIMADA-paper
 This file provides an overview of the steps to take when publishing code corresponding to a peer-reviewed CLIMADA article or technical paper. The intended audience is the authors of the given code and paper. Please make sure to follow the steps carefully so the information is correct and your code easily accessible.
 
