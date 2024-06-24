@@ -1,7 +1,7 @@
 # CLIMADA-papers overview
 This file contains an overview of the publications and corresponding software components implemented in [CLIMADA Python](https://github.com/CLIMADA-project/climada_python). 
 
-For authors: Please consult the [README](./README.md) on how to add to this overview before making any edits.
+To contributors: Please consult the [README](./README.md) on how to add to this overview before making any edits.
 
 | Publication                                                                                                                                                                                                                                                                                                                                                  | Zenodo link                                                                                 |
 |--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------|
