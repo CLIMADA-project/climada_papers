@@ -8,4 +8,4 @@ This file provides an overview of the steps to take when publishing code corresp
 * Upload all relevant code
 * Add a readme file with all the information necessary to replicate your analysis, including which CLIMADA version was used
 * Make a Zenodo release
-* Update the paper overview in the climada_papers repository with the paper DOI and the code DOI from Zenodo (create a new row on top of the existing table)
+* Update the paper overview [climada_papers_overview.md](./climada_papers_overview.md) in the climada_papers repository with the paper DOI and the code DOI from Zenodo (create a new row on top of the existing table)
