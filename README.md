@@ -1,6 +1,5 @@
 # READ ME
-This repository contains an overview of the publications and corresponding software components implemented in [CLIMADA Python](https://github.com/CLIMADA-project/climada_python). Please find the list of publications and the corresponding software components implemented in [CLIMADA Python](https://github.com/CLIMADA-project/climada_python) below. 
-
+This repository contains an overview of the publications and corresponding software components implemented in [CLIMADA Python](https://github.com/CLIMADA-project/climada_python) (see list below). 
 To contributors: Please follow the bullet points below when making any edits.
 
 ## How to publish code for a CLIMADA-paper
